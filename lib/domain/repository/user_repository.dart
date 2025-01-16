@@ -1,11 +1,11 @@
 import 'package:easthardware_pms/domain/models/user.dart';
 
 abstract class UserRepository {
-  Future<User> getAllUsers();
-  Future<User> getUserById();
-  Future<User> getUserByUsername();
+  Future<List<User>> getAllUsers();
+  Future<User?> getUserById(int id);
+  Future<User?> getUserByUsername(String username);
 
-  Future<User> addUser();
-  Future<User> updateUser();
-  Future<User> deleteUser();
+  Future<bool> addUser(User user);
+  Future<bool> updateUser(int id, User user);
+  Future<bool> deleteUser(int id);
 }

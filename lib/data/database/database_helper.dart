@@ -1,5 +1,4 @@
 import 'dart:async';
-
 // import 'package:easthardware_pms/data/database/tables/products_table.dart';
 import 'package:easthardware_pms/data/database/tables/users_table.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -9,12 +8,18 @@ import 'package:path/path.dart';
 /// database_helper.dart
 /// This file contains the DatabaseHelper class
 ///
-/// The DatabaseHelper class shall be responsible for creating the tables on start-up and initializing the database.
+/// The DatabaseHelper class shall be responsible for creating the tables on creating, initializing, and upgrading the SQLite database.
+///
+/// Any data manipulation functions should be created in DAOs respective to entities.
 
 class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  /// Ensures there is only one instance of the database all througouht the applicaiton
+  /// This avoids any conflicts from multiple connections
+  factory DatabaseHelper() => _instance;
 
   DatabaseHelper._internal();
+
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
 
   static Database? _database;
 
@@ -38,5 +43,5 @@ class DatabaseHelper {
     UsersTable.createTable(database, version);
   }
 
-  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {}
+  Future<void> onUpgrade(Database database, int old_version, int new_version) async {}
 }
