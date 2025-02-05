@@ -7,9 +7,9 @@ abstract class UsersDao {
   Future<User?> getUserById(int id);
   Future<User?> getUserByUsername(String username);
 
-  Future<bool> insertUser(User user);
-  Future<bool> updateUser(int id, User user);
-  Future<bool> deleteUser(int id);
+  Future<void> insertUser(User user);
+  Future<void> updateUser(int id, User user);
+  Future<void> deleteUser(int id);
 }
 
 class UsersDaoImpl extends UsersDao {

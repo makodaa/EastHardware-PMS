@@ -1,3 +1,5 @@
+import "dart:typed_data";
+
 enum AccessLevel {
   staff,
   administrator,
@@ -9,8 +11,8 @@ class User {
   final String last_name;
   final String username;
   final AccessLevel access_level;
-  final int password_hash;
-  final int salt;
+  final Uint8List password_hash;
+  final Uint8List salt;
 
   User(
     this.id,
@@ -28,8 +30,8 @@ class User {
     String? last_name,
     String? username,
     AccessLevel? access_level,
-    int? password_hash,
-    int? salt,
+    Uint8List? password_hash,
+    Uint8List? salt,
   }) {
     return User(
       id ?? this.id,
@@ -61,8 +63,8 @@ class User {
       map['last_name'] as String,
       map['username'] as String,
       AccessLevel.values[map['access_level'] as int],
-      map['password_hash'] as int,
-      map['salt'] as int,
+      Uint8List.fromList(map['password_hash'] as List<int>),
+      Uint8List.fromList(map['salt'] as List<int>),
     );
   }
 }

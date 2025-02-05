@@ -1,4 +1,5 @@
 import 'package:easthardware_pms/data/database/dao/users_dao.dart';
+import 'package:easthardware_pms/domain/errors/exceptions.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
 import 'package:easthardware_pms/domain/repository/user_repository.dart';
 
@@ -8,14 +9,21 @@ class UserRepositoryImpl extends UserRepository {
   final UsersDao _usersDao = UsersDaoImpl();
 
   @override
-  Future<bool> addUser(User user) {
-    // TODO: check if function works properly when adding a duplicate
-    return _usersDao.insertUser(user);
+  Future<void> addUser(User user) async {
+    try {
+      _usersDao.insertUser(user);
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
-  Future<bool> deleteUser(int id) {
-    return _usersDao.deleteUser(id);
+  Future<void> deleteUser(int id) async {
+    try {
+      _usersDao.deleteUser(id);
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
@@ -34,7 +42,11 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> updateUser(int id, User user) {
-    return _usersDao.updateUser(id, user);
+  Future<void> updateUser(int id, User user) async {
+    try {
+      _usersDao.updateUser(id, user);
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 }
