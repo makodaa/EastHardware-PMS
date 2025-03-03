@@ -1,6 +1,7 @@
 part of 'login_form_bloc.dart';
 
-sealed class LoginFormState extends Equatable {
+// use mixins lang for this.
+sealed class LoginFormState with EquatableMixin {
   final String username;
   final String password;
   final bool is_valid;

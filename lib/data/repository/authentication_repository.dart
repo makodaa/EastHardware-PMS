@@ -37,8 +37,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     }
 
     Uint8List password_bytes = utf8.encode(password);
-    Uint8List hashed_password =
-        _cryptographyService.hashPasswordBytes([...password_bytes, ...user.salt]);
+    Uint8List hashed_password = _cryptographyService.hashPasswordBytes([
+      ...password_bytes,
+      ...user.salt,
+    ]);
 
     // Check if password matches stored password
     if (hashed_password != user.password_hash) {

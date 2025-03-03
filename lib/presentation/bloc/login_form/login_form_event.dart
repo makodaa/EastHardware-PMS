@@ -3,11 +3,17 @@ part of 'login_form_bloc.dart';
 sealed class LoginFormEvent extends Equatable {
   const LoginFormEvent();
 
+  // Redirecting constructors to assist in autocompletion.
+
+  const factory LoginFormEvent.usernameChanged(String name) = LoginFormUsernameChangedEvent;
+  const factory LoginFormEvent.passwordChanged(String password) = LoginFormPasswordChangedEvent;
+  const factory LoginFormEvent.loginButtonPressed() = LoginFormButtonPressedEvent;
+
   @override
   List<Object?> get props => [];
 }
 
-class LoginFormUsernameChangedEvent extends LoginFormEvent {
+final class LoginFormUsernameChangedEvent extends LoginFormEvent {
   final String username;
   const LoginFormUsernameChangedEvent(this.username);
 
@@ -15,7 +21,7 @@ class LoginFormUsernameChangedEvent extends LoginFormEvent {
   List<Object?> get props => [username];
 }
 
-class LoginFormPasswordChangedEvent extends LoginFormEvent {
+final class LoginFormPasswordChangedEvent extends LoginFormEvent {
   final String password;
   const LoginFormPasswordChangedEvent(this.password);
 
@@ -23,4 +29,8 @@ class LoginFormPasswordChangedEvent extends LoginFormEvent {
   List<Object?> get props => [password];
 }
 
-class LoginFormButtonPressedEvent extends LoginFormEvent {}
+final class LoginFormButtonPressedEvent extends LoginFormEvent {
+  const LoginFormButtonPressedEvent();
+
+  /// What do you want to do?
+}
