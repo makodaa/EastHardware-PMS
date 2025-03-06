@@ -9,9 +9,7 @@ part 'login_form_event.dart';
 part 'login_form_state.dart';
 
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
-  final AuthenticationRepository authRepo;
-
-  LoginFormBloc(this.authRepo) : super(const LoginFormInitial()) {
+  LoginFormBloc() : super(const LoginFormInitial()) {
     on<LoginFormEvent>((event, emit) {});
     on<LoginFormUsernameChangedEvent>(_onUsernameChanged);
     on<LoginFormPasswordChangedEvent>(_onPasswordChanged);
@@ -20,16 +18,16 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
 
   Future _onUsernameChanged(LoginFormUsernameChangedEvent event, Emitter emit) async {
     emit(LoginFormFilled(
-        input_username: event.username,
-        input_password: state.password,
-        input_is_valid: _checkValidity(event.username, state.password)));
+        inputUsername: event.username,
+        inputPassword: state.password,
+        inputIsValid: _checkValidity(event.username, state.password)));
   }
 
   Future _onPasswordChanged(LoginFormPasswordChangedEvent event, Emitter emit) async {
     emit(LoginFormFilled(
-        input_username: state.username,
-        input_password: event.password,
-        input_is_valid: _checkValidity(state.username, event.password)));
+        inputUsername: state.username,
+        inputPassword: event.password,
+        inputIsValid: _checkValidity(state.username, event.password)));
   }
 
   Future<void> _onButtonPressed(LoginFormButtonPressedEvent event, Emitter emit) async {

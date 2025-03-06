@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:easthardware_pms/data/repository/authentication_repository.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
@@ -15,11 +17,19 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   Future<void> _login(AuthenticationLoginEvent event, Emitter emit) async {
     emit(AuthenticationLoginLoadingState());
-
     try {
-      final User user = await _authentication_repository.logIn(
-          username: event.username, password: event.password);
-      emit(AuthenticationLoginSuccessState(user));
+      // TODO: Implement Repository Access
+      // final User user = await _authentication_repository.logIn(
+      //     username: event.username, password: event.password);
+      emit(AuthenticationLoginSuccessState(User(
+        1,
+        "firstName",
+        "lastName",
+        "username",
+        AccessLevel.administrator,
+        Uint8List.fromList([1, 2, 3]),
+        Uint8List.fromList([1, 2, 3]),
+      )));
     } catch (e) {
       emit(AuthenticationLoginFailureState(e.toString()));
     }

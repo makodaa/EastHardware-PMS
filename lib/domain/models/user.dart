@@ -7,39 +7,39 @@ enum AccessLevel {
 
 class User {
   final int id;
-  final String first_name;
-  final String last_name;
+  final String firstName;
+  final String lastName;
   final String username;
-  final AccessLevel access_level;
-  final Uint8List password_hash;
+  final AccessLevel accessLevel;
+  final Uint8List passwordHash;
   final Uint8List salt;
 
   User(
     this.id,
-    this.first_name,
-    this.last_name,
+    this.firstName,
+    this.lastName,
     this.username,
-    this.access_level,
-    this.password_hash,
+    this.accessLevel,
+    this.passwordHash,
     this.salt,
   );
 
   User copyWith({
     int? id,
-    String? first_name,
-    String? last_name,
+    String? firstName,
+    String? lastName,
     String? username,
-    AccessLevel? access_level,
-    Uint8List? password_hash,
+    AccessLevel? accessLevel,
+    Uint8List? passwordHash,
     Uint8List? salt,
   }) {
     return User(
       id ?? this.id,
-      first_name ?? this.first_name,
-      last_name ?? this.last_name,
+      firstName ?? this.firstName,
+      lastName ?? this.lastName,
       username ?? this.username,
-      access_level ?? this.access_level,
-      password_hash ?? this.password_hash,
+      accessLevel ?? this.accessLevel,
+      passwordHash ?? this.passwordHash,
       salt ?? this.salt,
     );
   }
@@ -47,11 +47,11 @@ class User {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'first_name': first_name,
-      'last_name': last_name,
+      'first_name': firstName,
+      'last_name': lastName,
       'username': username,
-      'access_level': access_level.index,
-      'password_hash': password_hash,
+      'access_level': accessLevel.index,
+      'password_hash': passwordHash,
       'salt': salt,
     };
   }

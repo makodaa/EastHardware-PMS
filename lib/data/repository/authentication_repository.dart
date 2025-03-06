@@ -33,17 +33,18 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
     // Check if user exists in database
     if (user == null) {
+      print("Null");
       throw AuthenticationException('Invalid username or password.');
     }
 
-    Uint8List password_bytes = utf8.encode(password);
-    Uint8List hashed_password = _cryptographyService.hashPasswordBytes([
-      ...password_bytes,
+    Uint8List passwordBytes = utf8.encode(password);
+    Uint8List hashedPassword = _cryptographyService.hashPasswordBytes([
+      ...passwordBytes,
       ...user.salt,
     ]);
 
     // Check if password matches stored password
-    if (hashed_password != user.password_hash) {
+    if (hashedPassword != user.passwordHash) {
       throw AuthenticationException('Invalid username or password');
     }
 

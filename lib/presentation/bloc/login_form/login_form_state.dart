@@ -4,9 +4,9 @@ part of 'login_form_bloc.dart';
 sealed class LoginFormState with EquatableMixin {
   final String username;
   final String password;
-  final bool is_valid;
+  final bool isValid;
 
-  const LoginFormState({required this.username, required this.password, required this.is_valid});
+  const LoginFormState({required this.username, required this.password, required this.isValid});
 
   @override
   List<Object?> get props => [username, password];
@@ -17,23 +17,23 @@ class LoginFormInitial extends LoginFormState {
       : super(
           username: '',
           password: '',
-          is_valid: false,
+          isValid: false,
         );
 }
 
 class LoginFormFilled extends LoginFormState {
-  final String input_username;
-  final String input_password;
-  final bool input_is_valid;
+  final String inputUsername;
+  final String inputPassword;
+  final bool inputIsValid;
   const LoginFormFilled({
-    required this.input_username,
-    required this.input_password,
-    required this.input_is_valid,
+    required this.inputUsername,
+    required this.inputPassword,
+    required this.inputIsValid,
   }) : super(
-          username: input_username,
-          password: input_password,
-          is_valid: input_is_valid,
+          username: inputUsername,
+          password: inputPassword,
+          isValid: inputIsValid,
         );
   @override
-  List<Object?> get props => [input_username, input_password];
+  List<Object?> get props => [inputUsername, inputPassword];
 }

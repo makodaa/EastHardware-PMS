@@ -30,6 +30,8 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
     final String path = join(await getDatabasesPath(), 'app_database.db');
     return await openDatabase(
       path,
@@ -43,5 +45,5 @@ class DatabaseHelper {
     UsersTable.createTable(database, version);
   }
 
-  Future<void> onUpgrade(Database database, int old_version, int new_version) async {}
+  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {}
 }
