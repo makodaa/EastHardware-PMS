@@ -33,7 +33,6 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
     // Check if user exists in database
     if (user == null) {
-      print("Null");
       throw AuthenticationException('Invalid username or password.');
     }
 
