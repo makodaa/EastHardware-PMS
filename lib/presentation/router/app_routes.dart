@@ -1,5 +1,15 @@
 class AppRoutes {
   static const String login = '/login';
-  static const String admin_dashboard = '/dashboard/admin';
-  static const String staff_dashboard = '/dashboard/staff';
+
+  // Scaffold Routes
+  static const String adminScaffold = '/admin';
+  static const String staffScaffold = '/staff';
+
+  // Major Page Routes
+  static const String adminDashboard = '/dashboard';
+  static const String staffDashboard = '/dashboard';
+  static const String inventoryPage = '/inventory';
+
+  // Create Page Routes
+  static const String createProductPage = '/create/product';
 }

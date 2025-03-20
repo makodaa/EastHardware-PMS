@@ -537,9 +537,11 @@
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/database/dao/users_dao.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/database/database_helper.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/database/tables/users_table.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/mock/mock.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/repository/authentication_repository.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/data/repository/user_repository.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/domain/errors/exceptions.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/domain/models/product.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/domain/models/user.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/domain/repository/authentication_repository.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/domain/repository/user_repository.dart
@@ -548,10 +550,14 @@
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/authentication/authentication_bloc.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/authentication/authentication_event.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/authentication/authentication_state.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/loginform/login_form_bloc.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/loginform/login_form_event.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/bloc/loginform/login_form_state.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/router/app_router.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/router/app_routes.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/authentication/login_page.dart
-/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/dashboard/admin_dashboard_page.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/navigation/admin_navigation_scaffold.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/widgets/authentication/login_form.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/widgets/layout/gaps.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/pubspec.yaml
 /Users/mackenziecerenio/fvm/versions/3.24.3/bin/cache/artifacts/material_fonts/MaterialIcons-Regular.otf

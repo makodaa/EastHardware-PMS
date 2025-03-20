@@ -23,19 +23,13 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = FluentThemeData(
-      scaffoldBackgroundColor: Colors.grey[10],
-      brightness: Brightness.light,
-      accentColor: Colors.blue,
-      // Add other theme properties as needed
-    );
-
     return MultiProvider(
       providers: di.inject(),
       child: FluentApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: router,
-        theme: lightTheme,
+        themeMode: ThemeMode.light,
+        color: Colors.grey[170],
       ),
     );
   }

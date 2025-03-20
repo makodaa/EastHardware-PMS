@@ -1,34 +1,27 @@
 part of 'authentication_bloc.dart';
 
-sealed class AuthenticationState extends Equatable {
-  final int loginCount;
-  const AuthenticationState(this.loginCount);
+enum AuthenticationStatus { unknown, loading, success, failure }
 
-  @override
-  List<Object> get props => [loginCount];
-}
+class AuthenticationState {
+  final AuthenticationStatus status;
+  final User? user;
+  final int loginAttempts;
 
-final class AuthenticationInitial extends AuthenticationState {
-  const AuthenticationInitial(super.loginCount);
-}
+  AuthenticationState({
+    this.status = AuthenticationStatus.unknown,
+    this.user,
+    this.loginAttempts = 0,
+  });
 
-final class AuthenticationLoginLoadingState extends AuthenticationState {
-  const AuthenticationLoginLoadingState(super.loginCount);
-}
-
-final class AuthenticationLoginSuccessState extends AuthenticationState {
-  final User user;
-  const AuthenticationLoginSuccessState(this.user) : super(0);
-
-  @override
-  List<Object> get props => [user];
-}
-
-final class AuthenticationLoginFailureState extends AuthenticationState {
-  final String message;
-  const AuthenticationLoginFailureState({required this.message, required loginCount})
-      : super(loginCount);
-
-  @override
-  List<Object> get props => [message];
+  AuthenticationState copyWith({
+    AuthenticationStatus? status,
+    User? user,
+    int? loginAttempts,
+  }) {
+    return AuthenticationState(
+      status: status ?? this.status,
+      user: user ?? this.user,
+      loginAttempts: loginAttempts ?? this.loginAttempts,
+    );
+  }
 }
