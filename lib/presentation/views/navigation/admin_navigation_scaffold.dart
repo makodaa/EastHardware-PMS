@@ -1,4 +1,3 @@
-import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,16 +13,10 @@ class AdminNavigationScaffold extends StatefulWidget {
 
 class _AdminNavigationScaffoldState extends State<AdminNavigationScaffold> {
   int selected = 0;
-  void _changePaneItem(int index) {
-    print(index);
 
+  // TODO: vincent, dito yung navigation ng sidebar
+  void _changePaneItem(int index) {
     widget.shell.goBranch(index);
-    // switch (index) {
-    //   case 0:
-    //     context.goNamed("Admin");
-    //     break;
-    //   default:
-    // }
   }
 
   @override
