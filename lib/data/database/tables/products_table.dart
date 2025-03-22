@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class ProductsTable {
-  static const String PRODUCTS_TABLE_NAME = 'users';
+  static const String PRODUCTS_TABLE_NAME = 'products';
   static const String PRODUCTS_ID = 'id';
   static const String PRODUCTS_SKU = 'sku';
   static const String PRODUCTS_CATEGORY = 'category';
@@ -32,7 +32,6 @@ class ProductsTable {
       $PRODUCTS_CREATION_DATE TEXT NOT NULL,
       $PRODUCTS_USER_ID INTEGER NOT NULL,
       $PRODUCTS_ARCHIVE_STATUS INTEGER NOT NULL
-    )
     )
   ''');
   }

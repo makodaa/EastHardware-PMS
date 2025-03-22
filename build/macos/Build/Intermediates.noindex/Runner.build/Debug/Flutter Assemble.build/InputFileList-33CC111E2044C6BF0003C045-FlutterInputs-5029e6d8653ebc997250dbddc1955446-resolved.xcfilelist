@@ -556,6 +556,7 @@
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/router/app_router.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/router/app_routes.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/authentication/login_page.dart
+/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/inventory/inventory_pane_page.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/views/navigation/admin_navigation_scaffold.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/widgets/authentication/login_form.dart
 /Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/lib/presentation/widgets/layout/gaps.dart

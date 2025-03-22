@@ -33,6 +33,7 @@ class DatabaseHelper {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
     final String path = join(await getDatabasesPath(), 'app_database.db');
+
     return await openDatabase(
       path,
       version: 1,
