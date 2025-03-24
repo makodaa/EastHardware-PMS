@@ -11,5 +11,5 @@ class AppRoutes {
   static const String inventoryPage = '/inventory';
 
   // Create Page Routes
-  static const String createProductPage = '/create/product';
+  static const String createProductPage = '/createproduct';
 }

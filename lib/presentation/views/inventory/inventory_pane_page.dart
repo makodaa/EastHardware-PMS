@@ -1,3 +1,4 @@
+import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -69,7 +70,9 @@ class SearchRow extends StatelessWidget {
                 padding: AppPadding.a8,
                 child: Text('New Product'),
               ),
-              onPressed: () {},
+              onPressed: () {
+                router.goNamed('CreateProduct');
+              },
             )
           ].withGap(() => Gaps.h16),
         ),

@@ -46,7 +46,7 @@ class LoginPageCard extends StatelessWidget {
     return Card(
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxHeight: 360,
+          maxHeight: 400,
           maxWidth: 500,
         ),
         child: Column(

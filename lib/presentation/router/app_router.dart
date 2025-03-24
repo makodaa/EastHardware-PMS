@@ -1,5 +1,6 @@
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/views/authentication/login_page.dart';
+import 'package:easthardware_pms/presentation/views/inventory/create_product_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -19,7 +20,8 @@ final GoRouter router = GoRouter(
     ),
     StatefulShellRoute(
       builder: (context, state, shell) => shell,
-      navigatorContainerBuilder: (_, shell, children) => AdminNavigationScaffold(shell, children),
+      navigatorContainerBuilder: (_, shell, children) =>
+          AdminNavigationScaffold(shell, children),
       branches: [
         StatefulShellBranch(
           routes: [
@@ -36,6 +38,11 @@ final GoRouter router = GoRouter(
               name: "Inventory",
               path: "/inventory",
               builder: (context, state) => const InventoryPanePage(),
+            ),
+            GoRoute(
+              name: "CreateProduct",
+              path: "/createproduct",
+              builder: (context, state) => const CreateProductPage(),
             ),
           ],
         )
