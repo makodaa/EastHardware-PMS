@@ -1,5 +1,8 @@
 import 'dart:async';
 // import 'package:easthardware_pms/data/database/tables/products_table.dart';
+import 'package:easthardware_pms/data/database/tables/categories_table.dart';
+import 'package:easthardware_pms/data/database/tables/products_table.dart';
+import 'package:easthardware_pms/data/database/tables/units_table.dart';
 import 'package:easthardware_pms/data/database/tables/users_table.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // ignore: depend_on_referenced_packages
@@ -36,7 +39,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: onCreate,
       onUpgrade: onUpgrade,
     );
@@ -44,7 +47,18 @@ class DatabaseHelper {
 
   Future<void> onCreate(Database database, int version) async {
     UsersTable.createTable(database, version);
+    CategoriesTable.createTable(database);
+    UnitsTable.createUnitsTable(database);
+    ProductsTable.createTable(database);
   }
 
-  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {}
+  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {
+    await database.execute("""
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS units;
+      DROP TABLE IF EXISTS products;
+          """);
+    await onCreate(database, newVersion);
+  }
 }

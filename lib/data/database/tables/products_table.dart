@@ -18,13 +18,13 @@ class ProductsTable {
   static const String PRODUCTS_USER_ID = 'user_id';
   static const String PRODUCTS_ARCHIVE_STATUS = 'archive_status';
 
-  static void createTable(Database database, int version) async {
+  static void createTable(Database database) async {
     await database.execute('''
     CREATE TABLE $PRODUCTS_TABLE_NAME (
       $PRODUCTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
       $PRODUCTS_NAME TEXT NOT NULL,
       $PRODUCTS_SKU TEXT NOT NULL,
-      $PRODUCTS_CATEGORY INTEGER NOT NULL,
+      $PRODUCTS_CATEGORY INTEGER,
       $PRODUCTS_DESCRIPTION TEXT,
       $PRODUCTS_SALE_PRICE REAL NOT NULL,
       $PRODUCTS_ORDER_COST REAL NOT NULL,

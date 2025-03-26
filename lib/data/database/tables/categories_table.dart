@@ -5,7 +5,7 @@ class CategoriesTable {
   static const String CATEGORIES_ID = "id";
   static const String CATEGORIES_NAME = "name";
 
-  static void createCategoriesTable(Database database) async {
+  static void createTable(Database database) async {
     await database.execute('''
     CREATE TABLE $CATEGORIES_TABLE_NAME (
     $CATEGORIES_ID INTEGER PRIMARY KEY AUTOINCREMENT,

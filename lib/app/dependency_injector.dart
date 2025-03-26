@@ -1,5 +1,3 @@
-import 'package:easthardware_pms/data/database/dao/users_dao.dart';
-import 'package:easthardware_pms/data/database/database_helper.dart';
 import 'package:easthardware_pms/data/repository/authentication_repository.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_bloc.dart';
@@ -14,8 +12,6 @@ class DependencyInjector {
   }
 
   List<SingleChildWidget> inject() {
-    UsersDaoImpl dao = UsersDaoImpl(DatabaseHelper());
-    dao.getAllUsers();
     return [
       BlocProvider(create: (context) => AuthenticationBloc(_authenticationRepository)),
       BlocProvider(create: (context) => LoginFormBloc()),
