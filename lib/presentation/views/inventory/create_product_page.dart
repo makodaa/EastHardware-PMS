@@ -1,5 +1,7 @@
 import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:go_router/go_router.dart';
+import 'package:scroll_animator/scroll_animator.dart';
 
 class CreateProductPage extends StatefulWidget {
   const CreateProductPage({super.key});
@@ -9,14 +11,19 @@ class CreateProductPage extends StatefulWidget {
 }
 
 class _CreateProductPageState extends State<CreateProductPage> {
+  final AnimatedScrollController scrollController =
+      AnimatedScrollController(animationFactory: const ChromiumImpulse());
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController skuController = TextEditingController();
-  final TextEditingController productCategoryController = TextEditingController();
-  final TextEditingController productQuantityController = TextEditingController();
+  final TextEditingController productCategoryController =
+      TextEditingController();
+  final TextEditingController productQuantityController =
+      TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController criticalLevelController = TextEditingController();
   final TextEditingController deadStockController = TextEditingController();
-  final TextEditingController fastMovingStockController = TextEditingController();
+  final TextEditingController fastMovingStockController =
+      TextEditingController();
   final TextEditingController salePriceController = TextEditingController();
   final TextEditingController orderCostController = TextEditingController();
   final TextEditingController dateCreatedController = TextEditingController();
@@ -39,97 +46,97 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: AppPadding.a16,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey,
-                  width: 0.2,
+    return ColoredBox(
+      color: FluentTheme.of(context).scaffoldBackgroundColor,
+      child: Padding(
+        padding: AppPadding.a16,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Create New Product",
+                  style: FluentTheme.of(context).typography.title,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    TextBoxInput(
+                      label: "SKU",
+                      controller: skuController,
+                    ),
+                    TextBoxInput(
+                      label: "Product Category",
+                      controller: productCategoryController,
+                    ),
+                    ExpandedTextBoxInput(
+                      label: "Description",
+                      controller: descriptionController,
+                    ),
+                    TextBoxInput(
+                      label: "Sale Price",
+                      controller: salePriceController,
+                    ),
+                    TextBoxInput(
+                      label: "Order Cost",
+                      controller: orderCostController,
+                    ),
+                    TextBoxInput(
+                      label: "Product Quantiy",
+                      controller: productQuantityController,
+                    ),
+                    TextBoxInput(
+                      label: "Critical Level",
+                      controller: criticalLevelController,
+                    ),
+                    TextBoxInput(
+                      label: "Dead Stock Threshold",
+                      controller: deadStockController,
+                    ),
+                    TextBoxInput(
+                      label: "Fast Moving Threshold",
+                      controller: fastMovingStockController,
+                    ),
+                    TextBoxInput(
+                      label: "Date",
+                      controller: dateCreatedController,
+                    ),
+                  ],
                 ),
               ),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Text(
-                    "Create New Product",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextBoxInput(
-                    label: "SKU",
-                    controller: skuController,
-                  ),
-                  TextBoxInput(
-                    label: "Product Category",
-                    controller: productCategoryController,
-                  ),
-                  ExpandedTextBoxInput(
-                    label: "Description",
-                    controller: descriptionController,
-                  ),
-                  TextBoxInput(
-                    label: "Sale Price",
-                    controller: salePriceController,
-                  ),
-                  TextBoxInput(
-                    label: "Order Cost",
-                    controller: orderCostController,
-                  ),
-                  TextBoxInput(
-                    label: "Product Quantiy",
-                    controller: productQuantityController,
-                  ),
-                  TextBoxInput(
-                    label: "Critical Level",
-                    controller: criticalLevelController,
-                  ),
-                  TextBoxInput(
-                    label: "Dead Stock Threshold",
-                    controller: deadStockController,
-                  ),
-                  TextBoxInput(
-                    label: "Fast Moving Threshold",
-                    controller: fastMovingStockController,
-                  ),
-                  TextBoxInput(
-                    label: "Date",
-                    controller: dateCreatedController,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Button(
-                        onPressed: () {},
-                        child: const Text("Cancel"),
-                      ),
-                      Button(
-                        onPressed: () {
-                          //_handleSubmit(context);
-                        },
-                        child: const Text("Create"),
-                      ),
-                    ].withGap(() => Gaps.h8),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
+      
+            /// The cancel and create must be persistent at the bottom of the screen.
+            /// (@water-mizuu: First experience, I thought there were no back buttons.)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Button(
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go("/inventory");
+                    }
+                  },
+                  child: const Text("Cancel"),
+                ),
+                Button(
+                  onPressed: () {
+                    //_handleSubmit(context);
+                  },
+                  child: const Text("Create"),
+                ),
+              ].withGap(() => Gaps.h8),
+            )
+          ],
+        ),
       ),
     );
   }

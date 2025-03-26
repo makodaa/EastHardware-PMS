@@ -3,7 +3,7 @@ import 'package:easthardware_pms/presentation/views/authentication/login_page.da
 import 'package:easthardware_pms/presentation/views/inventory/create_product_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -28,7 +28,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: "Admin",
               path: "/dashboard",
-              builder: (context, state) => Text("dashboard"),
+              builder: (context, state) => const Text("dashboard"),
             )
           ],
         ),
@@ -41,8 +41,13 @@ final GoRouter router = GoRouter(
             ),
             GoRoute(
               name: "CreateProduct",
-              path: "/createproduct",
-              builder: (context, state) => const CreateProductPage(),
+              path: "/create_product",
+
+              /// The [MaterialPage] is used for the transition animation.
+              /// Should be removed if decided not to use the transition.
+              pageBuilder: (context, state) => const MaterialPage(
+                child: CreateProductPage(),
+              ),
             ),
           ],
         )

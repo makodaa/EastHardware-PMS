@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   // Singleton
-  App._internal();
-  static final App instance = App._internal();
+  const App._internal();
+  static const App instance = App._internal();
   factory App() => instance;
   @override
   State<StatefulWidget> createState() => _AppState();

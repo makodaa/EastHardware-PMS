@@ -8,7 +8,8 @@ class AdminNavigationScaffold extends StatefulWidget {
   final List<Widget> children;
 
   @override
-  State<AdminNavigationScaffold> createState() => _AdminNavigationScaffoldState();
+  State<AdminNavigationScaffold> createState() =>
+      _AdminNavigationScaffoldState();
 }
 
 class _AdminNavigationScaffoldState extends State<AdminNavigationScaffold> {
@@ -16,7 +17,7 @@ class _AdminNavigationScaffoldState extends State<AdminNavigationScaffold> {
 
   // TODO: vincent, dito yung navigation ng sidebar
   void _changePaneItem(int index) {
-    widget.shell.goBranch(index);
+    widget.shell.goBranch(index, initialLocation: true);
   }
 
   @override
@@ -30,9 +31,10 @@ class _AdminNavigationScaffoldState extends State<AdminNavigationScaffold> {
         onItemPressed: _changePaneItem,
         items: [
           PaneItem(
-              icon: const Icon(FluentIcons.home),
-              title: const Text("Dashboard"),
-              body: const SizedBox()),
+            icon: const Icon(FluentIcons.home),
+            title: const Text("Dashboard"),
+            body: const SizedBox(),
+          ),
           PaneItemSeparator(),
           PaneItem(
             icon: const Icon(FluentIcons.package),
