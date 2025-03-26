@@ -1,7 +1,5 @@
-import 'package:easthardware_pms/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateProductPage extends StatefulWidget {
   const CreateProductPage({super.key});
@@ -13,15 +11,12 @@ class CreateProductPage extends StatefulWidget {
 class _CreateProductPageState extends State<CreateProductPage> {
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController skuController = TextEditingController();
-  final TextEditingController productCategoryController =
-      TextEditingController();
-  final TextEditingController productQuantityController =
-      TextEditingController();
+  final TextEditingController productCategoryController = TextEditingController();
+  final TextEditingController productQuantityController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController criticalLevelController = TextEditingController();
   final TextEditingController deadStockController = TextEditingController();
-  final TextEditingController fastMovingStockController =
-      TextEditingController();
+  final TextEditingController fastMovingStockController = TextEditingController();
   final TextEditingController salePriceController = TextEditingController();
   final TextEditingController orderCostController = TextEditingController();
   final TextEditingController dateCreatedController = TextEditingController();
@@ -117,7 +112,6 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    spacing: 8,
                     children: [
                       Button(
                         onPressed: () {},
@@ -129,7 +123,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                         },
                         child: const Text("Create"),
                       ),
-                    ],
+                    ].withGap(() => Gaps.h8),
                   )
                 ],
               ),

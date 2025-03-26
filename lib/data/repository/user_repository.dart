@@ -9,18 +9,18 @@ class UserRepositoryImpl extends UserRepository {
   final UsersDao _usersDao = UsersDaoImpl();
 
   @override
-  Future<void> addUser(User user) async {
+  Future<bool> addUser(User user) async {
     try {
-      _usersDao.insertUser(user);
+      return _usersDao.insertUser(user);
     } catch (e) {
       throw DatabaseException(e.toString());
     }
   }
 
   @override
-  Future<void> deleteUser(int id) async {
+  Future<bool> deleteUser(int id) async {
     try {
-      _usersDao.deleteUser(id);
+      return _usersDao.deleteUser(id);
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -28,23 +28,35 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<User?> getUserById(int id) {
-    return _usersDao.getUserById(id);
+    try {
+      return _usersDao.getUserById(id);
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
   Future<User?> getUserByUsername(String username) {
-    return _usersDao.getUserByUsername(username);
+    try {
+      return _usersDao.getUserByUsername(username);
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
   Future<List<User>> getAllUsers() {
-    return _usersDao.getAllUsers();
+    try {
+      return _usersDao.getAllUsers();
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
   }
 
   @override
-  Future<void> updateUser(int id, User user) async {
+  Future<bool> updateUser(int id, User user) async {
     try {
-      _usersDao.updateUser(id, user);
+      return _usersDao.updateUser(id, user);
     } catch (e) {
       throw DatabaseException(e.toString());
     }

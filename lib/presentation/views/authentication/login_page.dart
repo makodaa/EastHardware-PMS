@@ -1,5 +1,5 @@
 import 'package:easthardware_pms/domain/models/user.dart';
-import 'package:easthardware_pms/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/widgets/authentication/login_form.dart';
 
 import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';

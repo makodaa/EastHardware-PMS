@@ -14,10 +14,5 @@ class Mock {
     Uint8List.fromList([1, 2, 3]),
   );
 
-  static List<Product> products = [
-    Product(id: 0, name: 'Steel', salePrice: 0.0, orderCost: 0.0, quantity: 10, criticalLevel: 1),
-    Product(id: 0, name: 'Cement', salePrice: 0.0, orderCost: 0.0, quantity: 10, criticalLevel: 1),
-    Product(id: 0, name: 'Gravel', salePrice: 0.0, orderCost: 0.0, quantity: 10, criticalLevel: 1),
-    Product(id: 0, name: 'Wood', salePrice: 0.0, orderCost: 0.0, quantity: 100, criticalLevel: 10)
-  ];
+  static List<Product> products = [];
 }

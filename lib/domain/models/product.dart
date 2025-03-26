@@ -1,45 +1,70 @@
-import 'dart:ffi';
-
 class Product {
   final int id;
   final String name;
-  final String? category;
+  final int? category;
   final String? description;
   final double salePrice;
   final double orderCost;
   final double quantity;
+  final String mainUnit;
   final double criticalLevel;
+  final int deadStockThreshold;
+  final int fastMovingStockThreshold;
+  final String creationDate;
+  final int userId;
+  final int architeveStatus;
 
-  Product(
-      {required this.id,
-      required this.name,
-      this.category,
-      this.description,
-      required this.salePrice,
-      required this.orderCost,
-      required this.quantity,
-      required this.criticalLevel});
-  // TODO: Add creation date, userid, archive status
+  Product({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.description,
+    required this.salePrice,
+    required this.orderCost,
+    required this.quantity,
+    required this.mainUnit,
+    required this.criticalLevel,
+    required this.deadStockThreshold,
+    required this.fastMovingStockThreshold,
+    required this.creationDate,
+    required this.userId,
+    required this.architeveStatus,
+  });
 
-  Product copyWith({
-    int? id,
-    String? name,
-    String? category,
-    String? description,
-    double? salePrice,
-    double? orderCost,
-    double? quantity,
-    double? criticalLevel,
-  }) {
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'category': category,
+      'salePrice': salePrice,
+      'orderCost': orderCost,
+      'quantity': quantity,
+      'mainUnit': mainUnit,
+      'criticalLevel': criticalLevel,
+      'deadStockThreshold': deadStockThreshold,
+      'fastMovingStockThreshold': fastMovingStockThreshold,
+      'creationDate': creationDate,
+      'userId': userId,
+      'archiveStatus': architeveStatus,
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      category: this.category,
-      description: this.description,
-      salePrice: salePrice ?? this.salePrice,
-      orderCost: orderCost ?? this.orderCost,
-      quantity: quantity ?? this.quantity,
-      criticalLevel: criticalLevel ?? this.criticalLevel,
+      id: map['id'] as int,
+      name: map['name'] as String,
+      category: map['category'] as int?,
+      description: map['description'] as String?,
+      salePrice: map['salePrice'] as double,
+      orderCost: map['orderCost'] as double,
+      quantity: map['quantity'] as double,
+      mainUnit: map['mainUnit'] as String,
+      criticalLevel: map['criticalLevel'] as double,
+      deadStockThreshold: map['deadStockThreshold'] as int,
+      fastMovingStockThreshold: map['fastMovingStockThreshold'] as int,
+      creationDate: map['creationDate'] as String,
+      userId: map['userId'] as int,
+      architeveStatus: map['archiveStatus'] as int,
     );
   }
 }

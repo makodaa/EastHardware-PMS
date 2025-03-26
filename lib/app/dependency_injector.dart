@@ -1,8 +1,8 @@
 import 'package:easthardware_pms/data/database/dao/users_dao.dart';
 import 'package:easthardware_pms/data/database/database_helper.dart';
 import 'package:easthardware_pms/data/repository/authentication_repository.dart';
-import 'package:easthardware_pms/presentation/bloc/authentication/authentication_bloc.dart';
-import 'package:easthardware_pms/presentation/bloc/loginform/login_form_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -14,12 +14,11 @@ class DependencyInjector {
   }
 
   List<SingleChildWidget> inject() {
-    //TODO: REMOVE ONCE OK, PRIMITIVE SOLUTION TO CREATING TABLE
     UsersDaoImpl dao = UsersDaoImpl(DatabaseHelper());
     dao.getAllUsers();
     return [
       BlocProvider(create: (context) => AuthenticationBloc(_authenticationRepository)),
-      BlocProvider(create: (context) => LoginFormBloc())
+      BlocProvider(create: (context) => LoginFormBloc()),
     ];
   }
 }
