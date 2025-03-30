@@ -1,0 +1,55 @@
+import 'package:easthardware_pms/data/database/dao/categories_dao.dart';
+import 'package:easthardware_pms/domain/errors/exceptions.dart';
+import 'package:easthardware_pms/domain/models/category.dart';
+import 'package:easthardware_pms/domain/repository/category_repository.dart';
+
+class CategoryRepositoryImpl extends CategoryRepository {
+  CategoryRepositoryImpl() : super();
+
+  final CategoriesDao _categoriesDao = CategoriesDaoImpl();
+
+  @override
+  Future<bool> deleteCategory(int id) {
+    try {
+      return _categoriesDao.deleteCategory(id);
+    } catch (e) {
+      throw DatabaseException('Failed to delete category');
+    }
+  }
+
+  @override
+  Future<List<Category>?> getAllCategories() async {
+    try {
+      return await _categoriesDao.getAllCategories();
+    } catch (e) {
+      throw DatabaseException('Failed to fetch all categories');
+    }
+  }
+
+  @override
+  Future<Category?> getCategoryById(int id) async {
+    try {
+      return await _categoriesDao.getCategoryById(id);
+    } catch (e) {
+      throw DatabaseException('Failed to fetch category by ID');
+    }
+  }
+
+  @override
+  Future<bool> insertCategory(Category category) async {
+    try {
+      return await _categoriesDao.insertCategory(category);
+    } catch (e) {
+      throw DatabaseException('Failed to insert category');
+    }
+  }
+
+  @override
+  Future<bool> updateCategory(Category category) async {
+    try {
+      return await _categoriesDao.updateCategory(category);
+    } catch (e) {
+      throw DatabaseException('Failed to update category');
+    }
+  }
+}
