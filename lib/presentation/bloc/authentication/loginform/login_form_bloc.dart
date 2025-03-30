@@ -1,13 +1,19 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'login_form_state.dart';
 part 'login_form_event.dart';
+part 'login_form_state.dart';
 
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
-  LoginFormBloc() : super(const LoginFormState()) {
+  final GlobalKey<FormState> formKey;
+
+  LoginFormBloc()
+      : formKey = GlobalKey<FormState>(),
+        super(const LoginFormState()) {
     on<LoginFormUsernameChanged>(_onUsernameChanged);
     on<LoginFormPasswordChanged>(_onPasswordChanged);
     on<LoginFormButtonPressed>(_onButtonPressed);
+    on<LoginFormReset>(_onReset);
   }
 
   void _onUsernameChanged(LoginFormUsernameChanged event, Emitter emit) {
@@ -21,15 +27,17 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _onButtonPressed(LoginFormButtonPressed event, Emitter emit) async {
-    if (state.username.isNotEmpty && state.password.isNotEmpty) {
-      emit(state.copyWith(isSubmitting: true));
-      emit(state.copyWith(isSubmitting: true));
+    emit(state.copyWith(isValidating: true));
+
+    if (formKey.currentState case FormState formState
+        when formState.validate()) {
+      emit(state.copyWith(isSubmitting: true, isValidating: false));
+    } else {
+      emit(state.copyWith(isSubmitting: false, isValidating: false));
     }
-    return emit(state.copyWith(
-      isSubmitting: false,
-      isValid: false,
-      usernameFieldError: "Username cannot be empty.",
-      passwordFieldError: "Password cannot be empty.",
-    ));
+  }
+
+  void _onReset(LoginFormReset event, Emitter emit) {
+    emit(const LoginFormState());
   }
 }

@@ -17,21 +17,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listener: (_, state) {
-        if (state.status == AuthenticationStatus.success) {
-          final AccessLevel level = state.user!.accessLevel;
-          redirectToDashboard(context, level);
-        }
-      },
-      child: ColoredBox(
-        color: Colors.grey[10],
-        child: const Center(
-          child: LoginPageCard(
-            children: [
-              LoginForm(),
-            ],
-          ),
+    return ColoredBox(
+      color: Colors.grey[10],
+      child: const Center(
+        child: LoginPageCard(
+          children: [
+            LoginForm(),
+          ],
         ),
       ),
     );
@@ -56,19 +48,3 @@ class LoginPageCard extends StatelessWidget {
     );
   }
 }
-
-void redirectToDashboard(BuildContext context, AccessLevel level) {
-  if (context.mounted) {
-    switch (level) {
-      case AccessLevel.administrator:
-        context.goNamed("Admin");
-        break;
-      case AccessLevel.staff:
-        context.goNamed("Staff");
-        break;
-      default:
-    }
-  }
-}
-
-void redirectToPasswordReset() {}

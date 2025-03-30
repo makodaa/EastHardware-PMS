@@ -13,7 +13,8 @@ class DependencyInjector {
 
   List<SingleChildWidget> inject() {
     return [
-      BlocProvider(create: (context) => AuthenticationBloc(_authenticationRepository)),
+      BlocProvider(
+          create: (context) => AuthenticationBloc(_authenticationRepository)),
       BlocProvider(create: (context) => LoginFormBloc()),
     ];
   }

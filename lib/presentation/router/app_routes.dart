@@ -1,5 +1,6 @@
 class AppRoutes {
   static const String login = '/login';
+  static const String resetPassword = '/reset_password';
 
   // Scaffold Routes
   static const String adminScaffold = '/admin';
@@ -11,5 +12,5 @@ class AppRoutes {
   static const String inventoryPage = '/inventory';
 
   // Create Page Routes
-  static const String createProductPage = '/createproduct';
+  static const String createProductPage = '/create_product';
 }

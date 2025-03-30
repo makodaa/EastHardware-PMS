@@ -18,30 +18,37 @@ final GoRouter router = GoRouter(
       name: "Login",
       builder: (context, state) => const LoginPage(),
     ),
+    GoRoute(
+      path: AppRoutes.resetPassword,
+      name: "ResetPassword",
+      builder: (context, state) => const Text("Reset Password"),
+    ),
     StatefulShellRoute(
       builder: (context, state, shell) => shell,
       navigatorContainerBuilder: (_, shell, children) =>
           AdminNavigationScaffold(shell, children),
       branches: [
         StatefulShellBranch(
+          initialLocation: AppRoutes.adminDashboard,
           routes: [
             GoRoute(
               name: "Admin",
-              path: "/dashboard",
+              path: AppRoutes.adminDashboard,
               builder: (context, state) => const Text("dashboard"),
             )
           ],
         ),
         StatefulShellBranch(
+          initialLocation: AppRoutes.inventoryPage,
           routes: [
             GoRoute(
               name: "Inventory",
-              path: "/inventory",
+              path: AppRoutes.inventoryPage,
               builder: (context, state) => const InventoryPanePage(),
             ),
             GoRoute(
               name: "CreateProduct",
-              path: "/create_product",
+              path: AppRoutes.createProductPage,
 
               /// The [MaterialPage] is used for the transition animation.
               /// Should be removed if decided not to use the transition.

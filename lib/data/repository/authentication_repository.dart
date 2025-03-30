@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:easthardware_pms/data/repository/user_repository.dart';
 import 'package:easthardware_pms/domain/errors/exceptions.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
@@ -16,7 +17,7 @@ import 'package:easthardware_pms/domain/services/cryptography_service.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final UserRepository _userRepository = UserRepositoryImpl();
-  final CryptographyService _cryptographyService = CryptographyService();
+  static const CryptographyService _cryptographyService = CryptographyService();
 
   /// Attempts to log in a user with inputted credentials
   /// @param [username] The string username of the user

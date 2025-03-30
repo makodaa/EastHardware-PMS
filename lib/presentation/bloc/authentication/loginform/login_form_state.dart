@@ -1,10 +1,12 @@
 part of 'login_form_bloc.dart';
 
+const undefined = #undefined;
+
 class LoginFormState {
   final String username;
   final String password;
   final bool isSubmitting;
-  final bool? isValid;
+  final bool isValidating;
 
   final String? usernameFieldError;
   final String? passwordFieldError;
@@ -13,27 +15,39 @@ class LoginFormState {
     this.username = '',
     this.password = '',
     this.isSubmitting = false,
-    this.isValid,
+    this.isValidating = false,
     this.usernameFieldError,
     this.passwordFieldError,
   });
 
-  LoginFormState copyWith({
+  LoginFormState Function({
     String? username,
     String? password,
-    int? loginCount,
     bool? isSubmitting,
-    bool? isValid,
+    bool? isValidating,
     String? usernameFieldError,
     String? passwordFieldError,
+  }) get copyWith => _copyWith;
+
+  LoginFormState _copyWith({
+    Object? username = undefined,
+    Object? password = undefined,
+    Object? isSubmitting = undefined,
+    Object? isValidating = undefined,
+    Object? usernameFieldError = undefined,
+    Object? passwordFieldError = undefined,
   }) {
     return LoginFormState(
-      username: username ?? this.username,
-      password: password ?? this.password,
-      isSubmitting: isSubmitting ?? this.isSubmitting,
-      isValid: isValid ?? this.isValid,
-      usernameFieldError: this.usernameFieldError,
-      passwordFieldError: this.passwordFieldError,
+      username: username.or(this.username),
+      password: password.or(this.password),
+      isSubmitting: isSubmitting.or(this.isSubmitting),
+      isValidating: isValidating.or(this.isValidating),
+      usernameFieldError: usernameFieldError.or(this.usernameFieldError),
+      passwordFieldError: passwordFieldError.or(this.passwordFieldError),
     );
   }
+}
+
+extension on Object? {
+  T or<T>(T value) => this == undefined ? value : this as T;
 }

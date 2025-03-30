@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc(this._repository) : super(AuthenticationState()) {
     on<AuthenticationLoginEvent>(_onLogin);
     on<AuthenticationLogoutEvent>((event, emit) {});
@@ -18,7 +19,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   void _onLogin(AuthenticationLoginEvent event, Emitter emit) {
     try {
       emit(state.copyWith(status: AuthenticationStatus.loading));
-
       User mock = Mock.user;
       emit(state.copyWith(
         user: mock,
