@@ -1,4 +1,4 @@
-import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
+import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class LogoRow extends StatelessWidget {
@@ -17,7 +17,7 @@ class LogoRow extends StatelessWidget {
           "East Hardware",
           style: FluentTheme.of(context).typography.bodyLarge?.copyWith(color: Colors.blue.dark),
         )
-      ].withGap(() => Gaps.h16),
+      ].withSpacing(() => Spacing.h16),
     );
   }
 }

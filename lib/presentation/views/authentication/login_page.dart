@@ -1,11 +1,7 @@
-import 'package:easthardware_pms/domain/models/user.dart';
-import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/widgets/authentication/login_form.dart';
 
-import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
+import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,7 +38,7 @@ class LoginPageCard extends StatelessWidget {
           maxWidth: 500,
         ),
         child: Column(
-          children: children!.withGap(() => Gaps.v16),
+          children: children!.withSpacing(() => Spacing.v16),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-class Gaps {
+class Spacing {
   // Vertical Gaps
   static const Widget v4 = SizedBox(height: 4);
   static const Widget v8 = SizedBox(height: 8);
@@ -17,21 +17,23 @@ class Gaps {
 }
 
 class AppPadding {
+  // Generic Padding
   static const EdgeInsets a4 = EdgeInsets.all(4);
   static const EdgeInsets a8 = EdgeInsets.all(8);
   static const EdgeInsets a12 = EdgeInsets.all(12);
   static const EdgeInsets a16 = EdgeInsets.all(16);
   static const EdgeInsets a32 = EdgeInsets.all(32);
   static const EdgeInsets a64 = EdgeInsets.all(64);
-  static const EdgeInsets v8h16 = EdgeInsets.symmetric(vertical: 8, horizontal: 16);
-  static const EdgeInsets v32h64 = EdgeInsets.symmetric(vertical: 32, horizontal: 64);
+
+  // Context Specific Padding
+  static const EdgeInsets panePadding = EdgeInsets.all(24.0);
 }
 
-extension GapList on List<Widget> {
-  List<Widget> withGap(Widget Function() gapWidget) => [
+extension SpacingList on List<Widget> {
+  List<Widget> withSpacing(Widget Function() spacing) => [
         for (var (index, widget) in indexed) ...[
           widget,
-          if (index < length - 1) gapWidget(),
+          if (index < length - 1) spacing(),
         ]
       ];
 }

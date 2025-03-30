@@ -1,6 +1,6 @@
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_validator.dart';
-import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
+import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,9 +23,9 @@ class LoginForm extends StatelessWidget {
             _FormHeader(),
             _FormUsernameField(),
             _FormPasswordField(),
-            Gaps.v8,
+            Spacing.v8,
             _FormButton(),
-          ].withGap(() => Gaps.v16),
+          ].withSpacing(() => Spacing.v16),
         ),
       ),
     );
@@ -45,13 +45,10 @@ class _FormHeader extends StatelessWidget {
           ),
           Text(
             "Fill in the form below to log in",
-            style: FluentTheme.of(context)
-                .typography
-                .body
-                ?.copyWith(color: Colors.grey[170]),
+            style: FluentTheme.of(context).typography.body?.copyWith(color: Colors.grey[170]),
             textAlign: TextAlign.start,
           )
-        ].withGap(() => Gaps.v8));
+        ].withSpacing(() => Spacing.v8));
   }
 }
 
@@ -67,11 +64,9 @@ class _FormUsernameField extends StatelessWidget with LoginFormValidator {
         ),
         TextFormBox(
           validator: validateUsername,
-          onChanged: (value) => context
-              .read<LoginFormBloc>()
-              .add(LoginFormUsernameChanged(value)),
+          onChanged: (value) => context.read<LoginFormBloc>().add(LoginFormUsernameChanged(value)),
         )
-      ].withGap(() => Gaps.v8),
+      ].withSpacing(() => Spacing.v8),
     );
   }
 }
@@ -90,13 +85,11 @@ class _FormPasswordField extends StatelessWidget with LoginFormValidator {
           validator: validatePassword,
           revealMode: PasswordRevealMode.peekAlways,
           onSaved: (value) => switch (value) {
-            String value => context
-                .read<LoginFormBloc>()
-                .add(LoginFormPasswordChanged(value)),
+            String value => context.read<LoginFormBloc>().add(LoginFormPasswordChanged(value)),
             null => null,
           },
         ),
-      ].withGap(() => Gaps.v8),
+      ].withSpacing(() => Spacing.v8),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:easthardware_pms/presentation/widgets/layout/gaps.dart';
+import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scroll_animator/scroll_animator.dart';
@@ -15,15 +15,12 @@ class _CreateProductPageState extends State<CreateProductPage> {
       AnimatedScrollController(animationFactory: const ChromiumImpulse());
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController skuController = TextEditingController();
-  final TextEditingController productCategoryController =
-      TextEditingController();
-  final TextEditingController productQuantityController =
-      TextEditingController();
+  final TextEditingController productCategoryController = TextEditingController();
+  final TextEditingController productQuantityController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController criticalLevelController = TextEditingController();
   final TextEditingController deadStockController = TextEditingController();
-  final TextEditingController fastMovingStockController =
-      TextEditingController();
+  final TextEditingController fastMovingStockController = TextEditingController();
   final TextEditingController salePriceController = TextEditingController();
   final TextEditingController orderCostController = TextEditingController();
   final TextEditingController dateCreatedController = TextEditingController();
@@ -111,7 +108,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 ),
               ),
             ),
-      
+
             /// The cancel and create must be persistent at the bottom of the screen.
             /// (@water-mizuu: First experience, I thought there were no back buttons.)
             Row(
@@ -133,7 +130,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   },
                   child: const Text("Create"),
                 ),
-              ].withGap(() => Gaps.h8),
+              ].withSpacing(() => Spacing.h8),
             )
           ],
         ),
