@@ -37,8 +37,7 @@ class _AppState extends State<App> {
               redirectToDashboard(context, level);
             }
 
-            if (state.status == AuthenticationStatus.failure &&
-                state.loginAttempts > 3) {
+            if (state.status == AuthenticationStatus.failure && state.loginAttempts > 3) {
               redirectToPasswordReset(context);
             }
           },

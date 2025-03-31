@@ -91,6 +91,24 @@ class StrongText extends StatelessWidget {
   }
 }
 
+class GreyText extends StatelessWidget {
+  const GreyText(
+    this.data, {
+    super.key,
+  });
+
+  final String data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(data,
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Colors.grey[100],
+        ));
+  }
+}
+
 class CaptionText extends StatelessWidget {
   const CaptionText(
     this.data, {
