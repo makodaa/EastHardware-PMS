@@ -6,7 +6,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 /// Revised from the Entity Relationship Diagram
 /// Changes:
 /// [INVOICES_DATE] Kept, and states when is the invoice expected to be paid
-/// [INVOICES_PAYMENT_METHOD] Is now an INT to reference the payment method table
+/// [INVOICES_PAYMENT_METHOD] Is now an INTEGER to reference the payment method table
 /// [INVOICES_CREATION_DATE] states when the invoice is created. For User Logs
 /// [INVOICES_PAYMENT_DATE] states when the invoice was paid
 /// [INVOICES_CREATOR_ID] states the user that created the invoice.

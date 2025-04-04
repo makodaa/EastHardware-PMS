@@ -1,8 +1,7 @@
-// ignore: dangling_library_doc_comments
-/// users_table.dart
-/// Defines the table name, column names, and provides a method
-/// to create the table in the database
+import 'dart:typed_data';
 
+import 'package:easthardware_pms/domain/models/user.dart';
+import 'package:easthardware_pms/domain/services/cryptography_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class UsersTable {
@@ -27,9 +26,30 @@ class UsersTable {
       $USERS_SALT INTEGER NOT NULL
     )
   ''');
+    _insertInitialAdmin(database);
   }
 
   static void dropTable(Database database) async {
     await database.execute('DROP TABLE IF EXISTS $USERS_TABLE_NAME');
+  }
+
+  // private function: create initial admin
+  static void _insertInitialAdmin(Database database) async {
+    final CryptographyService cryptographyService = CryptographyService();
+    const String password = 'Admin123';
+    Uint8List salt = cryptographyService.generateSalt();
+    Uint8List passwordHash = cryptographyService.hashPassword(password, salt);
+
+    User admin = User(
+      id: 0,
+      firstName: 'System',
+      lastName: 'Administrator',
+      username: 'admin',
+      accessLevel: AccessLevel.administrator,
+      passwordHash: passwordHash,
+      salt: salt,
+    );
+
+    database.insert(UsersTable.USERS_TABLE_NAME, admin.toMap());
   }
 }

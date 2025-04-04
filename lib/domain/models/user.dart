@@ -11,18 +11,18 @@ class User {
   final String lastName;
   final String username;
   final AccessLevel accessLevel;
-  final Uint8List passwordHash;
   final Uint8List salt;
+  final Uint8List passwordHash;
 
-  User(
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.username,
-    this.accessLevel,
-    this.passwordHash,
-    this.salt,
-  );
+  User({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.username,
+    required this.accessLevel,
+    required this.passwordHash,
+    required this.salt,
+  });
 
   User copyWith({
     int? id,
@@ -34,13 +34,13 @@ class User {
     Uint8List? salt,
   }) {
     return User(
-      id ?? this.id,
-      firstName ?? this.firstName,
-      lastName ?? this.lastName,
-      username ?? this.username,
-      accessLevel ?? this.accessLevel,
-      passwordHash ?? this.passwordHash,
-      salt ?? this.salt,
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      username: username ?? this.username,
+      accessLevel: accessLevel ?? this.accessLevel,
+      passwordHash: passwordHash ?? this.passwordHash,
+      salt: salt ?? this.salt,
     );
   }
 
@@ -58,13 +58,13 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      map['id'] as int,
-      map['first_name'] as String,
-      map['last_name'] as String,
-      map['username'] as String,
-      AccessLevel.values[map['access_level'] as int],
-      Uint8List.fromList(map['password_hash'] as List<int>),
-      Uint8List.fromList(map['salt'] as List<int>),
+      id: map['id'] as int,
+      firstName: map['first_name'] as String,
+      lastName: map['last_name'] as String,
+      username: map['username'] as String,
+      accessLevel: AccessLevel.values[map['access_level'] as int],
+      passwordHash: map['password_hash'] as Uint8List,
+      salt: map['salt'] as Uint8List,
     );
   }
 }

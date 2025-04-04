@@ -8,6 +8,7 @@ import 'package:easthardware_pms/data/database/tables/order_products_table.dart'
 import 'package:easthardware_pms/data/database/tables/orders_table.dart';
 import 'package:easthardware_pms/data/database/tables/payment_methods_table.dart';
 import 'package:easthardware_pms/data/database/tables/products_table.dart';
+import 'package:easthardware_pms/data/database/tables/security_questions_table.dart';
 import 'package:easthardware_pms/data/database/tables/units_table.dart';
 import 'package:easthardware_pms/data/database/tables/user_logs_table.dart';
 import 'package:easthardware_pms/data/database/tables/users_table.dart';
@@ -64,6 +65,7 @@ class DatabaseHelper {
     OrderProductsTable.createTable(database);
     InvoicesTable.createTable(database);
     InvoiceProductsTable.createTable(database);
+    SecurityQuestionsTable.createTable(database);
   }
 
   Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {
@@ -79,6 +81,7 @@ class DatabaseHelper {
     OrderProductsTable.dropTable(database);
     InvoicesTable.dropTable(database);
     InvoiceProductsTable.dropTable(database);
+    SecurityQuestionsTable.dropTable(database);
     // Recreate all tables
     await onCreate(database, newVersion);
     // You can also add any additional migration logic here if needed
