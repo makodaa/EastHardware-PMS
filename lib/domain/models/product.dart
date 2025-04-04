@@ -12,7 +12,7 @@ class Product {
   final int fastMovingStockThreshold;
   final String creationDate;
   final int userId;
-  final int architeveStatus;
+  final int archiveStatus;
 
   Product({
     required this.id,
@@ -28,7 +28,7 @@ class Product {
     required this.fastMovingStockThreshold,
     required this.creationDate,
     required this.userId,
-    required this.architeveStatus,
+    required this.archiveStatus,
   });
 
   Map<String, dynamic> toMap() {
@@ -45,7 +45,7 @@ class Product {
       'fastMovingStockThreshold': fastMovingStockThreshold,
       'creationDate': creationDate,
       'userId': userId,
-      'archiveStatus': architeveStatus,
+      'archiveStatus': archiveStatus,
     };
   }
 
@@ -64,7 +64,7 @@ class Product {
       fastMovingStockThreshold: map['fastMovingStockThreshold'] as int,
       creationDate: map['creationDate'] as String,
       userId: map['userId'] as int,
-      architeveStatus: map['archiveStatus'] as int,
+      archiveStatus: map['archiveStatus'] as int,
     );
   }
 }

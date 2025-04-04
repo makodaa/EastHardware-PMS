@@ -1,25 +1,25 @@
 class Unit {
   final int id;
-  final int product;
+  final int productId;
   final String name;
   final double conversionFactor;
 
   Unit({
     required this.id,
-    required this.product,
+    required this.productId,
     required this.name,
     required this.conversionFactor,
   });
 
   Unit copyWith({
     int? id,
-    int? product,
+    int? productId,
     String? name,
     double? conversionFactor,
   }) {
     return Unit(
       id: id ?? this.id,
-      product: product ?? this.product,
+      productId: productId ?? this.productId,
       name: name ?? this.name,
       conversionFactor: conversionFactor ?? this.conversionFactor,
     );
@@ -28,7 +28,7 @@ class Unit {
   factory Unit.fromMap(Map<String, dynamic> map) {
     return Unit(
       id: map['id'] as int,
-      product: map['product'] as int,
+      productId: map['product'] as int,
       name: map['name'] as String,
       conversionFactor: map['conversionFactor'] as double,
     );
@@ -37,7 +37,7 @@ class Unit {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'product': product,
+      'product': productId,
       'name': name,
       'conversionFactor': conversionFactor,
     };
