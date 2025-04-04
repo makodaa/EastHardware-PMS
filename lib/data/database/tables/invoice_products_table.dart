@@ -41,4 +41,8 @@ class InvoiceProductsTable {
   )
 ''');
   }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $INVOICE_PRODUCTS_TABLE_NAME');
+  }
 }

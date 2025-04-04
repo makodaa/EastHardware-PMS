@@ -19,4 +19,8 @@ class UserLogsTable {
       )
     ''');
   }
+
+  static Future<void> dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $USER_LOGS_TABLE_NAME');
+  }
 }

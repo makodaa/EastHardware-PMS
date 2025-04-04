@@ -19,4 +19,8 @@ class UnitsTable {
     )
     ''');
   }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $UNITS_TABLE_NAME');
+  }
 }

@@ -29,7 +29,7 @@ class InvoicesTable {
   static void createTable(Database database) async {
     await database.execute('''
       CREATE TABLE $INVOICES_TABLE_NAME(
-      $INVOICES_ID INTEGER PRIMARY KEY AUTOINCREMENT
+      $INVOICES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
       $INVOICES_CUSTOMER_NAME TEXT,
       $INVOICES_DATE TEXT NOT NULL,
       $INVOICES_PAYMENT_METHOD INTEGER NOT NULL,
@@ -46,5 +46,9 @@ class InvoicesTable {
       FOREIGN KEY($INVOICES_CREATOR_ID) REFERENCES ${UsersTable.USERS_TABLE_NAME}(${UsersTable.USERS_ID})
       )
 ''');
+  }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $INVOICES_TABLE_NAME');
   }
 }

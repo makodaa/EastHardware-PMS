@@ -28,4 +28,8 @@ class UsersTable {
     )
   ''');
   }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $USERS_TABLE_NAME');
+  }
 }

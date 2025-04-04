@@ -9,8 +9,12 @@ class CategoriesTable {
     await database.execute('''
       CREATE TABLE $CATEGORIES_TABLE_NAME (
         $CATEGORIES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        $CATEGORIES_NAME TEXT NOT NULL UNIQUE,
+        $CATEGORIES_NAME TEXT NOT NULL UNIQUE
       )
     ''');
+  }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $CATEGORIES_TABLE_NAME');
   }
 }

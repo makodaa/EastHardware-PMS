@@ -43,4 +43,8 @@ class ProductsTable {
     )
   ''');
   }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $PRODUCTS_TABLE_NAME');
+  }
 }

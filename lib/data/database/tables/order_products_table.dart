@@ -37,4 +37,8 @@ class OrderProductsTable {
   )
 ''');
   }
+
+  static void dropTable(Database database) {
+    database.execute('DROP TABLE IF EXISTS $ORDER_PRODUCTS_TABLE_NAME');
+  }
 }

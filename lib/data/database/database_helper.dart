@@ -53,7 +53,6 @@ class DatabaseHelper {
   }
 
   Future<void> onCreate(Database database, int version) async {
-    // DO NOT CHANGE ORDER BRO
     CategoriesTable.createTable(database);
     ExpenseTypesTable.createTable(database);
     PaymentMethodsTable.createTable(database);
@@ -67,5 +66,22 @@ class DatabaseHelper {
     InvoiceProductsTable.createTable(database);
   }
 
-  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {}
+  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {
+    // Drop all tables
+    CategoriesTable.dropTable(database);
+    ExpenseTypesTable.dropTable(database);
+    PaymentMethodsTable.dropTable(database);
+    UsersTable.dropTable(database);
+    UserLogsTable.dropTable(database);
+    ProductsTable.dropTable(database);
+    UnitsTable.dropTable(database);
+    OrdersTable.dropTable(database);
+    OrderProductsTable.dropTable(database);
+    InvoicesTable.dropTable(database);
+    InvoiceProductsTable.dropTable(database);
+    // Recreate all tables
+    await onCreate(database, newVersion);
+    // You can also add any additional migration logic here if needed
+    // For example, if you want to migrate data from old tables to new tables, you can do it here
+  }
 }

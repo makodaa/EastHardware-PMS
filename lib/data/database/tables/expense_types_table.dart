@@ -13,4 +13,8 @@ class ExpenseTypesTable {
       )
     ''');
   }
+
+  static void dropTable(Database database) async {
+    await database.execute('DROP TABLE IF EXISTS $EXPENSE_TYPE_TABLE_NAME');
+  }
 }
