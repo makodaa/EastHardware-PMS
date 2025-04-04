@@ -1,8 +1,15 @@
 import 'dart:async';
 // import 'package:easthardware_pms/data/database/tables/products_table.dart';
 import 'package:easthardware_pms/data/database/tables/categories_table.dart';
+import 'package:easthardware_pms/data/database/tables/expense_types_table.dart';
+import 'package:easthardware_pms/data/database/tables/invoice_products_table.dart';
+import 'package:easthardware_pms/data/database/tables/invoices_table.dart';
+import 'package:easthardware_pms/data/database/tables/order_products_table.dart';
+import 'package:easthardware_pms/data/database/tables/orders_table.dart';
+import 'package:easthardware_pms/data/database/tables/payment_methods_table.dart';
 import 'package:easthardware_pms/data/database/tables/products_table.dart';
 import 'package:easthardware_pms/data/database/tables/units_table.dart';
+import 'package:easthardware_pms/data/database/tables/user_logs_table.dart';
 import 'package:easthardware_pms/data/database/tables/users_table.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // ignore: depend_on_referenced_packages
@@ -39,26 +46,26 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 1,
       onCreate: onCreate,
       onUpgrade: onUpgrade,
     );
   }
 
   Future<void> onCreate(Database database, int version) async {
-    UsersTable.createTable(database, version);
+    // DO NOT CHANGE ORDER BRO
     CategoriesTable.createTable(database);
-    UnitsTable.createUnitsTable(database);
+    ExpenseTypesTable.createTable(database);
+    PaymentMethodsTable.createTable(database);
+    UsersTable.createTable(database);
+    UserLogsTable.createTable(database);
     ProductsTable.createTable(database);
+    UnitsTable.createTable(database);
+    OrdersTable.createTable(database);
+    OrderProductsTable.createTable(database);
+    InvoicesTable.createTable(database);
+    InvoiceProductsTable.createTable(database);
   }
 
-  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {
-    await database.execute("""
-      DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS categories;
-      DROP TABLE IF EXISTS units;
-      DROP TABLE IF EXISTS products;
-          """);
-    await onCreate(database, newVersion);
-  }
+  Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {}
 }

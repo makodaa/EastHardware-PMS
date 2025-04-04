@@ -1,3 +1,5 @@
+import 'package:easthardware_pms/data/database/tables/categories_table.dart';
+import 'package:easthardware_pms/data/database/tables/users_table.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class ProductsTable {
@@ -15,15 +17,15 @@ class ProductsTable {
   static const String PRODUCTS_DEAD_STOCK_THRESHOLD = 'dead_stock_treshold';
   static const String PRODUCTS_FAST_MOVING_PERIOD = 'fast_moving_period';
   static const String PRODUCTS_CREATION_DATE = 'creation_date';
-  static const String PRODUCTS_USER_ID = 'user_id';
+  static const String PRODUCTS_CREATOR_ID = 'creator_id';
   static const String PRODUCTS_ARCHIVE_STATUS = 'archive_status';
 
   static void createTable(Database database) async {
     await database.execute('''
     CREATE TABLE $PRODUCTS_TABLE_NAME (
       $PRODUCTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-      $PRODUCTS_NAME TEXT NOT NULL,
-      $PRODUCTS_SKU TEXT NOT NULL,
+      $PRODUCTS_NAME TEXT NOT NULL UNIQUE,
+      $PRODUCTS_SKU TEXT NOT NULL UNIQUE,
       $PRODUCTS_CATEGORY INTEGER,
       $PRODUCTS_DESCRIPTION TEXT,
       $PRODUCTS_SALE_PRICE REAL NOT NULL,
@@ -34,8 +36,10 @@ class ProductsTable {
       $PRODUCTS_DEAD_STOCK_THRESHOLD INTEGER NOT NULL,
       $PRODUCTS_FAST_MOVING_PERIOD INTEGER NOT NULL,
       $PRODUCTS_CREATION_DATE TEXT NOT NULL,
-      $PRODUCTS_USER_ID INTEGER NOT NULL,
-      $PRODUCTS_ARCHIVE_STATUS INTEGER NOT NULL
+      $PRODUCTS_CREATOR_ID INTEGER NOT NULL,
+      $PRODUCTS_ARCHIVE_STATUS INTEGER NOT NULL,
+      FOREIGN KEY($PRODUCTS_CATEGORY) REFERENCES ${CategoriesTable.CATEGORIES_TABLE_NAME}(${CategoriesTable.CATEGORIES_ID}),
+      FOREIGN KEY($PRODUCTS_CREATOR_ID) REFERENCES ${UsersTable.USERS_TABLE_NAME}(${UsersTable.USERS_ID})
     )
   ''');
   }

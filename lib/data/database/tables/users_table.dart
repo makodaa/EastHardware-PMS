@@ -15,11 +15,11 @@ class UsersTable {
   static const String USERS_ACCESS_LEVEL = 'access_level';
   static const String USERS_SALT = 'salt';
 
-  static void createTable(Database database, int version) async {
+  static void createTable(Database database) async {
     await database.execute('''
       CREATE TABLE $USERS_TABLE_NAME (
       $USERS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-      $USERS_USERNAME TEXT NOT NULL,
+      $USERS_USERNAME TEXT NOT NULL UNIQUE,
       $USERS_PASSWORD_HASH BLOB NOT NULL,
       $USERS_FIRST_NAME TEXT NOT NULL,
       $USERS_LAST_NAME TEXT NOT NULL,

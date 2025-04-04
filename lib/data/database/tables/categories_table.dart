@@ -7,10 +7,10 @@ class CategoriesTable {
 
   static void createTable(Database database) async {
     await database.execute('''
-    CREATE TABLE $CATEGORIES_TABLE_NAME (
-    $CATEGORIES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    $CATEGORIES_NAME TEXT NOT NULL
-    )
-''');
+      CREATE TABLE $CATEGORIES_TABLE_NAME (
+        $CATEGORIES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $CATEGORIES_NAME TEXT NOT NULL UNIQUE,
+      )
+    ''');
   }
 }
