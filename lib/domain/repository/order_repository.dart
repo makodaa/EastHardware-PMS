@@ -13,4 +13,6 @@ abstract class OrderRepository {
   Future<List<Order>> getOrdersByCreatorId(int creatorId);
   Future<List<Order>> getOrdersByProductNames(List<String> productNames);
   Future<List<Order>> getOrdersByExpenseType(int expenseType);
+  Future<int> getTotalAmountDue();
+  Future<int> getTotalOrderCount();
 }
