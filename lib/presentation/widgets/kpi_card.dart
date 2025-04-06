@@ -2,8 +2,8 @@ import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-class PerformanceCard extends StatelessWidget {
-  const PerformanceCard(
+class KPICard extends StatelessWidget {
+  const KPICard(
     this.title, {
     this.value = '',
     this.icon = const Icon(FluentIcons.square_shape),

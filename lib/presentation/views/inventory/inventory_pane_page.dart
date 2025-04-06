@@ -1,6 +1,6 @@
 import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
-import 'package:easthardware_pms/presentation/widgets/performance_card.dart';
+import 'package:easthardware_pms/presentation/widgets/kpi_card.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -117,7 +117,7 @@ class Notifications extends StatelessWidget {
   }
 }
 
-class TotalCountCard extends PerformanceCard {
+class TotalCountCard extends KPICard {
   const TotalCountCard({super.key})
       : super(
           'Total Products',
@@ -126,7 +126,7 @@ class TotalCountCard extends PerformanceCard {
         );
 }
 
-class LowStockCountCard extends PerformanceCard {
+class LowStockCountCard extends KPICard {
   const LowStockCountCard({super.key})
       : super(
           'Low Stock Products',
@@ -135,7 +135,7 @@ class LowStockCountCard extends PerformanceCard {
         );
 }
 
-class HangingCountCard extends PerformanceCard {
+class HangingCountCard extends KPICard {
   const HangingCountCard({super.key})
       : super(
           'Hanging Products',
@@ -144,7 +144,7 @@ class HangingCountCard extends PerformanceCard {
         );
 }
 
-class FastMovingCountCard extends PerformanceCard {
+class FastMovingCountCard extends KPICard {
   const FastMovingCountCard({super.key})
       : super(
           'Fast Moving Products',

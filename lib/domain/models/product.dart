@@ -13,6 +13,9 @@ class Product {
   final String creationDate;
   final int userId;
   final int archiveStatus;
+  final int? isBelowCriticalLevel;
+  final int? isFastMovingStock;
+  final int? isDeadStock;
 
   Product({
     required this.id,
@@ -29,6 +32,9 @@ class Product {
     required this.creationDate,
     required this.userId,
     required this.archiveStatus,
+    this.isBelowCriticalLevel,
+    this.isFastMovingStock,
+    this.isDeadStock,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,12 +46,16 @@ class Product {
       'orderCost': orderCost,
       'quantity': quantity,
       'mainUnit': mainUnit,
+      'description': description,
       'criticalLevel': criticalLevel,
       'deadStockThreshold': deadStockThreshold,
       'fastMovingStockThreshold': fastMovingStockThreshold,
       'creationDate': creationDate,
       'userId': userId,
       'archiveStatus': archiveStatus,
+      'isBelowCriticalLevel': isBelowCriticalLevel,
+      'isFastMovingStock': isFastMovingStock,
+      'isDeadStock': isDeadStock,
     };
   }
 
@@ -65,6 +75,9 @@ class Product {
       creationDate: map['creationDate'] as String,
       userId: map['userId'] as int,
       archiveStatus: map['archiveStatus'] as int,
+      isBelowCriticalLevel: map['isBelowCriticalLevel'] as int?,
+      isFastMovingStock: map['isFastMovingStock'] as int?,
+      isDeadStock: map['isDeadStock'] as int?,
     );
   }
 }
