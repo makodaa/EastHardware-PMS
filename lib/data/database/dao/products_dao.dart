@@ -10,9 +10,9 @@ abstract class ProductsDao {
   Future<List<Product?>> getFastMovingProducts();
   Future<List<Product?>> getDeadStockProducts();
   Future<Product?> getProductById(int id);
-  Future<bool> insertProduct(Product product);
-  Future<bool> updateProduct(Product product);
-  Future<bool> deleteProduct(int id);
+  Future<Product> insertProduct(Product product);
+  Future<Product> updateProduct(Product product);
+  Future<void> deleteProduct(int id);
 }
 
 class ProductsDaoImpl extends ProductsDao {
@@ -21,15 +21,13 @@ class ProductsDaoImpl extends ProductsDao {
       : _databaseHelper = databaseHelper ?? DatabaseHelper();
 
   @override
-  Future<bool> deleteProduct(int id) async {
+  Future<void> deleteProduct(int id) async {
     final Database database = await _databaseHelper.database;
-    var res = await database.delete(
+    await database.delete(
       ProductsTable.PRODUCTS_TABLE_NAME,
       where: '${ProductsTable.PRODUCTS_ID} = ?',
       whereArgs: [id],
     );
-
-    return res != 0;
   }
 
   @override
@@ -62,7 +60,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<bool> insertProduct(Product product) async {
+  Future<Product> insertProduct(Product product) async {
     final Database database = await _databaseHelper.database;
     int id = await database.insert(
       ProductsTable.PRODUCTS_TABLE_NAME,
@@ -75,11 +73,11 @@ class ProductsDaoImpl extends ProductsDao {
     /// [mk] Take id from last entry of product list state
     assert(id == product.id);
 
-    return id == product.id;
+    return product;
   }
 
   @override
-  Future<bool> updateProduct(Product product) async {
+  Future<Product> updateProduct(Product product) async {
     final Database database = await _databaseHelper.database;
     int affected = await database.update(
       ProductsTable.PRODUCTS_TABLE_NAME,
@@ -90,7 +88,7 @@ class ProductsDaoImpl extends ProductsDao {
 
     assert(affected == 1, "This should only update one row.");
 
-    return affected > 0;
+    return product;
   }
 
   @override

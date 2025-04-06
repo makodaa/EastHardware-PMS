@@ -5,8 +5,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class OrderProductsDao {
   Future<List<OrderProduct?>> getAllOrderProducts();
   Future<OrderProduct?> getOrderProductById(int id);
-  Future<void> insertOrderProduct(OrderProduct orderProduct);
-  Future<void> updateOrderProduct(OrderProduct orderProduct);
+  Future<OrderProduct> insertOrderProduct(OrderProduct orderProduct);
+  Future<OrderProduct> updateOrderProduct(OrderProduct orderProduct);
   Future<void> deleteOrderProduct(int id);
   Future<List<OrderProduct?>> getOrderProductsByOrderId(int orderId);
 }
@@ -46,19 +46,20 @@ class OrderProductsDaoImpl extends OrderProductsDao {
 
   /// Inserts a new order product into the database.
   @override
-  Future<void> insertOrderProduct(OrderProduct orderProduct) async {
+  Future<OrderProduct> insertOrderProduct(OrderProduct orderProduct) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'order_products',
       orderProduct.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return orderProduct;
   }
 
   /// Updates an existing order product in the database.
   ///
   @override
-  Future<void> updateOrderProduct(OrderProduct orderProduct) async {
+  Future<OrderProduct> updateOrderProduct(OrderProduct orderProduct) async {
     final db = await _databaseHelper.database;
     await db.update(
       'order_products',
@@ -66,6 +67,7 @@ class OrderProductsDaoImpl extends OrderProductsDao {
       where: 'id = ?',
       whereArgs: [orderProduct.id],
     );
+    return orderProduct;
   }
 
   /// Deletes an order product from the database by its ID.

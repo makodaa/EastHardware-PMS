@@ -5,8 +5,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class PaymentMethodsDao {
   Future<List<PaymentMethod?>> getAllPaymentMethods();
   Future<PaymentMethod?> getPaymentMethodById(int id);
-  Future<void> insertPaymentMethod(PaymentMethod paymentMethod);
-  Future<void> updatePaymentMethod(PaymentMethod paymentMethod);
+  Future<PaymentMethod> insertPaymentMethod(PaymentMethod paymentMethod);
+  Future<PaymentMethod> updatePaymentMethod(PaymentMethod paymentMethod);
   Future<void> deletePaymentMethod(int id);
 }
 
@@ -49,17 +49,18 @@ class PaymentMethodsDaoImpl extends PaymentMethodsDao {
   }
 
   @override
-  Future<void> insertPaymentMethod(PaymentMethod paymentMethod) async {
+  Future<PaymentMethod> insertPaymentMethod(PaymentMethod paymentMethod) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'payment_methods',
       paymentMethod.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return paymentMethod;
   }
 
   @override
-  Future<void> updatePaymentMethod(PaymentMethod paymentMethod) async {
+  Future<PaymentMethod> updatePaymentMethod(PaymentMethod paymentMethod) async {
     final db = await _databaseHelper.database;
     await db.update(
       'payment_methods',
@@ -67,5 +68,6 @@ class PaymentMethodsDaoImpl extends PaymentMethodsDao {
       where: 'id = ?',
       whereArgs: [paymentMethod.id],
     );
+    return paymentMethod;
   }
 }

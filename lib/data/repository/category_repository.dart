@@ -9,7 +9,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
   final CategoriesDao _categoriesDao = CategoriesDaoImpl();
 
   @override
-  Future<bool> deleteCategory(int id) {
+  Future<void> deleteCategory(int id) {
     try {
       return _categoriesDao.deleteCategory(id);
     } catch (e) {
@@ -36,7 +36,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  Future<bool> insertCategory(Category category) async {
+  Future<Category> insertCategory(Category category) async {
     try {
       return await _categoriesDao.insertCategory(category);
     } catch (e) {
@@ -45,7 +45,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  Future<bool> updateCategory(Category category) async {
+  Future<Category> updateCategory(Category category) async {
     try {
       return await _categoriesDao.updateCategory(category);
     } catch (e) {

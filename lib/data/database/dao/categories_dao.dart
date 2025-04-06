@@ -13,9 +13,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class CategoriesDao {
   Future<List<Category>?> getAllCategories();
   Future<Category?> getCategoryById(int id);
-  Future<bool> insertCategory(Category category);
-  Future<bool> updateCategory(Category category);
-  Future<bool> deleteCategory(int id);
+  Future<Category> insertCategory(Category category);
+  Future<Category> updateCategory(Category category);
+  Future<void> deleteCategory(int id);
 }
 
 /// Implementation of the CategoriesDao interface
@@ -32,18 +32,6 @@ class CategoriesDaoImpl extends CategoriesDao {
 
   CategoriesDaoImpl([DatabaseHelper? databaseHelper])
       : _databaseHelper = databaseHelper ?? DatabaseHelper();
-
-  /// Deletes a category by its ID.
-  @override
-  Future<bool> deleteCategory(int id) async {
-    final db = await _databaseHelper.database;
-    int res = await db.delete(
-      'categories',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    return res != 0;
-  }
 
   /// Gets all categories from the database.
   @override
@@ -65,28 +53,40 @@ class CategoriesDaoImpl extends CategoriesDao {
     return maps.isNotEmpty ? Category.fromMap(maps.first) : null;
   }
 
-  /// Inserts a new category into the database.
   @override
-  Future<bool> insertCategory(Category category) async {
+  Future<void> deleteCategory(int id) async {
     final db = await _databaseHelper.database;
-    int res = await db.insert(
+    final category = await getCategoryById(id);
+    if (category == null) {
+      throw Exception('Category not found');
+    }
+    await db.delete(
+      'categories',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  @override
+  Future<Category> insertCategory(Category category) async {
+    final db = await _databaseHelper.database;
+    final id = await db.insert(
       'categories',
       category.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return res != 0;
+    return category.copyWith(id: id);
   }
 
-  /// Updates an existing category in the database.
   @override
-  Future<bool> updateCategory(Category category) async {
+  Future<Category> updateCategory(Category category) async {
     final db = await _databaseHelper.database;
-    int res = await db.update(
+    await db.update(
       'categories',
       category.toMap(),
       where: 'id = ?',
       whereArgs: [category.id],
     );
-    return res != 0;
+    return category;
   }
 }

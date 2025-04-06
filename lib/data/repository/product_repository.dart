@@ -7,7 +7,7 @@ class ProductRepositoryImpl extends ProductRepository {
   ProductRepositoryImpl() : super();
   final ProductsDaoImpl _productsDao = ProductsDaoImpl();
   @override
-  Future<bool> deleteProduct(int id) {
+  Future<void> deleteProduct(int id) {
     try {
       return _productsDao.deleteProduct(id);
     } catch (e) {
@@ -16,7 +16,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product>?> getAllProducts() {
+  Future<List<Product?>> getAllProducts() {
     try {
       return _productsDao.getAllProducts();
     } catch (e) {
@@ -34,7 +34,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<bool> insertProduct(Product product) {
+  Future<Product> insertProduct(Product product) {
     try {
       return _productsDao.insertProduct(product);
     } catch (e) {
@@ -43,7 +43,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<bool> updateProduct(Product product) {
+  Future<Product> updateProduct(Product product) {
     try {
       return _productsDao.updateProduct(product);
     } catch (e) {

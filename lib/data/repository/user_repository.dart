@@ -9,7 +9,7 @@ class UserRepositoryImpl extends UserRepository {
   final UsersDao _usersDao = UsersDaoImpl();
 
   @override
-  Future<bool> addUser(User user) async {
+  Future<User> addUser(User user) async {
     try {
       return _usersDao.insertUser(user);
     } catch (e) {
@@ -18,7 +18,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> deleteUser(int id) async {
+  Future<void> deleteUser(int id) async {
     try {
       return _usersDao.deleteUser(id);
     } catch (e) {
@@ -54,7 +54,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> updateUser(int id, User user) async {
+  Future<User> updateUser(int id, User user) async {
     try {
       return _usersDao.updateUser(id, user);
     } catch (e) {

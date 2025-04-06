@@ -7,9 +7,9 @@ abstract class UsersDao {
   Future<User?> getUserById(int id);
   Future<User?> getUserByUsername(String username);
 
-  Future<bool> insertUser(User user);
-  Future<bool> updateUser(int id, User user);
-  Future<bool> deleteUser(int id);
+  Future<User> insertUser(User user);
+  Future<User> updateUser(int id, User user);
+  Future<void> deleteUser(int id);
 }
 
 class UsersDaoImpl extends UsersDao {
@@ -57,33 +57,31 @@ class UsersDaoImpl extends UsersDao {
   }
 
   @override
-  Future<bool> insertUser(User user) async {
+  Future<User> insertUser(User user) async {
     final database = await _databaseHelper.database;
-    var res = await database.insert(UsersTable.USERS_TABLE_NAME, user.toMap());
-    return res != 0;
+    await database.insert(UsersTable.USERS_TABLE_NAME, user.toMap());
+    return user;
   }
 
   @override
-  Future<bool> updateUser(int id, User user) async {
+  Future<User> updateUser(int id, User user) async {
     final database = await _databaseHelper.database;
-    var res = await database.update(
+    await database.update(
       UsersTable.USERS_TABLE_NAME,
       user.toMap(),
       where: "${UsersTable.USERS_ID} = ?",
       whereArgs: [id],
     );
-    return res != 0;
+    return user;
   }
 
   @override
-  Future<bool> deleteUser(int id) async {
+  Future<void> deleteUser(int id) async {
     final database = await _databaseHelper.database;
-    var res = await database.delete(
+    await database.delete(
       UsersTable.USERS_TABLE_NAME,
       where: "${UsersTable.USERS_ID} = ?",
       whereArgs: [id],
     );
-
-    return res != 0;
   }
 }

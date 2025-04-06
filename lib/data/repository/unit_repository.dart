@@ -8,7 +8,7 @@ class UnitRepositoryImpl extends UnitRepository {
 
   final UnitsDaoImpl _unitsDao = UnitsDaoImpl();
   @override
-  Future<bool> deleteUnit(int id) async {
+  Future<void> deleteUnit(int id) async {
     try {
       return _unitsDao.deleteUnit(id);
     } catch (e) {
@@ -35,7 +35,7 @@ class UnitRepositoryImpl extends UnitRepository {
   }
 
   @override
-  Future<bool> insertUnit(Unit unit) async {
+  Future<Unit> insertUnit(Unit unit) async {
     try {
       return _unitsDao.insertUnit(unit);
     } catch (e) {
@@ -44,7 +44,7 @@ class UnitRepositoryImpl extends UnitRepository {
   }
 
   @override
-  Future<bool> updateUnit(Unit unit) async {
+  Future<Unit> updateUnit(Unit unit) async {
     try {
       return _unitsDao.insertUnit(unit);
     } catch (e) {

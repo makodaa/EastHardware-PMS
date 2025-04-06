@@ -5,8 +5,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class ExpenseTypesDao {
   Future<List<ExpenseType?>> getAllExpenseTypes();
   Future<ExpenseType?> getExpenseTypeById(int id);
-  Future<void> insertExpenseType(ExpenseType expenseType);
-  Future<void> updateExpenseType(ExpenseType expenseType);
+  Future<ExpenseType> insertExpenseType(ExpenseType expenseType);
+  Future<ExpenseType> updateExpenseType(ExpenseType expenseType);
   Future<void> deleteExpenseType(int id);
 }
 
@@ -54,13 +54,14 @@ class ExpenseTypesDaoImpl extends ExpenseTypesDao {
   /// It returns a Future that completes when the operation is done.
   /// If the operation fails, it throws an exception.
   @override
-  Future<void> insertExpenseType(ExpenseType expenseType) async {
+  Future<ExpenseType> insertExpenseType(ExpenseType expenseType) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'expense_types',
       expenseType.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return expenseType;
   }
 
   /// This method updates an existing expense type in the database.
@@ -68,7 +69,7 @@ class ExpenseTypesDaoImpl extends ExpenseTypesDao {
   /// It returns a Future that completes when the operation is done.
   /// If the operation fails, it throws an exception.
   @override
-  Future<void> updateExpenseType(ExpenseType expenseType) async {
+  Future<ExpenseType> updateExpenseType(ExpenseType expenseType) async {
     final db = await _databaseHelper.database;
     await db.update(
       'expense_types',
@@ -76,6 +77,7 @@ class ExpenseTypesDaoImpl extends ExpenseTypesDao {
       where: 'id = ?',
       whereArgs: [expenseType.id],
     );
+    return expenseType;
   }
 
   /// This method deletes an expense type from the database.

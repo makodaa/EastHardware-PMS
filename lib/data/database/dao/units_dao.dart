@@ -7,9 +7,9 @@ abstract class UnitsDao {
   Future<List<Unit>?> getAllUnitsOfProduct(int id);
   Future<Unit?> getUnitById(int id);
 
-  Future<bool> insertUnit(Unit unit);
-  Future<bool> updateUnit(Unit unit);
-  Future<bool> deleteUnit(int id);
+  Future<Unit> insertUnit(Unit unit);
+  Future<Unit> updateUnit(Unit unit);
+  Future<void> deleteUnit(int id);
 }
 
 class UnitsDaoImpl extends UnitsDao {
@@ -19,14 +19,13 @@ class UnitsDaoImpl extends UnitsDao {
       : _databaseHelper = databaseHelper ?? DatabaseHelper();
 
   @override
-  Future<bool> deleteUnit(int id) async {
+  Future<void> deleteUnit(int id) async {
     final database = await _databaseHelper.database;
-    var res = await database.delete(
+    await database.delete(
       UnitsTable.UNITS_TABLE_NAME,
       where: "${UnitsTable.UNITS_TABLE_NAME} = ?",
       whereArgs: [id],
     );
-    return res != 0;
   }
 
   @override
@@ -52,22 +51,22 @@ class UnitsDaoImpl extends UnitsDao {
   }
 
   @override
-  Future<bool> insertUnit(Unit unit) async {
+  Future<Unit> insertUnit(Unit unit) async {
     final database = await _databaseHelper.database;
-    var res = await database.insert(UnitsTable.UNITS_TABLE_NAME, unit.toMap());
-    return res != 0;
+    await database.insert(UnitsTable.UNITS_TABLE_NAME, unit.toMap());
+    return unit;
   }
 
   @override
-  Future<bool> updateUnit(Unit unit) async {
+  Future<Unit> updateUnit(Unit unit) async {
     final database = await _databaseHelper.database;
-    var res = await database.update(
+    await database.update(
       UnitsTable.UNITS_TABLE_NAME,
       unit.toMap(),
       where: "${UnitsTable.UNITS_ID} = ?",
       whereArgs: [unit.id],
     );
-    return res != 0;
+    return unit;
   }
 
   @override

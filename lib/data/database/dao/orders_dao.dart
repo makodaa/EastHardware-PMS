@@ -5,8 +5,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class OrdersDao {
   Future<List<Order?>> getAllOrders();
   Future<Order?> getOrderById(int id);
-  Future<void> insertOrder(Order order);
-  Future<void> updateOrder(Order order);
+  Future<Order> insertOrder(Order order);
+  Future<Order> updateOrder(Order order);
   Future<void> deleteOrder(int id);
 
   Future<List<Order?>> getOrdersByPayeeName(String payeeName);
@@ -148,17 +148,18 @@ class OrdersDaoImpl extends OrdersDao {
   }
 
   @override
-  Future<void> insertOrder(Order order) async {
+  Future<Order> insertOrder(Order order) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'insert',
       order.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return order;
   }
 
   @override
-  Future<void> updateOrder(Order order) async {
+  Future<Order> updateOrder(Order order) async {
     final db = await _databaseHelper.database;
     await db.update(
       'orders',
@@ -166,5 +167,6 @@ class OrdersDaoImpl extends OrdersDao {
       where: 'id = ?',
       whereArgs: [order.id],
     );
+    return order;
   }
 }

@@ -4,7 +4,7 @@ abstract class CategoryRepository {
   Future<List<Category>?> getAllCategories();
   Future<Category?> getCategoryById(int id);
 
-  Future<bool> insertCategory(Category category);
-  Future<bool> updateCategory(Category category);
-  Future<bool> deleteCategory(int id);
+  Future<Category> insertCategory(Category category);
+  Future<Category> updateCategory(Category category);
+  Future<void> deleteCategory(int id);
 }

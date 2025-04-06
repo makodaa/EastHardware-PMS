@@ -5,8 +5,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 abstract class InvoicesDao {
   Future<List<Invoice?>> getAllInvoices();
   Future<Invoice?> getInvoiceById(int id);
-  Future<void> insertInvoice(Invoice invoice);
-  Future<void> updateInvoice(Invoice invoice);
+  Future<Invoice> insertInvoice(Invoice invoice);
+  Future<Invoice> updateInvoice(Invoice invoice);
   Future<void> deleteInvoice(int id);
   Future<List<Invoice?>> getInvoicesByCustomerName(String customerName);
   Future<List<Invoice?>> getInvoicesByDateRange(DateTime startDate, DateTime endDate);
@@ -57,19 +57,20 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// Inserts a new invoice into the database.
   /// TODO: Handle the case where the invoice already exists.
   @override
-  Future<void> insertInvoice(Invoice invoice) async {
+  Future<Invoice> insertInvoice(Invoice invoice) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'invoices',
       invoice.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return invoice;
   }
 
   /// Updates an existing invoice in the database.
   /// TODO: Handle the case where the invoice does not exist.
   @override
-  Future<void> updateInvoice(Invoice invoice) async {
+  Future<Invoice> updateInvoice(Invoice invoice) async {
     final db = await _databaseHelper.database;
     await db.update(
       'invoices',
@@ -77,6 +78,7 @@ class InvoicesDaoImpl extends InvoicesDao {
       where: 'id = ?',
       whereArgs: [invoice.id],
     );
+    return invoice;
   }
 
   /// Deletes an invoice from the database by its ID.

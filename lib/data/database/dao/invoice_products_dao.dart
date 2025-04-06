@@ -6,8 +6,8 @@ abstract class InvoiceProductsDao {
   Future<List<InvoiceProduct?>> getAllInvoiceProducts();
   Future<InvoiceProduct?> getInvoiceProductById(int id);
   Future<List<InvoiceProduct?>> getInvoiceProductsByInvoiceId(int invoiceId);
-  Future<void> insertInvoiceProduct(InvoiceProduct invoiceProduct);
-  Future<void> updateInvoiceProduct(InvoiceProduct invoiceProduct);
+  Future<InvoiceProduct> insertInvoiceProduct(InvoiceProduct invoiceProduct);
+  Future<InvoiceProduct> updateInvoiceProduct(InvoiceProduct invoiceProduct);
   Future<void> deleteInvoiceProduct(int id);
 }
 
@@ -71,13 +71,14 @@ class InvoiceProductsDaoImpl extends InvoiceProductsDao {
   /// If the operation fails, it throws an exception.
   ///
   @override
-  Future<void> insertInvoiceProduct(InvoiceProduct invoiceProduct) async {
+  Future<InvoiceProduct> insertInvoiceProduct(InvoiceProduct invoiceProduct) async {
     final db = await _databaseHelper.database;
     await db.insert(
       'invoice_products',
       invoiceProduct.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
+    return invoiceProduct.copyWith();
   }
 
   /// This method updates an existing invoice product in the database.
@@ -86,7 +87,7 @@ class InvoiceProductsDaoImpl extends InvoiceProductsDao {
   /// If the operation fails, it throws an exception.
   ///
   @override
-  Future<void> updateInvoiceProduct(InvoiceProduct invoiceProduct) async {
+  Future<InvoiceProduct> updateInvoiceProduct(InvoiceProduct invoiceProduct) async {
     final db = await _databaseHelper.database;
     await db.update(
       'invoice_products',
@@ -94,6 +95,7 @@ class InvoiceProductsDaoImpl extends InvoiceProductsDao {
       where: 'id = ?',
       whereArgs: [invoiceProduct.id],
     );
+    return invoiceProduct;
   }
 
   /// This method deletes an invoice product from the database.

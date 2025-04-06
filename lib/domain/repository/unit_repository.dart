@@ -4,7 +4,7 @@ abstract class UnitRepository {
   Future<List<Unit>?> getAllUnits();
   Future<Unit?> getUnitById(int id);
 
-  Future<bool> insertUnit(Unit unit);
-  Future<bool> updateUnit(Unit unit);
-  Future<bool> deleteUnit(int id);
+  Future<Unit> insertUnit(Unit unit);
+  Future<Unit> updateUnit(Unit unit);
+  Future<void> deleteUnit(int id);
 }
