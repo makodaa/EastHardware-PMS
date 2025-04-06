@@ -15,7 +15,7 @@ class ProductsTable {
   static const String PRODUCTS_MAIN_UNIT = 'main_unit';
   static const String PRODUCTS_CRITICAL_LEVEL = 'critical_level';
   static const String PRODUCTS_DEAD_STOCK_THRESHOLD = 'dead_stock_treshold';
-  static const String PRODUCTS_FAST_MOVING_PERIOD = 'fast_moving_period';
+  static const String PRODUCTS_FAST_MOVING_THRESHOLD = 'fast_moving_threshold';
   static const String PRODUCTS_CREATION_DATE = 'creation_date';
   static const String PRODUCTS_CREATOR_ID = 'creator_id';
   static const String PRODUCTS_ARCHIVE_STATUS = 'archive_status';
@@ -34,7 +34,7 @@ class ProductsTable {
       $PRODUCTS_MAIN_UNIT STRING NOT NULL,
       $PRODUCTS_CRITICAL_LEVEL REAL NOT NULL,
       $PRODUCTS_DEAD_STOCK_THRESHOLD INTEGER NOT NULL,
-      $PRODUCTS_FAST_MOVING_PERIOD INTEGER NOT NULL,
+      $PRODUCTS_FAST_MOVING_THRESHOLD INTEGER NOT NULL,
       $PRODUCTS_CREATION_DATE TEXT NOT NULL,
       $PRODUCTS_CREATOR_ID INTEGER NOT NULL,
       $PRODUCTS_ARCHIVE_STATUS INTEGER NOT NULL,

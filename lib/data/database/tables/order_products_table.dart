@@ -5,6 +5,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Represents the list of products in a restock order
 /// If [ORDER_PRODUCTS_SECONDARY_UNIT] is null, main unit will be used, or conversion will be set to 1.
+/// [ORDER_PRODUCTS_PRODUCT] can be null for the cases the user purchase products not in the system.
 class OrderProductsTable {
   static const String ORDER_PRODUCTS_TABLE_NAME = 'order_products';
   static const String ORDER_PRODUCTS_ID = 'id';
@@ -23,7 +24,7 @@ class OrderProductsTable {
   CREATE TABLE $ORDER_PRODUCTS_TABLE_NAME (
   $ORDER_PRODUCTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
   $ORDER_PRODUCTS_ORDER INTEGER NOT NULL,
-  $ORDER_PRODUCTS_PRODUCT INTEGER NOT NULL,
+  $ORDER_PRODUCTS_PRODUCT INTEGER,
   $ORDER_PRODUCTS_NAME TEXT NOT NULL,
   $ORDER_PRODUCTS_DESCRIPTION TEXT,
   $ORDER_PRODUCTS_QUANTITY REAL NOT NULL,

@@ -1,0 +1,170 @@
+import 'package:easthardware_pms/data/database/database_helper.dart';
+import 'package:easthardware_pms/domain/models/order.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+abstract class OrdersDao {
+  Future<List<Order?>> getAllOrders();
+  Future<Order?> getOrderById(int id);
+  Future<void> insertOrder(Order order);
+  Future<void> updateOrder(Order order);
+  Future<void> deleteOrder(int id);
+
+  Future<List<Order?>> getOrdersByPayeeName(String payeeName);
+  Future<List<Order?>> getOrdersByExpenseType(int expenseType);
+  Future<List<Order?>> getOrdersByDateRange(DateTime startDate, DateTime endDate);
+  Future<List<Order?>> getOrdersByPaymentMethod(int paymentMethod);
+  Future<List<Order?>> getOrdersByAmountDue(double minAmount, double maxAmount);
+  Future<List<Order?>> getOrdersByCreatorId(int creatorId);
+  Future<List<Order?>> getOrdersByProductNames(List<String> productNames);
+}
+
+class OrdersDaoImpl extends OrdersDao {
+  final DatabaseHelper _databaseHelper;
+  OrdersDaoImpl([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+
+  @override
+  Future<void> deleteOrder(int id) async {
+    final db = await _databaseHelper.database;
+    await db.delete(
+      'orders',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  @override
+  Future<List<Order?>> getAllOrders() async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query('orders');
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<Order?> getOrderById(int id) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.isNotEmpty) {
+      return Order.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByAmountDue(double minAmount, double maxAmount) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'amount_due BETWEEN ? AND ?',
+      whereArgs: [minAmount, maxAmount],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByCreatorId(int creatorId) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'creator_id = ?',
+      whereArgs: [creatorId],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByDateRange(DateTime startDate, DateTime endDate) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'order_date BETWEEN ? AND ?',
+      whereArgs: [startDate.toIso8601String(), endDate.toIso8601String()],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByExpenseType(int expenseType) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'expense_type = ?',
+      whereArgs: [expenseType],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByPayeeName(String payeeName) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'payee_name = ?',
+      whereArgs: [payeeName],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByPaymentMethod(int paymentMethod) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'orders',
+      where: 'payment_method = ?',
+      whereArgs: [paymentMethod],
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Order?>> getOrdersByProductNames(List<String> productNames) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT DISTINCT orders.* FROM orders '
+      'JOIN order_products ON orders.id = order_products.order_id '
+      'WHERE order_products.product_id IN (${productNames.join(',')})',
+    );
+    return List.generate(maps.length, (i) {
+      return Order.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<void> insertOrder(Order order) async {
+    final db = await _databaseHelper.database;
+    await db.insert(
+      'insert',
+      order.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
+
+  @override
+  Future<void> updateOrder(Order order) async {
+    final db = await _databaseHelper.database;
+    await db.update(
+      'orders',
+      order.toMap(),
+      where: 'id = ?',
+      whereArgs: [order.id],
+    );
+  }
+}

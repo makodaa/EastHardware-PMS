@@ -4,7 +4,7 @@ class Order {
   final int expenseType;
   final DateTime orderDate;
   final int paymentMethod;
-  final String referenceNumber;
+  final String? referenceNumber;
   final String? memo;
   final double amountDue;
   final double? amountPaid;
