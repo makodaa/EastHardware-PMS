@@ -50,4 +50,28 @@ class ProductRepositoryImpl extends ProductRepository {
       throw DatabaseException(e.toString());
     }
   }
+
+  @override
+  Future<List<Product?>> getDeadStockProducts() {
+    // TODO: implement getDeadStockProducts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Product?>> getFastMovingProducts() {
+    // TODO: implement getFastMovingProducts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Product?>> getLowStockProducts() {
+    // TODO: implement getLowStockProducts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Product?>> getProductsByCategoryId(int categoryId) {
+    // TODO: implement getProductsByCategoryId
+    throw UnimplementedError();
+  }
 }
