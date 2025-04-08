@@ -11,7 +11,7 @@ class ProductsTable {
   static const String PRODUCTS_DESCRIPTION = 'description';
   static const String PRODUCTS_SALE_PRICE = 'sale_price';
   static const String PRODUCTS_ORDER_COST = 'order_cost';
-  static const String PRODUCTS_QUANTITY = 'product_quantity';
+  static const String PRODUCTS_QUANTITY = 'quantity';
   static const String PRODUCTS_MAIN_UNIT = 'main_unit';
   static const String PRODUCTS_CRITICAL_LEVEL = 'critical_level';
   static const String PRODUCTS_DEAD_STOCK_THRESHOLD = 'dead_stock_treshold';

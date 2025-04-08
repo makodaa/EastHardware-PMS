@@ -1,5 +1,6 @@
 import 'package:easthardware_pms/data/database/database_helper.dart';
 import 'package:easthardware_pms/data/database/tables/products_table.dart';
+import 'package:easthardware_pms/data/database/views/product_flags_view.dart';
 import 'package:easthardware_pms/domain/models/product.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -13,6 +14,7 @@ abstract class ProductsDao {
   Future<Product> insertProduct(Product product);
   Future<Product> updateProduct(Product product);
   Future<void> deleteProduct(int id);
+  Future<List<Product?>> getProductsByCategoryId(int categoryId);
 }
 
 class ProductsDaoImpl extends ProductsDao {
@@ -33,7 +35,7 @@ class ProductsDaoImpl extends ProductsDao {
   @override
   Future<List<Product?>> getAllProducts() async {
     final Database database = await _databaseHelper.database;
-    var queryResults = await database.query(ProductsTable.PRODUCTS_TABLE_NAME);
+    var queryResults = await database.query(ProductFlagsView.PRODUCT_STATUS_VIEW_TABLE);
 
     return queryResults.map(Product.fromMap).toList();
   }
@@ -115,7 +117,7 @@ class ProductsDaoImpl extends ProductsDao {
       "SELECT products.* FROM products "
       "JOIN invoice_products ON products.id = invoice_product.product_id "
       "JOIN invoices ON invoice_products.invoice_id = invoices.id "
-      "WHERE date(invoices.invoice_date) BETWEEN date('now', '-14 days') AND date('now', '0 days') "
+      "WHERE date(invoices.invoice_date) BETWEEN date('now', '-30 days') AND date('now', '0 days') "
       "GROUP BY products.id "
       "HAVING count(invoices.*) >= products.fast_moving_threshold "
       "ORDER BY count(invoices.*) DESC",
@@ -131,6 +133,17 @@ class ProductsDaoImpl extends ProductsDao {
     var res = await database.query(
       ProductsTable.PRODUCTS_TABLE_NAME,
       where: '${ProductsTable.PRODUCTS_QUANTITY} <= ${ProductsTable.PRODUCTS_CRITICAL_LEVEL}',
+    );
+    return res.map(Product.fromMap).toList();
+  }
+
+  @override
+  Future<List<Product?>> getProductsByCategoryId(int categoryId) async {
+    final Database database = await _databaseHelper.database;
+    var res = await database.query(
+      ProductsTable.PRODUCTS_TABLE_NAME,
+      where: '${ProductsTable.PRODUCTS_CATEGORY} = ?',
+      whereArgs: [categoryId],
     );
     return res.map(Product.fromMap).toList();
   }

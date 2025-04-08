@@ -12,6 +12,7 @@ import 'package:easthardware_pms/data/database/tables/security_questions_table.d
 import 'package:easthardware_pms/data/database/tables/units_table.dart';
 import 'package:easthardware_pms/data/database/tables/user_logs_table.dart';
 import 'package:easthardware_pms/data/database/tables/users_table.dart';
+import 'package:easthardware_pms/data/database/views/product_flags_view.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
@@ -66,6 +67,7 @@ class DatabaseHelper {
     InvoicesTable.createTable(database);
     InvoiceProductsTable.createTable(database);
     SecurityQuestionsTable.createTable(database);
+    ProductFlagsView.createView(database);
   }
 
   Future<void> onUpgrade(Database database, int oldVersion, int newVersion) async {
@@ -82,6 +84,7 @@ class DatabaseHelper {
     InvoicesTable.dropTable(database);
     InvoiceProductsTable.dropTable(database);
     SecurityQuestionsTable.dropTable(database);
+    ProductFlagsView.dropView(database);
     // Recreate all tables
     await onCreate(database, newVersion);
     // You can also add any additional migration logic here if needed

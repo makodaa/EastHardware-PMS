@@ -15,6 +15,8 @@ abstract class InvoicesDao {
   Future<List<Invoice?>> getInvoicesByCreatorId(int creatorId);
   Future<List<Invoice?>> getInvoicesByProductIds(List<int> productIds);
   Future<List<Invoice?>> getInvoiceByProductCategory(int categoryId);
+  Future<Invoice?> getLatestInvoiceOfProduct(int productId);
+  Future<int?> getRecentInvoiceCountOfProduct(int productId);
 }
 
 /// The [InvoicesDaoImpl] class implements the [InvoicesDao] interface
@@ -203,5 +205,36 @@ class InvoicesDaoImpl extends InvoicesDao {
     return List.generate(maps.length, (i) {
       return Invoice.fromMap(maps[i]);
     });
+  }
+
+  @override
+  Future<Invoice?> getLatestInvoiceOfProduct(int productId) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT DISTINCT invoices.* FROM invoices '
+      'JOIN invoice_products ON invoices.id = invoice_products.invoice_id '
+      'WHERE invoice_products.product_id = ? '
+      'ORDER BY invoice_date DESC LIMIT 1',
+      [productId],
+    );
+    if (maps.isNotEmpty) {
+      return Invoice.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  @override
+  Future<int?> getRecentInvoiceCountOfProduct(int productId) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM invoices '
+      'JOIN invoice_products ON invoices.id = invoice_products.invoice_id '
+      'WHERE invoice_products.product_id = ?',
+      [productId],
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['count'] as int?;
+    }
+    return null;
   }
 }

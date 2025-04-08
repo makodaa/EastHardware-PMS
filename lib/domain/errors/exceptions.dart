@@ -15,3 +15,30 @@ class DatabaseException implements Exception {
   @override
   String toString() => 'DatabaseException: $message';
 }
+
+class NetworkException implements Exception {
+  final String message;
+
+  NetworkException(this.message);
+
+  @override
+  String toString() => 'NetworkException: $message';
+}
+
+class ValidationException implements Exception {
+  final String message;
+
+  ValidationException(this.message);
+
+  @override
+  String toString() => 'ValidationException: $message';
+}
+
+class ArgumentException implements Exception {
+  final String message;
+
+  ArgumentException(this.message);
+
+  @override
+  String toString() => 'ArgumentException: $message';
+}
