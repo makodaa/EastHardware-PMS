@@ -28,18 +28,18 @@ class Unit {
   factory Unit.fromMap(Map<String, dynamic> map) {
     return Unit(
       id: map['id'] as int,
-      productId: map['product'] as int,
+      productId: map['product_id'] as int,
       name: map['name'] as String,
-      conversionFactor: map['conversionFactor'] as double,
+      conversionFactor: map['conversion_factor'] as double,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'product': productId,
+      'product_id': productId,
       'name': name,
-      'conversionFactor': conversionFactor,
+      'conversion_factor': conversionFactor,
     };
   }
 }

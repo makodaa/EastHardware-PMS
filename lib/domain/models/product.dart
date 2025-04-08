@@ -2,6 +2,7 @@ class Product {
   final int id;
   final String name;
   final int? category;
+  final String sku;
   final String? description;
   final double salePrice;
   final double orderCost;
@@ -13,11 +14,12 @@ class Product {
   final String creationDate;
   final int userId;
   final int archiveStatus;
-  final int? isBelowCriticalLevel;
-  final int? isFastMovingStock;
-  final int? isDeadStock;
+  final bool? isBelowCriticalLevel;
+  final bool? isFastMovingStock;
+  final bool? isDeadStock;
 
   Product({
+    required this.sku,
     required this.id,
     required this.name,
     required this.category,
@@ -37,25 +39,68 @@ class Product {
     this.isDeadStock,
   });
 
+  Product copyWith({
+    int? id,
+    String? name,
+    String? sku,
+    int? category,
+    String? description,
+    double? salePrice,
+    double? orderCost,
+    double? quantity,
+    String? mainUnit,
+    double? criticalLevel,
+    int? deadStockThreshold,
+    int? fastMovingStockThreshold,
+    String? creationDate,
+    int? userId,
+    int? archiveStatus,
+    bool? isBelowCriticalLevel,
+    bool? isFastMovingStock,
+    bool? isDeadStock,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      sku: sku ?? this.sku,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      salePrice: salePrice ?? this.salePrice,
+      orderCost: orderCost ?? this.orderCost,
+      quantity: quantity ?? this.quantity,
+      mainUnit: mainUnit ?? this.mainUnit,
+      criticalLevel: criticalLevel ?? this.criticalLevel,
+      deadStockThreshold: deadStockThreshold ?? this.deadStockThreshold,
+      fastMovingStockThreshold: fastMovingStockThreshold ?? this.fastMovingStockThreshold,
+      creationDate: creationDate ?? this.creationDate,
+      userId: userId ?? this.userId,
+      archiveStatus: archiveStatus ?? this.archiveStatus,
+      isBelowCriticalLevel: isBelowCriticalLevel ?? this.isBelowCriticalLevel,
+      isFastMovingStock: isFastMovingStock ?? this.isFastMovingStock,
+      isDeadStock: isDeadStock ?? this.isDeadStock,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'name': name,
       'category': category,
-      'salePrice': salePrice,
-      'orderCost': orderCost,
+      'sku': sku,
+      'sale_price': salePrice,
+      'order_cost': orderCost,
       'quantity': quantity,
-      'mainUnit': mainUnit,
+      'main_unit': mainUnit,
       'description': description,
-      'criticalLevel': criticalLevel,
-      'deadStockThreshold': deadStockThreshold,
-      'fastMovingStockThreshold': fastMovingStockThreshold,
-      'creationDate': creationDate,
-      'userId': userId,
-      'archiveStatus': archiveStatus,
-      'isBelowCriticalLevel': isBelowCriticalLevel,
-      'isFastMovingStock': isFastMovingStock,
-      'isDeadStock': isDeadStock,
+      'critical_level': criticalLevel,
+      'dead_stock_threshold': deadStockThreshold,
+      'fast_moving_threshold': fastMovingStockThreshold,
+      'creation_date': creationDate,
+      'user_id': userId,
+      'archive_status': archiveStatus,
+      'is_below_critical_level': isBelowCriticalLevel,
+      'is_fast_moving_stock': isFastMovingStock,
+      'is_dead_stock': isDeadStock,
     };
   }
 
@@ -63,21 +108,22 @@ class Product {
     return Product(
       id: map['id'] as int,
       name: map['name'] as String,
+      sku: map['sku'] as String,
       category: map['category'] as int?,
       description: map['description'] as String?,
-      salePrice: map['salePrice'] as double,
-      orderCost: map['orderCost'] as double,
+      salePrice: map['sale_price'] as double,
+      orderCost: map['order_cost'] as double,
       quantity: map['quantity'] as double,
-      mainUnit: map['mainUnit'] as String,
-      criticalLevel: map['criticalLevel'] as double,
-      deadStockThreshold: map['deadStockThreshold'] as int,
-      fastMovingStockThreshold: map['fastMovingStockThreshold'] as int,
-      creationDate: map['creationDate'] as String,
-      userId: map['userId'] as int,
-      archiveStatus: map['archiveStatus'] as int,
-      isBelowCriticalLevel: map['isBelowCriticalLevel'] as int?,
-      isFastMovingStock: map['isFastMovingStock'] as int?,
-      isDeadStock: map['isDeadStock'] as int?,
+      mainUnit: map['main_unit'] as String,
+      criticalLevel: map['critical_level'] as double,
+      deadStockThreshold: map['dead_stock_threshold'] as int,
+      fastMovingStockThreshold: map['fast_moving_threshold'] as int,
+      creationDate: map['creation_date'] as String,
+      userId: map['user_id'] as int,
+      archiveStatus: map['archive_status'] as int,
+      isBelowCriticalLevel: map['is_below_critical_level'] == 1,
+      isFastMovingStock: map['is_fast_moving_stock'] == 1,
+      isDeadStock: map['is_dead_stock'] == 1,
     );
   }
 }

@@ -10,13 +10,13 @@ abstract class ExpenseTypeRepository {
   /// Fetches all expense types.
   ///
   /// Returns a list of [ExpenseType] objects.
-  Future<List<ExpenseType>> getAllExpenseTypes();
+  Future<List<ExpenseType?>> getAllExpenseTypes();
 
   /// Fetches an expense type by its ID.
   ///
   /// [id] is the unique identifier of the expense type to fetch.
   /// Returns an [ExpenseType] object if found, or null if not found.
-  Future<ExpenseType?> getExpenseTypeById(String id);
+  Future<ExpenseType?> getExpenseTypeById(int id);
 
   /// Creates a new expense type.
   ///
@@ -33,5 +33,5 @@ abstract class ExpenseTypeRepository {
   /// Deletes an expense type by its ID.
   ///
   /// [id] is the unique identifier of the expense type to delete.
-  Future<void> deleteExpenseType(String id);
+  Future<void> deleteExpenseType(int id);
 }
