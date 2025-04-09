@@ -1,5 +1,5 @@
 import 'package:easthardware_pms/app/dependency_injector.dart';
-import 'package:easthardware_pms/domain/models/user.dart';
+import 'package:easthardware_pms/domain/enums/enums.dart' show AccessLevel;
 import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:fluent_ui/fluent_ui.dart';

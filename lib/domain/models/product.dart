@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 class Product {
   final int id;
   final String name;
@@ -19,7 +21,7 @@ class Product {
   final bool? isDeadStock;
 
   Product({
-    required this.sku,
+    String? sku,
     required this.id,
     required this.name,
     required this.category,
@@ -37,7 +39,7 @@ class Product {
     this.isBelowCriticalLevel,
     this.isFastMovingStock,
     this.isDeadStock,
-  });
+  }) : sku = sku ?? const Uuid().v4();
 
   Product copyWith({
     int? id,

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
 import 'package:easthardware_pms/domain/services/cryptography_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -7,6 +8,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 class UsersTable {
   static const String USERS_TABLE_NAME = 'users';
   static const String USERS_ID = 'id';
+  static const String USERS_UID = 'uid';
   static const String USERS_USERNAME = 'username';
   static const String USERS_PASSWORD_HASH = 'password_hash';
   static const String USERS_FIRST_NAME = 'first_name';
@@ -18,6 +20,7 @@ class UsersTable {
     await database.execute('''
       CREATE TABLE $USERS_TABLE_NAME (
       $USERS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+      $USERS_UID TEXT NOT NULL,
       $USERS_USERNAME TEXT NOT NULL UNIQUE,
       $USERS_PASSWORD_HASH BLOB NOT NULL,
       $USERS_FIRST_NAME TEXT NOT NULL,
@@ -35,10 +38,10 @@ class UsersTable {
 
   // private function: create initial admin
   static void _insertInitialAdmin(Database database) async {
-    final CryptographyService cryptographyService = CryptographyService();
+    const CryptographyService cryptographyService = CryptographyService();
     const String password = 'Admin123';
     Uint8List salt = cryptographyService.generateSalt();
-    Uint8List passwordHash = cryptographyService.hashPassword(password, salt);
+    Uint8List passwordHash = cryptographyService.generateHash(password, salt);
 
     User admin = User(
       id: 0,

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:easthardware_pms/data/repository/user_repository.dart';
@@ -26,27 +25,21 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   /// @throws [AuthenticationException] if the username or password is invalid
   ///
   @override
-  Future<User> logIn({
-    required String username,
-    required String password,
-  }) async {
+  Future<User> logIn({required String username, required String password}) async {
+    _validateInput(username, password);
+    // Check if the user exists in the database
     final User? user = await _userRepository.getUserByUsername(username);
 
-    // Check if user exists in database
     if (user == null) {
-      throw AuthenticationException('Invalid username or password.');
+      throw AuthenticationException('Invalid username or password');
     }
 
-    // Uint8List passwordBytes = utf8.encode(password);
-    // Uint8List hashedPassword = _cryptographyService.hashPasswordBytes([
-    //   ...passwordBytes,
-    //   ...user.salt,
-    // ]);
-
-    // Check if password matches stored password
-    // if (hashedPassword != user.passwordHash) {
-    //   throw AuthenticationException('Invalid username or password');
-    // }
+    // Hash the input password
+    final Uint8List hashedPassword = _cryptographyService.generateHash(password, user.salt);
+    // Compare the hashed password with the stored password
+    if (user.passwordHash != hashedPassword) {
+      throw AuthenticationException('Invalid username or password');
+    }
 
     return user;
   }
@@ -56,4 +49,18 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   void dispose() {}
+
+  void _validateInput(String username, String password) {
+    if (username.isEmpty || password.isEmpty) {
+      throw AuthenticationException('Username and password cannot be empty');
+    }
+    if (username.length < 3 || password.length < 6) {
+      throw AuthenticationException(
+          'Username must be at least 3 characters and password must be at least 6 characters');
+    }
+    if (username.length > 20 || password.length > 20) {
+      throw AuthenticationException(
+          'Username must be at most 20 characters and password must be at most 20 characters');
+    }
+  }
 }

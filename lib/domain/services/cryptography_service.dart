@@ -17,7 +17,7 @@ class CryptographyService {
   }
 
   // Hashes password + salt using SHA-256
-  Uint8List hashPassword(String password, Uint8List salt) {
+  Uint8List generateHash(String password, Uint8List salt) {
     final passwordBytes = Uint8List.fromList(password.codeUnits);
     final combined = Uint8List(salt.length + passwordBytes.length)
       ..setAll(0, salt)

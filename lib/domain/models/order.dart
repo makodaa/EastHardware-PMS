@@ -1,5 +1,8 @@
+import 'package:uuid/uuid.dart';
+
 class Order {
   final int id;
+  final String uid;
   final String payeeName;
   final int expenseType;
   final DateTime orderDate;
@@ -13,6 +16,7 @@ class Order {
   final int creatorId;
 
   Order({
+    String? uid,
     required this.id,
     required this.payeeName,
     required this.expenseType,
@@ -25,9 +29,10 @@ class Order {
     this.paymentDate,
     required this.creationDate,
     required this.creatorId,
-  });
+  }) : uid = uid ?? const Uuid().v4();
   Order copyWith({
     int? id,
+    String? uid,
     String? payeeName,
     int? expenseType,
     DateTime? orderDate,
@@ -42,6 +47,7 @@ class Order {
   }) {
     return Order(
       id: id ?? this.id,
+      uid: uid ?? this.uid,
       payeeName: payeeName ?? this.payeeName,
       expenseType: expenseType ?? this.expenseType,
       orderDate: orderDate ?? this.orderDate,
@@ -59,6 +65,7 @@ class Order {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'uid': uid,
       'payee_name': payeeName,
       'expense_type': expenseType,
       'order_date': orderDate.toIso8601String(),
@@ -76,6 +83,7 @@ class Order {
   factory Order.fromMap(Map<String, dynamic> map) {
     return Order(
       id: map['id'],
+      uid: map['uid'],
       payeeName: map['payee_name'],
       expenseType: map['expense_type'],
       orderDate: DateTime.parse(map['order_date']),

@@ -1,12 +1,11 @@
 import "dart:typed_data";
 
-enum AccessLevel {
-  staff,
-  administrator,
-}
+import "package:easthardware_pms/domain/enums/enums.dart";
+import "package:uuid/uuid.dart";
 
 class User {
   final int id;
+  final String uid;
   final String firstName;
   final String lastName;
   final String username;
@@ -15,6 +14,7 @@ class User {
   final Uint8List passwordHash;
 
   User({
+    String? uid,
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -22,7 +22,7 @@ class User {
     required this.accessLevel,
     required this.passwordHash,
     required this.salt,
-  });
+  }) : uid = uid ?? const Uuid().v4();
 
   User copyWith({
     int? id,

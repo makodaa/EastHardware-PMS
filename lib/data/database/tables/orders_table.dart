@@ -6,6 +6,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 class OrdersTable {
   static const String ORDERS_TABLE_NAME = 'orders';
   static const String ORDERS_ID = 'id';
+  static const String ORDERS_UID = 'uid';
   static const String ORDERS_PAYEE_NAME = 'payee_name';
   static const String ORDERS_EXPRENSE_TYPE = 'expense_type';
   static const String ORDERS_DATE = 'order_date';
@@ -22,6 +23,7 @@ class OrdersTable {
     database.execute('''
       CREATE TABLE IF NOT EXISTS $ORDERS_TABLE_NAME (
         $ORDERS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $ORDERS_UID TEXT NOT NULL,
         $ORDERS_PAYEE_NAME TEXT NOT NULL,
         $ORDERS_EXPRENSE_TYPE INTEGER NOT NULL,
         $ORDERS_DATE TEXT NOT NULL,
