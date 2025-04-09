@@ -1,4 +1,5 @@
 import 'package:easthardware_pms/data/database/tables/invoice_products_table.dart';
+import 'package:easthardware_pms/domain/enums/enums.dart';
 
 class InvoiceProduct {
   final int id;
@@ -7,7 +8,7 @@ class InvoiceProduct {
   final String productName;
   final String? description;
   final double? discount;
-  final int? discountType;
+  final DiscountType? discountType;
   final double quantity;
   final int? secondaryUnit;
   final double? conversionFactor;
@@ -36,7 +37,7 @@ class InvoiceProduct {
     String? productName,
     String? description,
     double? discount,
-    int? discountType,
+    DiscountType? discountType,
     double? quantity,
     int? secondaryUnit,
     double? conversionFactor,
@@ -67,7 +68,7 @@ class InvoiceProduct {
       InvoiceProductsTable.INVOICE_PRODUCTS_NAME: productName,
       InvoiceProductsTable.INVOICE_PRODUCTS_DESCRIPTION: description,
       InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT: discount,
-      InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT_TYPE: discountType,
+      InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT_TYPE: discountType?.index,
       InvoiceProductsTable.INVOICE_PRODUCTS_QUANTITY: quantity,
       InvoiceProductsTable.INVOICE_PRODUCTS_SECONDARY_UNIT: secondaryUnit,
       InvoiceProductsTable.INVOICE_PRODUCTS_CONVERSION_FACTOR: conversionFactor,
@@ -84,7 +85,8 @@ class InvoiceProduct {
       productName: map[InvoiceProductsTable.INVOICE_PRODUCTS_NAME],
       description: map[InvoiceProductsTable.INVOICE_PRODUCTS_DESCRIPTION],
       discount: map[InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT],
-      discountType: map[InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT_TYPE],
+      discountType:
+          DiscountType.values[map[InvoiceProductsTable.INVOICE_PRODUCTS_DISCOUNT_TYPE] as int],
       quantity: map[InvoiceProductsTable.INVOICE_PRODUCTS_QUANTITY],
       secondaryUnit: map[InvoiceProductsTable.INVOICE_PRODUCTS_SECONDARY_UNIT],
       conversionFactor: map[InvoiceProductsTable.INVOICE_PRODUCTS_CONVERSION_FACTOR],

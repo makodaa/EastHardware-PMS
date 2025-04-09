@@ -9,20 +9,20 @@ class CategoryRepositoryImpl extends CategoryRepository {
   final CategoriesDao _categoriesDao = CategoriesDaoImpl();
 
   @override
-  Future<void> deleteCategory(int id) {
+  Future<void> deleteCategory(int id) async {
     try {
-      return _categoriesDao.deleteCategory(id);
+      return await _categoriesDao.deleteCategory(id);
     } catch (e) {
-      throw DatabaseException('Failed to delete category');
+      throw DatabaseException('Failed to delete category: $e');
     }
   }
 
   @override
-  Future<List<Category>?> getAllCategories() async {
+  Future<List<Category>> getAllCategories() async {
     try {
       return await _categoriesDao.getAllCategories();
     } catch (e) {
-      throw DatabaseException('Failed to fetch all categories');
+      throw DatabaseException('Failed to fetch all categories: $e');
     }
   }
 
@@ -31,7 +31,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
     try {
       return await _categoriesDao.getCategoryById(id);
     } catch (e) {
-      throw DatabaseException('Failed to fetch category by ID');
+      throw DatabaseException('Failed to fetch category by ID: $e');
     }
   }
 
@@ -40,7 +40,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
     try {
       return await _categoriesDao.insertCategory(category);
     } catch (e) {
-      throw DatabaseException('Failed to insert category');
+      throw DatabaseException('Failed to insert category: $e');
     }
   }
 
@@ -49,7 +49,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
     try {
       return await _categoriesDao.updateCategory(category);
     } catch (e) {
-      throw DatabaseException('Failed to update category');
+      throw DatabaseException('Failed to update category: $e');
     }
   }
 }

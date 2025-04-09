@@ -16,7 +16,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product?>> getAllProducts() async {
+  Future<List<Product>> getAllProducts() async {
     try {
       return await _productsDao.getAllProducts();
     } catch (e) {
@@ -41,7 +41,7 @@ class ProductRepositoryImpl extends ProductRepository {
       throw DatabaseException('Product with ID ${product.id} already exists');
     }
     try {
-      return _productsDao.insertProduct(product);
+      return await _productsDao.insertProduct(product);
     } catch (e) {
       throw DatabaseException("Failed to insert product: $e");
     }
@@ -59,7 +59,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product?>> getDeadStockProducts() {
+  Future<List<Product>> getDeadStockProducts() {
     try {
       return _productsDao.getDeadStockProducts();
     } catch (e) {
@@ -68,7 +68,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product?>> getFastMovingProducts() {
+  Future<List<Product>> getFastMovingProducts() {
     try {
       return _productsDao.getFastMovingProducts();
     } catch (e) {
@@ -77,7 +77,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product?>> getLowStockProducts() {
+  Future<List<Product>> getLowStockProducts() {
     try {
       return _productsDao.getLowStockProducts();
     } catch (e) {
@@ -86,7 +86,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product?>> getProductsByCategoryId(int categoryId) {
+  Future<List<Product>> getProductsByCategoryId(int categoryId) async {
     try {
       return _productsDao.getProductsByCategoryId(categoryId);
     } catch (e) {
@@ -104,5 +104,6 @@ class ProductRepositoryImpl extends ProductRepository {
     if (product.salePrice <= 0) {
       throw ValidationException('Product price must be greater than zero');
     }
+    // TODO: Add more validation rules as needed
   }
 }

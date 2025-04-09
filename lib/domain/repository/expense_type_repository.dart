@@ -10,7 +10,7 @@ abstract class ExpenseTypeRepository {
   /// Fetches all expense types.
   ///
   /// Returns a list of [ExpenseType] objects.
-  Future<List<ExpenseType?>> getAllExpenseTypes();
+  Future<List<ExpenseType>> getAllExpenseTypes();
 
   /// Fetches an expense type by its ID.
   ///
