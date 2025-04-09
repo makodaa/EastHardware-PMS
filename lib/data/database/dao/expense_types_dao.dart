@@ -3,7 +3,7 @@ import 'package:easthardware_pms/domain/models/expense_type.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class ExpenseTypesDao {
-  Future<List<ExpenseType?>> getAllExpenseTypes();
+  Future<List<ExpenseType>> getAllExpenseTypes();
   Future<ExpenseType?> getExpenseTypeById(int id);
   Future<ExpenseType> insertExpenseType(ExpenseType expenseType);
   Future<ExpenseType> updateExpenseType(ExpenseType expenseType);
@@ -25,7 +25,7 @@ class ExpenseTypesDaoImpl extends ExpenseTypesDao {
   /// If no expense types are found, it returns an empty list.
   ///
   @override
-  Future<List<ExpenseType?>> getAllExpenseTypes() async {
+  Future<List<ExpenseType>> getAllExpenseTypes() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('expense_types');
     return List.generate(maps.length, (i) {

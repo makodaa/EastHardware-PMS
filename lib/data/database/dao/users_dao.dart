@@ -5,6 +5,7 @@ import 'package:easthardware_pms/domain/models/user.dart';
 abstract class UsersDao {
   Future<List<User>> getAllUsers();
   Future<User?> getUserById(int id);
+  Future<User?> getUserByUid(String uid);
   Future<User?> getUserByUsername(String username);
 
   Future<User> insertUser(User user);
@@ -83,5 +84,19 @@ class UsersDaoImpl extends UsersDao {
       where: "${UsersTable.USERS_ID} = ?",
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<User?> getUserByUid(String uid) async {
+    final database = await _databaseHelper.database;
+    var res = await database.query(
+      UsersTable.USERS_TABLE_NAME,
+      where: "${UsersTable.USERS_UID} = ?",
+      whereArgs: [uid],
+    );
+
+    User? user = res.isNotEmpty ? User.fromMap(res.first) : null;
+
+    return user;
   }
 }

@@ -6,15 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class ProductsDao {
-  Future<List<Product?>> getAllProducts();
-  Future<List<Product?>> getLowStockProducts();
-  Future<List<Product?>> getFastMovingProducts();
-  Future<List<Product?>> getDeadStockProducts();
+  Future<List<Product>> getAllProducts();
+  Future<List<Product>> getLowStockProducts();
+  Future<List<Product>> getFastMovingProducts();
+  Future<List<Product>> getDeadStockProducts();
   Future<Product?> getProductById(int id);
   Future<Product> insertProduct(Product product);
   Future<Product> updateProduct(Product product);
   Future<void> deleteProduct(int id);
-  Future<List<Product?>> getProductsByCategoryId(int categoryId);
+  Future<List<Product>> getProductsByCategoryId(int categoryId);
 }
 
 class ProductsDaoImpl extends ProductsDao {
@@ -33,7 +33,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<List<Product?>> getAllProducts() async {
+  Future<List<Product>> getAllProducts() async {
     final Database database = await _databaseHelper.database;
     var queryResults = await database.query(ProductFlagsView.PRODUCT_STATUS_VIEW_TABLE);
 
@@ -94,7 +94,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<List<Product?>> getDeadStockProducts() async {
+  Future<List<Product>> getDeadStockProducts() async {
     final Database database = await _databaseHelper.database;
     List<Map<String, dynamic>> maps = await database.rawQuery(
       "SELECT p.* FROM products p "
@@ -111,7 +111,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<List<Product?>> getFastMovingProducts() async {
+  Future<List<Product>> getFastMovingProducts() async {
     final Database database = await _databaseHelper.database;
     List<Map<String, dynamic>> maps = await database.rawQuery(
       "SELECT products.* FROM products "
@@ -128,7 +128,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<List<Product?>> getLowStockProducts() async {
+  Future<List<Product>> getLowStockProducts() async {
     final Database database = await _databaseHelper.database;
     var res = await database.query(
       ProductsTable.PRODUCTS_TABLE_NAME,
@@ -138,7 +138,7 @@ class ProductsDaoImpl extends ProductsDao {
   }
 
   @override
-  Future<List<Product?>> getProductsByCategoryId(int categoryId) async {
+  Future<List<Product>> getProductsByCategoryId(int categoryId) async {
     final Database database = await _databaseHelper.database;
     var res = await database.query(
       ProductsTable.PRODUCTS_TABLE_NAME,

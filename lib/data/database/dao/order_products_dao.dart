@@ -3,12 +3,12 @@ import 'package:easthardware_pms/domain/models/order_product.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class OrderProductsDao {
-  Future<List<OrderProduct?>> getAllOrderProducts();
+  Future<List<OrderProduct>> getAllOrderProducts();
   Future<OrderProduct?> getOrderProductById(int id);
   Future<OrderProduct> insertOrderProduct(OrderProduct orderProduct);
   Future<OrderProduct> updateOrderProduct(OrderProduct orderProduct);
   Future<void> deleteOrderProduct(int id);
-  Future<List<OrderProduct?>> getOrderProductsByOrderId(int orderId);
+  Future<List<OrderProduct>> getOrderProductsByOrderId(int orderId);
 }
 
 class OrderProductsDaoImpl extends OrderProductsDao {
@@ -19,7 +19,7 @@ class OrderProductsDaoImpl extends OrderProductsDao {
   /// Returns a list of all order products in the database.
   ///
   @override
-  Future<List<OrderProduct?>> getAllOrderProducts() async {
+  Future<List<OrderProduct>> getAllOrderProducts() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('order_products');
     return List.generate(maps.length, (i) {
@@ -83,7 +83,7 @@ class OrderProductsDaoImpl extends OrderProductsDao {
 
   /// Returns a list of order products by their order ID.
   @override
-  Future<List<OrderProduct?>> getOrderProductsByOrderId(int orderId) async {
+  Future<List<OrderProduct>> getOrderProductsByOrderId(int orderId) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'order_products',

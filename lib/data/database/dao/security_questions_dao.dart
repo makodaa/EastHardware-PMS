@@ -3,9 +3,9 @@ import 'package:easthardware_pms/data/database/tables/security_questions_table.d
 import 'package:easthardware_pms/domain/models/security_question.dart';
 
 abstract class SecurityQuestionsDao {
-  Future<List<SecurityQuestion?>> getAllSecurityQuestions();
+  Future<List<SecurityQuestion>> getAllSecurityQuestions();
   Future<SecurityQuestion?> getSecurityQuestionById(int id);
-  Future<List<SecurityQuestion?>> getSecurityQuestionsByUserId(int id);
+  Future<List<SecurityQuestion>> getSecurityQuestionsByUserId(int id);
   Future<SecurityQuestion> insertSecurityQuestion(SecurityQuestion securityQuestion);
   Future<SecurityQuestion> updateSecurityQuestion(SecurityQuestion securityQuestion);
   Future<void> deleteSecurityQuestion(int id);
@@ -27,7 +27,7 @@ class SecurityQuestionsDaoImpl extends SecurityQuestionsDao {
   }
 
   @override
-  Future<List<SecurityQuestion?>> getAllSecurityQuestions() async {
+  Future<List<SecurityQuestion>> getAllSecurityQuestions() async {
     final database = await _databaseHelper.database;
     var queryResults = await database.query(SecurityQuestionsTable.SECURITY_QUESTIONS_TABLE);
 
@@ -77,7 +77,7 @@ class SecurityQuestionsDaoImpl extends SecurityQuestionsDao {
   }
 
   @override
-  Future<List<SecurityQuestion?>> getSecurityQuestionsByUserId(int id) async {
+  Future<List<SecurityQuestion>> getSecurityQuestionsByUserId(int id) async {
     final database = await _databaseHelper.database;
     var queryResults = await database.query(
       SecurityQuestionsTable.SECURITY_QUESTIONS_TABLE,

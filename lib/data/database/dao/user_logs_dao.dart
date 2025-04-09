@@ -2,8 +2,9 @@ import 'package:easthardware_pms/data/database/database_helper.dart';
 import 'package:easthardware_pms/domain/models/user_log.dart';
 
 abstract class UserLogsDao {
-  Future<List<UserLog?>> getAllUserLogs();
+  Future<List<UserLog>> getAllUserLogs();
   Future<UserLog?> getUserLogById(int id);
+  Future<UserLog?> getUserLogByUid(String uid);
   Future<List<UserLog?>> getUserLogsByUser(int id);
   Future<List<UserLog>> getUserLogsByEventTime(DateTime start, DateTime end);
   Future<void> insertUserLog(UserLog userLog);
@@ -26,7 +27,7 @@ class UserLogsDaoImpl extends UserLogsDao {
   }
 
   @override
-  Future<List<UserLog?>> getAllUserLogs() async {
+  Future<List<UserLog>> getAllUserLogs() async {
     final database = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await database.query('user_logs');
     return List.generate(maps.length, (i) {
@@ -83,5 +84,17 @@ class UserLogsDaoImpl extends UserLogsDao {
     return List.generate(maps.length, (i) {
       return UserLog.fromMap(maps[i]);
     });
+  }
+
+  @override
+  Future<UserLog?> getUserLogByUid(String uid) async {
+    final database = await _databaseHelper.database;
+    final maps = await database.query(
+      'user_logs',
+      where: 'uid = ?',
+      whereArgs: [uid],
+    );
+    if (maps.isEmpty) return null;
+    return UserLog.fromMap(maps.first);
   }
 }

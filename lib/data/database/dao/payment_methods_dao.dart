@@ -3,7 +3,7 @@ import 'package:easthardware_pms/domain/models/payment_method.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class PaymentMethodsDao {
-  Future<List<PaymentMethod?>> getAllPaymentMethods();
+  Future<List<PaymentMethod>> getAllPaymentMethods();
   Future<PaymentMethod?> getPaymentMethodById(int id);
   Future<PaymentMethod> insertPaymentMethod(PaymentMethod paymentMethod);
   Future<PaymentMethod> updatePaymentMethod(PaymentMethod paymentMethod);
@@ -26,7 +26,7 @@ class PaymentMethodsDaoImpl extends PaymentMethodsDao {
   }
 
   @override
-  Future<List<PaymentMethod?>> getAllPaymentMethods() async {
+  Future<List<PaymentMethod>> getAllPaymentMethods() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('payment_methods');
     return List.generate(maps.length, (i) {

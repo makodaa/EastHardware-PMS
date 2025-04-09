@@ -11,7 +11,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // and returning the results.
 
 abstract class CategoriesDao {
-  Future<List<Category>?> getAllCategories();
+  Future<List<Category>> getAllCategories();
   Future<Category?> getCategoryById(int id);
   Future<Category> insertCategory(Category category);
   Future<Category> updateCategory(Category category);
@@ -35,10 +35,10 @@ class CategoriesDaoImpl extends CategoriesDao {
 
   /// Gets all categories from the database.
   @override
-  Future<List<Category>?> getAllCategories() async {
+  Future<List<Category>> getAllCategories() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('categories');
-    return maps.isNotEmpty ? maps.map((map) => Category.fromMap(map)).toList() : null;
+    return maps.isNotEmpty ? maps.map((map) => Category.fromMap(map)).toList() : [];
   }
 
   /// Gets a category by its ID.

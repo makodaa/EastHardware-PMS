@@ -3,8 +3,8 @@ import 'package:easthardware_pms/data/database/tables/units_table.dart';
 import 'package:easthardware_pms/domain/models/unit.dart';
 
 abstract class UnitsDao {
-  Future<List<Unit>?> getAllUnits();
-  Future<List<Unit>?> getAllUnitsOfProduct(int id);
+  Future<List<Unit>> getAllUnits();
+  Future<List<Unit>> getAllUnitsOfProduct(int id);
   Future<Unit?> getUnitById(int id);
 
   Future<Unit> insertUnit(Unit unit);
@@ -29,7 +29,7 @@ class UnitsDaoImpl extends UnitsDao {
   }
 
   @override
-  Future<List<Unit>?> getAllUnits() async {
+  Future<List<Unit>> getAllUnits() async {
     final database = await _databaseHelper.database;
     var res = await database.query(UnitsTable.UNITS_TABLE_NAME);
 
@@ -70,7 +70,7 @@ class UnitsDaoImpl extends UnitsDao {
   }
 
   @override
-  Future<List<Unit>?> getAllUnitsOfProduct(int id) async {
+  Future<List<Unit>> getAllUnitsOfProduct(int id) async {
     final database = await _databaseHelper.database;
     var res = await database.query(
       UnitsTable.UNITS_TABLE_NAME,

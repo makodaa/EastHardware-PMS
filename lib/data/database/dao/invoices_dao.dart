@@ -3,20 +3,25 @@ import 'package:easthardware_pms/domain/models/invoice.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class InvoicesDao {
-  Future<List<Invoice?>> getAllInvoices();
+  Future<List<Invoice>> getAllInvoices();
   Future<Invoice?> getInvoiceById(int id);
+  Future<Invoice?> getInvoiceByUid(String uid);
   Future<Invoice> insertInvoice(Invoice invoice);
   Future<Invoice> updateInvoice(Invoice invoice);
   Future<void> deleteInvoice(int id);
-  Future<List<Invoice?>> getInvoicesByCustomerName(String customerName);
-  Future<List<Invoice?>> getInvoicesByDateRange(DateTime startDate, DateTime endDate);
-  Future<List<Invoice?>> getInvoicesByPaymentMethod(String paymentMethod);
-  Future<List<Invoice?>> getInvoicesByAmountDue(double minAmount, double maxAmount);
-  Future<List<Invoice?>> getInvoicesByCreatorId(int creatorId);
-  Future<List<Invoice?>> getInvoicesByProductIds(List<int> productIds);
-  Future<List<Invoice?>> getInvoiceByProductCategory(int categoryId);
+  Future<List<Invoice>> getInvoicesByCustomerName(String customerName);
+  Future<List<Invoice>> getInvoicesByDateRange(DateTime startDate, DateTime endDate);
+  Future<List<Invoice>> getInvoicesByPaymentMethod(String paymentMethod);
+  Future<List<Invoice>> getInvoicesByAmountDue(double minAmount, double maxAmount);
+  Future<List<Invoice>> getInvoicesByCreatorId(int creatorId);
+  Future<List<Invoice>> getInvoicesByProductIds(List<int> productIds);
+  Future<List<Invoice>> getInvoiceByProductCategory(int categoryId);
   Future<Invoice?> getLatestInvoiceOfProduct(int productId);
-  Future<int?> getRecentInvoiceCountOfProduct(int productId);
+  Future<int> getRecentInvoiceCountOfProduct(int productId);
+  Future<int> getPaidInvoiceCount();
+  Future<int> getUnpaidInvoiceCount();
+  Future<double> getTotalAmountPaid();
+  Future<double> getTotalAmountDue();
 }
 
 /// The [InvoicesDaoImpl] class implements the [InvoicesDao] interface
@@ -31,7 +36,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// Returns a list of all invoices in the database.
   ///
   @override
-  Future<List<Invoice?>> getAllInvoices() async {
+  Future<List<Invoice>> getAllInvoices() async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('invoices');
     return List.generate(maps.length, (i) {
@@ -99,7 +104,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoicesByDateRange(DateTime startDate, DateTime endDate) async {
+  Future<List<Invoice>> getInvoicesByDateRange(DateTime startDate, DateTime endDate) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'invoices',
@@ -115,7 +120,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoicesByPaymentMethod(String paymentMethod) async {
+  Future<List<Invoice>> getInvoicesByPaymentMethod(String paymentMethod) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'invoices',
@@ -131,7 +136,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoicesByAmountDue(double minAmount, double maxAmount) async {
+  Future<List<Invoice>> getInvoicesByAmountDue(double minAmount, double maxAmount) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'invoices',
@@ -147,7 +152,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoicesByCreatorId(int createdBy) async {
+  Future<List<Invoice>> getInvoicesByCreatorId(int createdBy) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'invoices',
@@ -164,7 +169,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   ///
 
   @override
-  Future<List<Invoice?>> getInvoicesByProductIds(List<int> productIds) async {
+  Future<List<Invoice>> getInvoicesByProductIds(List<int> productIds) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       'SELECT DISTINCT invoices.* FROM invoices '
@@ -180,7 +185,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoiceByProductCategory(int categoryId) async {
+  Future<List<Invoice>> getInvoiceByProductCategory(int categoryId) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       'SELECT DISTINCT invoices.* FROM invoices '
@@ -198,7 +203,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   /// If no invoices are found, returns an empty list.
   ///
   @override
-  Future<List<Invoice?>> getInvoicesByCustomerName(String customerName) async {
+  Future<List<Invoice>> getInvoicesByCustomerName(String customerName) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps =
         await db.query('invoices', where: 'customer_name = ?', whereArgs: [customerName]);
@@ -224,7 +229,7 @@ class InvoicesDaoImpl extends InvoicesDao {
   }
 
   @override
-  Future<int?> getRecentInvoiceCountOfProduct(int productId) async {
+  Future<int> getRecentInvoiceCountOfProduct(int productId) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       'SELECT COUNT(*) as count FROM invoices '
@@ -233,7 +238,67 @@ class InvoicesDaoImpl extends InvoicesDao {
       [productId],
     );
     if (maps.isNotEmpty) {
-      return maps.first['count'] as int?;
+      return maps.first['count'] as int;
+    }
+    return 0;
+  }
+
+  @override
+  Future<int> getPaidInvoiceCount() async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'invoices',
+      where: 'amount_paid > ?',
+      whereArgs: [0],
+    );
+    return maps.length;
+  }
+
+  @override
+  Future<double> getTotalAmountDue() async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT SUM(amount_due) as total FROM invoices',
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['total'] as double;
+    }
+    return 0.0;
+  }
+
+  @override
+  Future<double> getTotalAmountPaid() async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      'SELECT SUM(amount_paid) as total FROM invoices',
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['total'] as double;
+    }
+    return 0.0;
+  }
+
+  @override
+  Future<int> getUnpaidInvoiceCount() async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'invoices',
+      where: 'amount_paid = ?',
+      whereArgs: [0],
+    );
+    return maps.length;
+  }
+
+  @override
+  Future<Invoice?> getInvoiceByUid(String uid) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'invoices',
+      where: 'uid = ?',
+      whereArgs: [uid],
+    );
+    if (maps.isNotEmpty) {
+      return Invoice.fromMap(maps.first);
     }
     return null;
   }
