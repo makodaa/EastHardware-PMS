@@ -1,4 +1,5 @@
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
+import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class LogoRow extends StatelessWidget {
@@ -6,18 +7,18 @@ class LogoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Image.asset(
-          'assets/icons/app.png',
-          height: 24,
-          width: 24,
-        ),
-        Text(
-          "East Hardware",
-          style: FluentTheme.of(context).typography.bodyLarge?.copyWith(color: Colors.blue.dark),
-        )
-      ].withSpacing(() => Spacing.h16),
+    return Padding(
+      padding: AppPadding.a16,
+      child: Row(
+        children: <Widget>[
+          Image.asset(
+            'assets/icons/app.png',
+            height: 18,
+            width: 18,
+          ),
+          const SubheadingText("East Hardware")
+        ].withSpacing(() => Spacing.h16),
+      ),
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
   initialLocation: AppRoutes.login,
@@ -15,39 +14,36 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.login,
-      name: "Login",
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
       path: AppRoutes.resetPassword,
-      name: "ResetPassword",
       builder: (context, state) => const Text("Reset Password"),
     ),
     StatefulShellRoute(
       builder: (context, state, shell) => shell,
-      navigatorContainerBuilder: (_, shell, children) =>
+      navigatorContainerBuilder: (context, shell, children) =>
           AdminNavigationScaffold(shell, children),
       branches: [
+        // Admin Dashboard Shell
         StatefulShellBranch(
-          initialLocation: AppRoutes.adminDashboard,
+          initialLocation: AppRoutes.admin,
           routes: [
             GoRoute(
-              name: "Admin",
-              path: AppRoutes.adminDashboard,
-              builder: (context, state) => const Text("dashboard"),
+              path: AppRoutes.admin,
+              builder: (context, state) => const Text("Dashboard"),
             )
           ],
         ),
+
+        // Inventory Page Shell
         StatefulShellBranch(
           initialLocation: AppRoutes.inventoryPage,
           routes: [
             GoRoute(
-              name: "Inventory",
-              path: AppRoutes.inventoryPage,
-              builder: (context, state) => const InventoryPanePage(),
-            ),
+                path: AppRoutes.inventoryPage,
+                builder: (context, state) => const InventoryPanePage()),
             GoRoute(
-              name: "CreateProduct",
               path: AppRoutes.createProductPage,
 
               /// The [MaterialPage] is used for the transition animation.
@@ -56,20 +52,13 @@ final GoRouter router = GoRouter(
                 child: CreateProductPage(),
               ),
             ),
+            GoRoute(
+              path: AppRoutes.categoriesPage,
+              builder: (context, state) => const Center(child: Text('Manage Categories')),
+            ),
           ],
-        )
+        ),
       ],
-      // path: AppRoutes.adminScaffold,
-      // name: "Admin",
-      // builder: (context, state) => const AdminNavigationScaffold(),
     )
-    // ShellRoute(
-    //   routes: [
-    //     GoRoute(
-    //       path: AppRoutes.adminDashboard,
-
-    //     )
-    //   ],
-    // ),
   ],
 );

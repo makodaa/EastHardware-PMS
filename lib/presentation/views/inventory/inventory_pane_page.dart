@@ -1,4 +1,5 @@
 import 'package:easthardware_pms/presentation/router/app_router.dart';
+import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/kpi_card.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
@@ -34,8 +35,8 @@ class PageHeader extends StatelessWidget {
       children: [
         const HeadingText('Products'),
         Expanded(child: Container()),
-        TextButton('Manage Categories', onPressed: () {}),
-        TextButtonFilled('New Product', onPressed: () => router.pushNamed('CreateProduct')),
+        TextButton('Manage Categories', onPressed: () => router.push(AppRoutes.categoriesPage)),
+        TextButtonFilled('New Product', onPressed: () => router.push(AppRoutes.createProductPage)),
       ].withSpacing(() => Spacing.h16),
     );
   }

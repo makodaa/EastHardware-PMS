@@ -48,7 +48,7 @@ class UsersTable {
       firstName: 'System',
       lastName: 'Administrator',
       username: 'admin',
-      accessLevel: AccessLevel.administrator,
+      accessLevel: AccessLevel.admin,
       passwordHash: passwordHash,
       salt: salt,
     );

@@ -13,7 +13,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     on<LoginFormUsernameChanged>(_onUsernameChanged);
     on<LoginFormPasswordChanged>(_onPasswordChanged);
     on<LoginFormButtonPressed>(_onButtonPressed);
-    on<LoginFormReset>(_onReset);
+    on<LoginFormResetEvent>(_onReset);
   }
 
   void _onUsernameChanged(LoginFormUsernameChanged event, Emitter emit) {
@@ -22,6 +22,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _onPasswordChanged(LoginFormPasswordChanged event, Emitter emit) {
+    print('pass ass ${event.password}');
     final password = event.password;
     return emit(state.copyWith(password: password));
   }
@@ -29,15 +30,14 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   void _onButtonPressed(LoginFormButtonPressed event, Emitter emit) async {
     emit(state.copyWith(isValidating: true));
 
-    if (formKey.currentState case FormState formState
-        when formState.validate()) {
+    if (formKey.currentState case FormState formState when formState.validate()) {
       emit(state.copyWith(isSubmitting: true, isValidating: false));
     } else {
       emit(state.copyWith(isSubmitting: false, isValidating: false));
     }
   }
 
-  void _onReset(LoginFormReset event, Emitter emit) {
+  void _onReset(LoginFormResetEvent event, Emitter emit) {
     emit(const LoginFormState());
   }
 }

@@ -47,6 +47,7 @@ class User {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'uid': uid,
       'first_name': firstName,
       'last_name': lastName,
       'username': username,

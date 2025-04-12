@@ -15,11 +15,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final AuthenticationRepositoryImpl _repository;
 
   void _onLogin(AuthenticationLoginEvent event, Emitter emit) async {
-    User user = await _repository.logIn(username: 'admin', password: 'Admin123');
+    emit(state.copyWith(status: AuthenticationStatus.loading));
+    await Future.delayed(const Duration(milliseconds: 0));
     try {
-      emit(state.copyWith(status: AuthenticationStatus.loading));
+      User user = await _repository.logIn(username: event.username, password: event.password);
       emit(state.copyWith(status: AuthenticationStatus.success, user: user));
     } catch (e) {
+      print('error: $e');
       return emit(state.copyWith(
         status: AuthenticationStatus.failure,
         loginAttempts: state.loginAttempts + 1,

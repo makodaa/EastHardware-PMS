@@ -33,11 +33,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     if (user == null) {
       throw AuthenticationException('Invalid username or password');
     }
-
     // Hash the input password
     final Uint8List hashedPassword = _cryptographyService.generateHash(password, user.salt);
     // Compare the hashed password with the stored password
-    if (user.passwordHash != hashedPassword) {
+    if (user.passwordHash.toString() != hashedPassword.toString()) {
       throw AuthenticationException('Invalid username or password');
     }
 

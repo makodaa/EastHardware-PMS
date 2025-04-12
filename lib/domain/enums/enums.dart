@@ -5,5 +5,5 @@ enum DiscountType {
 
 enum AccessLevel {
   staff,
-  administrator,
+  admin,
 }
