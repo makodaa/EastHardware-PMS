@@ -18,7 +18,6 @@ class ExpenseType {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "id": id,
       "name": name,
     };
   }

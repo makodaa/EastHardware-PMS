@@ -62,7 +62,6 @@ class InvoiceProduct {
 
   Map<String, dynamic> toMap() {
     return {
-      InvoiceProductsTable.INVOICE_PRODUCTS_ID: id,
       InvoiceProductsTable.INVOICE_PRODUCTS_INVOICE: invoiceId,
       InvoiceProductsTable.INVOICE_PRODUCTS_PRODUCT: productId,
       InvoiceProductsTable.INVOICE_PRODUCTS_NAME: productName,

@@ -22,7 +22,6 @@ class SecurityQuestion {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'user_id': userId,
       'question': question,
       'answer': answer,

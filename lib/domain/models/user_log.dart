@@ -26,7 +26,6 @@ class UserLog {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'uid': uid,
       'user_id': userId,
       'event': event,

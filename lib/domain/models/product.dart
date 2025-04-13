@@ -11,8 +11,8 @@ class Product {
   final double quantity;
   final String mainUnit;
   final double criticalLevel;
-  final int deadStockThreshold;
-  final int fastMovingStockThreshold;
+  final double deadStockThreshold;
+  final double fastMovingStockThreshold;
   final String creationDate;
   final int userId;
   final int archiveStatus;
@@ -21,8 +21,8 @@ class Product {
   final bool? isDeadStock;
 
   Product({
-    String? sku,
     this.id,
+    String? sku,
     required this.name,
     required this.category,
     required this.description,
@@ -39,7 +39,7 @@ class Product {
     this.isBelowCriticalLevel,
     this.isFastMovingStock,
     this.isDeadStock,
-  }) : sku = sku ?? const Uuid().v4();
+  }) : sku = sku!.isNotEmpty ? sku : const Uuid().v4();
 
   Product copyWith({
     int? id,
@@ -52,8 +52,8 @@ class Product {
     double? quantity,
     String? mainUnit,
     double? criticalLevel,
-    int? deadStockThreshold,
-    int? fastMovingStockThreshold,
+    double? deadStockThreshold,
+    double? fastMovingStockThreshold,
     String? creationDate,
     int? userId,
     int? archiveStatus,
@@ -85,7 +85,6 @@ class Product {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
       'category': category,
       'sku': sku,
@@ -118,8 +117,8 @@ class Product {
       quantity: map['quantity'] as double,
       mainUnit: map['main_unit'] as String,
       criticalLevel: map['critical_level'] as double,
-      deadStockThreshold: map['dead_stock_threshold'] as int,
-      fastMovingStockThreshold: map['fast_moving_threshold'] as int,
+      deadStockThreshold: map['dead_stock_threshold'] as double,
+      fastMovingStockThreshold: map['fast_moving_threshold'] as double,
       creationDate: map['creation_date'] as String,
       userId: map['user_id'] as int,
       archiveStatus: map['archive_status'] as int,

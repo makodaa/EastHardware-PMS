@@ -64,7 +64,6 @@ class Order {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'uid': uid,
       'payee_name': payeeName,
       'expense_type': expenseType,

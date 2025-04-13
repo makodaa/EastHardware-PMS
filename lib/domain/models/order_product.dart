@@ -51,7 +51,6 @@ class OrderProduct {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'order_id': orderId,
       'product_id': productId,
       'product_name': productName,

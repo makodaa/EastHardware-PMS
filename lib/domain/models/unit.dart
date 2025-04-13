@@ -1,12 +1,12 @@
 class Unit {
   final int? id;
-  final int productId;
+  final int? productId;
   final String name;
   final double conversionFactor;
 
   Unit({
     this.id,
-    required this.productId,
+    this.productId,
     required this.name,
     required this.conversionFactor,
   });

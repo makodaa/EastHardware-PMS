@@ -70,7 +70,6 @@ class Invoice {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'uid': uid,
       'customer_name': customerName,
       'invoice_date': invoiceDate.toIso8601String(),
