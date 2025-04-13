@@ -44,14 +44,12 @@ class _FormHeader extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
+          const HeadingText(
             "Login",
-            style: FluentTheme.of(context).typography.title,
             textAlign: TextAlign.start,
           ),
-          Text(
+          const GreyText(
             "Fill in the form below to log in",
-            style: FluentTheme.of(context).typography.body?.copyWith(color: Colors.grey[170]),
             textAlign: TextAlign.start,
           )
         ].withSpacing(() => Spacing.v8));
@@ -64,10 +62,7 @@ class _FormUsernameField extends StatelessWidget with LoginFormValidator {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          "Username",
-          style: FluentTheme.of(context).typography.bodyStrong,
-        ),
+        const BodyText("Username"),
         TextFormBox(
           validator: validateUsername,
           onChanged: (value) => context.read<LoginFormBloc>().add(LoginFormUsernameChanged(value)),
@@ -104,7 +99,6 @@ class _FormButton extends StatelessWidget {
       bloc: loginFormBloc,
       listener: (context, state) {
         if (state.isSubmitting == true) {
-          print('primitive ahh: ${state.username} ${state.password}');
           var event = AuthenticationLoginEvent(
             username: state.username,
             password: state.password,
