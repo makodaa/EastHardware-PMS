@@ -3,14 +3,18 @@ import 'package:fluent_ui/fluent_ui.dart';
 class HeadingText extends StatelessWidget {
   const HeadingText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
+
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 24.0,
       ),
@@ -21,14 +25,17 @@ class HeadingText extends StatelessWidget {
 class SubheadingText extends StatelessWidget {
   const SubheadingText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 16.0,
       ),
@@ -39,14 +46,17 @@ class SubheadingText extends StatelessWidget {
 class DisplayText extends StatelessWidget {
   const DisplayText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 20.0,
       ),
@@ -57,14 +67,17 @@ class DisplayText extends StatelessWidget {
 class BodyText extends StatelessWidget {
   const BodyText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 14.0,
       ),
@@ -75,9 +88,11 @@ class BodyText extends StatelessWidget {
 class StrongText extends StatelessWidget {
   const StrongText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +109,17 @@ class StrongText extends StatelessWidget {
 class GreyText extends StatelessWidget {
   const GreyText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
 
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(data,
+        textAlign: textAlign,
         style: TextStyle(
           fontSize: 14.0,
           color: Colors.grey[100],
@@ -112,14 +130,17 @@ class GreyText extends StatelessWidget {
 class CaptionText extends StatelessWidget {
   const CaptionText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 10.0,
       ),
@@ -130,14 +151,17 @@ class CaptionText extends StatelessWidget {
 class ButtonText extends StatelessWidget {
   const ButtonText(
     this.data, {
+    this.textAlign = TextAlign.left,
     super.key,
   });
   final String data;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       data,
+      textAlign: textAlign,
       style: const TextStyle(
         fontSize: 14.0,
       ),
