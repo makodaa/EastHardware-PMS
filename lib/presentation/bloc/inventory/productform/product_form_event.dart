@@ -12,6 +12,11 @@ class NameFieldChangedEvent extends ProductFormEvent {
   const NameFieldChangedEvent(this.name);
 }
 
+class SkuFieldChangedEvent extends ProductFormEvent {
+  final String sku;
+  const SkuFieldChangedEvent(this.sku);
+}
+
 class CategoryFieldChangedEvent extends ProductFormEvent {
   final String category;
 
@@ -78,4 +83,8 @@ class ProductStatusChangedEvent extends ProductFormEvent {
   const ProductStatusChangedEvent(this.status);
 }
 
+class FormButtonPressedEvent extends ProductFormEvent {}
+
 class FormSubmittedEvent extends ProductFormEvent {}
+
+class FormResetEvent extends ProductFormEvent {}

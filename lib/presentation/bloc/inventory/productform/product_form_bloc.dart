@@ -1,31 +1,41 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 
 part 'product_form_event.dart';
 part 'product_form_state.dart';
 
-class ProductformBloc extends Bloc<ProductFormEvent, ProductFormState> {
-  ProductformBloc() : super(const ProductFormState()) {
+class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
+  final GlobalKey<FormState> formKey;
+  ProductFormBloc()
+      : formKey = GlobalKey<FormState>(),
+        super(const ProductFormState()) {
     on<NameFieldChangedEvent>(_onNameChanged);
+    on<SkuFieldChangedEvent>(_onSkuChanged);
     on<CategoryFieldChangedEvent>(_onCategoryChanged);
     on<DescriptionFieldChangedEvent>(_onDescriptionChanged);
     on<PriceFieldChangedEvent>(_onPriceChanged);
     on<CostFieldChangedEvent>(_onCostChanged);
     on<QuantityFieldChangedEvent>(_onQuantityChanged);
     on<MainUnitFieldChangedEvent>(_onMainUnitChanged);
-    on<SecondaryUnitFieldChangedEvent>(_onSecondaryUnitsChanged);
     on<CriticalLevelFieldChangedEvent>(_onCriticalLevelChanged);
     on<DeadstockFieldChangedEvent>(_onDeadStockChanged);
     on<FastMovingStockFieldChangedEvent>(_onFastMovingStockChanged);
     on<ProductStatusChangedEvent>(_onProductStatusChanged);
+    on<FormButtonPressedEvent>(_onButtonPressed);
+    on<FormResetEvent>(_onFormReset);
     on<FormSubmittedEvent>(_onFormSubmitted);
   }
 
   void _onNameChanged(NameFieldChangedEvent event, Emitter<ProductFormState> emit) {
     final String name = event.name;
     return emit(state.copyWith(name: name));
+  }
+
+  void _onSkuChanged(SkuFieldChangedEvent event, Emitter<ProductFormState> emit) {
+    final String sku = event.sku;
+    return emit(state.copyWith(sku: sku));
   }
 
   void _onCategoryChanged(CategoryFieldChangedEvent event, Emitter<ProductFormState> emit) {
@@ -58,12 +68,6 @@ class ProductformBloc extends Bloc<ProductFormEvent, ProductFormState> {
     return emit(state.copyWith(mainUnit: mainUnit));
   }
 
-  void _onSecondaryUnitsChanged(
-      SecondaryUnitFieldChangedEvent event, Emitter<ProductFormState> emit) {
-    final Map<String, String> secondaryUnits = event.units;
-    return emit(state.copyWith(secondaryUnits: secondaryUnits));
-  }
-
   void _onCriticalLevelChanged(
       CriticalLevelFieldChangedEvent event, Emitter<ProductFormState> emit) {
     final String criticalLevel = event.criticalLevel;
@@ -86,13 +90,34 @@ class ProductformBloc extends Bloc<ProductFormEvent, ProductFormState> {
     return emit(state.copyWith(productStatus: status));
   }
 
-  FutureOr<void> _onFormSubmitted(FormSubmittedEvent event, Emitter<ProductFormState> emit) {
-    emit(state.copyWith(formStatus: FormStatus.submitting));
-    // TODO: hai
-    // call product repository
-    // call unit repository
-    // call category repository
-    // convert state to prduct entity
-    // try insert to database
+  void _onButtonPressed(FormButtonPressedEvent event, Emitter<ProductFormState> emit) async {
+    emit(state.copyWith(formStatus: FormStatus.validating));
+    await Future.delayed(const Duration(milliseconds: 300));
+    try {
+      emit(state.copyWith(formStatus: FormStatus.submitting));
+    } catch (e) {
+      print(e.toString());
+      emit(state.copyWith(formStatus: FormStatus.invalid));
+    }
+  }
+
+  FutureOr<void> _onFormReset(FormResetEvent event, Emitter<ProductFormState> emit) {
+    emit(state.copyWith(
+      name: '',
+      sku: '',
+      category: '',
+      description: '',
+      price: '',
+      cost: '',
+      quantity: '',
+      mainUnit: '',
+      criticalLevel: '',
+      deadstockTreshold: '',
+      fastmovingTreshold: '',
+    ));
+  }
+
+  void _onFormSubmitted(FormSubmittedEvent event, Emitter emit) {
+    emit(state.copyWith(formStatus: FormStatus.valid));
   }
 }

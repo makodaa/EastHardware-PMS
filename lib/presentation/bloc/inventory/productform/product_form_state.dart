@@ -1,10 +1,9 @@
 part of 'product_form_bloc.dart';
 
-enum FormStatus { initial, valid, submitting, invalid }
+enum FormStatus { initial, validating, submitting, valid, invalid }
 
 class ProductFormState extends Equatable {
   // Data Entity attributes
-  final String id;
   final String name;
   final String sku; // Stock Keeping Unit (SKU)
   final String category;
@@ -13,7 +12,6 @@ class ProductFormState extends Equatable {
   final String cost;
   final String quantity;
   final String mainUnit;
-  final Map<String, String>? secondaryUnits;
   final String criticalLevel;
   final String deadstockTreshold;
   final String fastmovingTreshold;
@@ -33,7 +31,6 @@ class ProductFormState extends Equatable {
   final FormStatus formStatus;
 
   const ProductFormState({
-    this.id = '',
     this.name = '',
     this.sku = '',
     this.category = '',
@@ -42,7 +39,6 @@ class ProductFormState extends Equatable {
     this.cost = '',
     this.quantity = '',
     this.mainUnit = '',
-    this.secondaryUnits,
     this.criticalLevel = '',
     this.deadstockTreshold = '',
     this.fastmovingTreshold = '',
@@ -61,7 +57,6 @@ class ProductFormState extends Equatable {
   });
 
   ProductFormState copyWith({
-    String? id,
     String? name,
     String? sku,
     String? category,
@@ -70,7 +65,6 @@ class ProductFormState extends Equatable {
     String? cost,
     String? quantity,
     String? mainUnit,
-    Map<String, String>? secondaryUnits,
     String? criticalLevel,
     String? deadstockTreshold,
     String? fastmovingTreshold,
@@ -88,7 +82,6 @@ class ProductFormState extends Equatable {
     FormStatus? formStatus,
   }) {
     return ProductFormState(
-      id: id ?? this.id,
       name: name ?? this.name,
       sku: sku ?? this.sku,
       category: category ?? this.category,
@@ -97,7 +90,6 @@ class ProductFormState extends Equatable {
       cost: cost ?? this.cost,
       quantity: quantity ?? this.quantity,
       mainUnit: mainUnit ?? this.mainUnit,
-      secondaryUnits: secondaryUnits ?? this.secondaryUnits,
       criticalLevel: criticalLevel ?? this.criticalLevel,
       deadstockTreshold: deadstockTreshold ?? this.deadstockTreshold,
       fastmovingTreshold: fastmovingTreshold ?? this.fastmovingTreshold,
@@ -117,5 +109,30 @@ class ProductFormState extends Equatable {
   }
 
   @override
-  List<Object> get props => [];
+  @override
+  List<Object?> get props => [
+        name,
+        sku,
+        category,
+        description,
+        price,
+        cost,
+        quantity,
+        mainUnit,
+        criticalLevel,
+        deadstockTreshold,
+        fastmovingTreshold,
+        date,
+        productStatus,
+        user,
+        nameErrorMessage,
+        skuErrorMessage,
+        categoryErrorMessage,
+        priceErrorMessage,
+        costErrorMessage,
+        quantityErrorMessage,
+        deadstockErrorMessage,
+        fastStockErrorMessage,
+        formStatus,
+      ];
 }
