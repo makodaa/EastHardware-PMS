@@ -21,7 +21,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       User user = await _repository.logIn(username: event.username, password: event.password);
       emit(state.copyWith(status: AuthenticationStatus.success, user: user));
     } catch (e) {
-      print('error: $e');
       return emit(state.copyWith(
         status: AuthenticationStatus.failure,
         loginAttempts: state.loginAttempts + 1,
