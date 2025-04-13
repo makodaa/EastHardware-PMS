@@ -1,11 +1,11 @@
 class SecurityQuestion {
-  final int id;
+  final int? id;
   final int userId;
   final String question;
   final String answer;
 
   SecurityQuestion({
-    required this.id,
+    this.id,
     required this.userId,
     required this.question,
     required this.answer,

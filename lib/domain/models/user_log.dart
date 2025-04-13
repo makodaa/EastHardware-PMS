@@ -1,14 +1,14 @@
 import 'package:uuid/uuid.dart';
 
 class UserLog {
-  final int id;
+  final int? id;
   final String uid;
   final int userId;
   final String event;
   final DateTime eventTime;
   UserLog({
     String? uid,
-    required this.id,
+    this.id,
     required this.userId,
     required this.event,
     required this.eventTime,

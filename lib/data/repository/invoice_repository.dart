@@ -177,9 +177,6 @@ class InvoiceRepositoryImpl extends InvoiceRepository {
 
   @override
   Future<Invoice> updateInvoice(Invoice invoice) async {
-    if (invoice.id <= 0) {
-      throw ArgumentError('Invalid invoice ID');
-    }
     try {
       return await _invoicesDao.updateInvoice(invoice);
     } catch (e) {

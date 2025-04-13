@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class Product {
-  final int id;
+  final int? id;
   final String name;
   final int? category;
   final String sku;
@@ -22,7 +22,7 @@ class Product {
 
   Product({
     String? sku,
-    required this.id,
+    this.id,
     required this.name,
     required this.category,
     required this.description,

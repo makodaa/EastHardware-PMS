@@ -1,9 +1,9 @@
 class PaymentMethod {
-  final int id;
+  final int? id;
   final String name;
 
   PaymentMethod({
-    required this.id,
+    this.id,
     required this.name,
   });
   PaymentMethod copyWith({

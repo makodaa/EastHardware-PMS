@@ -36,10 +36,6 @@ class ProductRepositoryImpl extends ProductRepository {
   @override
   Future<Product> insertProduct(Product product) async {
     _validateProduct(product);
-    final existingProduct = await _productsDao.getProductById(product.id);
-    if (existingProduct != null) {
-      throw DatabaseException('Product with ID ${product.id} already exists');
-    }
     try {
       return await _productsDao.insertProduct(product);
     } catch (e) {
@@ -95,9 +91,6 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   void _validateProduct(Product product) {
-    if (product.id <= 0) {
-      throw ArgumentException('Invalid product ID');
-    }
     if (product.name.isEmpty) {
       throw ValidationException('Product name cannot be empty');
     }

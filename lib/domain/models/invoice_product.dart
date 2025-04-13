@@ -2,7 +2,7 @@ import 'package:easthardware_pms/data/database/tables/invoice_products_table.dar
 import 'package:easthardware_pms/domain/enums/enums.dart';
 
 class InvoiceProduct {
-  final int id;
+  final int? id;
   final int invoiceId;
   final int productId;
   final String productName;
@@ -16,7 +16,7 @@ class InvoiceProduct {
   final double amount;
 
   InvoiceProduct({
-    required this.id,
+    this.id,
     required this.invoiceId,
     required this.productId,
     required this.productName,

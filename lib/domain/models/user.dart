@@ -4,7 +4,7 @@ import "package:easthardware_pms/domain/enums/enums.dart";
 import "package:uuid/uuid.dart";
 
 class User {
-  final int id;
+  final int? id;
   final String uid;
   final String firstName;
   final String lastName;
@@ -15,7 +15,7 @@ class User {
 
   User({
     String? uid,
-    required this.id,
+    this.id,
     required this.firstName,
     required this.lastName,
     required this.username,

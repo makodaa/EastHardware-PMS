@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class Order {
-  final int id;
+  final int? id;
   final String uid;
   final String payeeName;
   final int expenseType;
@@ -17,7 +17,7 @@ class Order {
 
   Order({
     String? uid,
-    required this.id,
+    this.id,
     required this.payeeName,
     required this.expenseType,
     required this.orderDate,

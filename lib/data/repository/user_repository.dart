@@ -74,9 +74,6 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   void _validateUser(User user) {
-    if (user.id <= 0) {
-      throw ArgumentException('Invalid user ID');
-    }
     if (user.username.trim().isEmpty) {
       throw ValidationException('Username cannot be empty');
     }

@@ -63,9 +63,6 @@ class OrderProductRepositoryImpl extends OrderProductRepository {
 
   @override
   Future<OrderProduct> updateOrderProduct(OrderProduct orderProduct) async {
-    if (orderProduct.id <= 0) {
-      throw ArgumentError('Invalid order product ID');
-    }
     _validateOrderProduct(orderProduct);
     try {
       return await _orderProductsDao.updateOrderProduct(orderProduct);

@@ -2,7 +2,7 @@ import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:uuid/uuid.dart';
 
 class Invoice {
-  final int id;
+  final int? id;
   final String uid;
   final String customerName;
   final DateTime invoiceDate;
@@ -19,7 +19,7 @@ class Invoice {
 
   Invoice({
     String? uid,
-    required this.id,
+    this.id,
     required this.customerName,
     required this.invoiceDate,
     required this.paymentMethod,

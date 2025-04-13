@@ -1,5 +1,5 @@
 class OrderProduct {
-  final int id;
+  final int? id;
   final int orderId;
   final int productId;
   final String productName;
@@ -11,7 +11,7 @@ class OrderProduct {
   final double amount;
 
   OrderProduct({
-    required this.id,
+    this.id,
     required this.orderId,
     required this.productId,
     required this.productName,
