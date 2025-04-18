@@ -86,8 +86,6 @@ class InvoicesDaoImpl extends InvoicesDao {
     return invoice;
   }
 
-  /// Deletes an invoice from the database by its ID.
-  /// TODO: Handle the case where the invoice does not exist.
   @override
   Future<void> deleteInvoice(int id) async {
     final db = await _databaseHelper.database;

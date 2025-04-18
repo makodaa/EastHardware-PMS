@@ -38,8 +38,6 @@ class ProductsDaoImpl extends ProductsDao {
     final Database database = await _databaseHelper.database;
     var queryResults = await database.query(ProductFlagsView.PRODUCT_STATUS_VIEW_TABLE);
 
-    print(queryResults);
-
     return List.generate(queryResults.length, (i) {
       return Product.fromMap(queryResults[i]);
     });
