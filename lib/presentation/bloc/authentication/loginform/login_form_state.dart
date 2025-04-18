@@ -8,16 +8,11 @@ class LoginFormState {
   final bool isSubmitting;
   final bool isValidating;
 
-  final String? usernameFieldError;
-  final String? passwordFieldError;
-
   const LoginFormState({
     this.username = '',
     this.password = '',
     this.isSubmitting = false,
     this.isValidating = false,
-    this.usernameFieldError,
-    this.passwordFieldError,
   });
 
   LoginFormState Function({
@@ -25,8 +20,6 @@ class LoginFormState {
     String? password,
     bool? isSubmitting,
     bool? isValidating,
-    String? usernameFieldError,
-    String? passwordFieldError,
   }) get copyWith => _copyWith;
 
   LoginFormState _copyWith({
@@ -34,16 +27,12 @@ class LoginFormState {
     Object? password = undefined,
     Object? isSubmitting = undefined,
     Object? isValidating = undefined,
-    Object? usernameFieldError = undefined,
-    Object? passwordFieldError = undefined,
   }) {
     return LoginFormState(
       username: username.or(this.username),
       password: password.or(this.password),
       isSubmitting: isSubmitting.or(this.isSubmitting),
       isValidating: isValidating.or(this.isValidating),
-      usernameFieldError: usernameFieldError.or(this.usernameFieldError),
-      passwordFieldError: passwordFieldError.or(this.passwordFieldError),
     );
   }
 }
