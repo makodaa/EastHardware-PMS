@@ -9,7 +9,7 @@ import 'package:easthardware_pms/domain/repository/invoice_product_repository.da
 class InvoiceProductRepositoryImpl extends InvoiceProductRepository {
   final InvoiceProductsDaoImpl _invoiceProductsDao = InvoiceProductsDaoImpl();
   @override
-  Future<void> createInvoiceProduct(InvoiceProduct invoiceProduct) {
+  Future<InvoiceProduct> createInvoiceProduct(InvoiceProduct invoiceProduct) {
     try {
       return _invoiceProductsDao.insertInvoiceProduct(invoiceProduct);
     } catch (e) {

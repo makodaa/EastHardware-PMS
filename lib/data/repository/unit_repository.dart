@@ -60,7 +60,7 @@ class UnitRepositoryImpl extends UnitRepository {
     if (unit.name.isEmpty) {
       throw ArgumentException('Unit name cannot be empty');
     }
-    if (unit.conversionFactor <= 0) {
+    if (unit.factor <= 0) {
       throw ArgumentException('Conversion factor must be greater than zero');
     }
   }
