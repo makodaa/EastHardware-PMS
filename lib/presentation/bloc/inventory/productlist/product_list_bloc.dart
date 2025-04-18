@@ -26,7 +26,9 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
           fastMovingProducts: await _repository.getFastMovingProducts(),
           deadStockProducts: await _repository.getDeadStockProducts(),
           status: DataStatus.success));
+      print('Products loaded: ${state.allProducts}');
     } catch (e) {
+      print('Error loading products: $e');
       emit(state.copyWith(status: DataStatus.error));
     }
   }
@@ -48,10 +50,10 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   void _onAdd(AddProductEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
     try {
-      await _repository.insertProduct(event.product);
+      final insertedProduct = await _repository.insertProduct(event.product);
 
-      final products = state.allProducts;
-      final lowStockProducts = state.lowStockProducts;
+      final products = List<Product>.from(state.allProducts)..add(insertedProduct);
+      final lowStockProducts = List<Product>.from(state.lowStockProducts);
       products.add(event.product);
 
       if (event.product.quantity <= event.product.criticalLevel) {
@@ -62,6 +64,8 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
         lowStockProducts: lowStockProducts,
       ));
     } catch (e) {
+      print("Error adding product: $e");
+      print(e.runtimeType);
       emit(state.copyWith(status: DataStatus.error));
     }
   }
@@ -71,8 +75,8 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     try {
       await _repository.insertProduct(event.product);
 
-      final products = state.allProducts;
-      final lowStockProducts = state.lowStockProducts;
+      final products = List<Product>.from(state.allProducts);
+      final lowStockProducts = List<Product>.from(state.lowStockProducts);
       products.add(event.product);
 
       final index = products.indexWhere((product) => product.id == event.product.id);

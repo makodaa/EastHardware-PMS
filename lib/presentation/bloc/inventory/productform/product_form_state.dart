@@ -1,138 +1,156 @@
 part of 'product_form_bloc.dart';
 
-enum FormStatus { initial, validating, submitting, valid, invalid }
-
 class ProductFormState extends Equatable {
   // Data Entity attributes
+
+  // Basic Product Information
   final String name;
-  final String sku; // Stock Keeping Unit (SKU)
-  final String category;
+  final String sku;
+
+  // Form specific attribute to handle creation of new category
+  final String categoryName;
+  // Category ID that will be generated while submitting the form
+  final int? categoryId;
+
   final String? description;
   final String price;
   final String cost;
   final String quantity;
   final String mainUnit;
   final String criticalLevel;
+
+  // Form specific attribute to handle automated critical level creation
+  final bool isCriticalLevelEdited;
+
   final String deadstockTreshold;
   final String fastmovingTreshold;
-  final String date;
-  final String productStatus;
-  final String user;
 
-  // Form attributes
-  final String? nameErrorMessage;
-  final String? skuErrorMessage;
-  final String? categoryErrorMessage;
-  final String? priceErrorMessage;
-  final String? costErrorMessage;
-  final String? quantityErrorMessage;
-  final String? deadstockErrorMessage;
-  final String? fastStockErrorMessage;
+  // Product Alternative Units
+  final List<FormUnit> alternativeUnits;
+
+  // Product Creation Information, Hidden from Form
+  final DateTime creationDate;
+  final int archiveStatus;
+  final int creatorId;
+
+  // Temporary Solution to not use repositories
+  final int productId;
+
   final FormStatus formStatus;
 
-  const ProductFormState({
+  ProductFormState({
     this.name = '',
-    this.sku = '',
-    this.category = '',
+    String? sku,
+    this.categoryName = '',
+    this.categoryId,
     this.description,
     this.price = '',
     this.cost = '',
     this.quantity = '',
     this.mainUnit = '',
+    List<FormUnit>? alternativeUnits,
     this.criticalLevel = '',
-    this.deadstockTreshold = '',
-    this.fastmovingTreshold = '',
-    this.date = '',
-    this.user = '',
-    this.productStatus = '',
-    this.nameErrorMessage,
-    this.skuErrorMessage,
-    this.categoryErrorMessage,
-    this.priceErrorMessage,
-    this.costErrorMessage,
-    this.quantityErrorMessage,
-    this.deadstockErrorMessage,
-    this.fastStockErrorMessage,
+    this.isCriticalLevelEdited = false,
+    String? deadstockTreshold,
+    String? fastmovingTreshold,
+    DateTime? creationDate,
+    required this.creatorId,
+    this.productId = 0,
+    this.archiveStatus = 0,
     this.formStatus = FormStatus.initial,
-  });
+  })  : sku = const Uuid().v4().toString(),
+        alternativeUnits = alternativeUnits ?? [FormUnit(name: '', factor: '')],
+        creationDate = creationDate ?? DateTime.now(),
+        deadstockTreshold = deadstockTreshold ?? DEFAULT_DEAD_STOCK_THRESHOLD.toString(),
+        fastmovingTreshold = fastmovingTreshold ?? DEFAULT_FAST_MOVING_STOCK_THRESHOLD.toString();
 
   ProductFormState copyWith({
     String? name,
     String? sku,
-    String? category,
+    String? categoryName,
+    int? categoryId,
     String? description,
     String? price,
     String? cost,
     String? quantity,
     String? mainUnit,
+    List<FormUnit>? alternativeUnits,
     String? criticalLevel,
+    bool? isCriticalLevelEdited,
     String? deadstockTreshold,
     String? fastmovingTreshold,
-    String? date,
-    String? productStatus,
-    String? user,
-    String? nameErrorMessage,
-    String? skuErrorMessage,
-    String? categoryErrorMessage,
-    String? priceErrorMessage,
-    String? costErrorMessage,
-    String? quantityErrorMessage,
-    String? deadstockErrorMessage,
-    String? fastStockErrorMessage,
+    DateTime? creationDate,
+    int? archiveStatus,
+    int? creatorId,
     FormStatus? formStatus,
+    int? productId,
   }) {
     return ProductFormState(
       name: name ?? this.name,
       sku: sku ?? this.sku,
-      category: category ?? this.category,
+      categoryName: categoryName ?? this.categoryName,
+      categoryId: categoryId ?? this.categoryId,
       description: description ?? this.description,
       price: price ?? this.price,
       cost: cost ?? this.cost,
       quantity: quantity ?? this.quantity,
       mainUnit: mainUnit ?? this.mainUnit,
+      alternativeUnits: alternativeUnits ?? this.alternativeUnits,
       criticalLevel: criticalLevel ?? this.criticalLevel,
+      isCriticalLevelEdited: isCriticalLevelEdited ?? this.isCriticalLevelEdited,
       deadstockTreshold: deadstockTreshold ?? this.deadstockTreshold,
       fastmovingTreshold: fastmovingTreshold ?? this.fastmovingTreshold,
-      date: date ?? this.date,
-      productStatus: productStatus ?? this.productStatus,
-      user: user ?? this.user,
-      nameErrorMessage: nameErrorMessage ?? this.nameErrorMessage,
-      skuErrorMessage: skuErrorMessage ?? this.skuErrorMessage,
-      categoryErrorMessage: categoryErrorMessage ?? this.categoryErrorMessage,
-      priceErrorMessage: priceErrorMessage ?? this.priceErrorMessage,
-      costErrorMessage: costErrorMessage ?? this.costErrorMessage,
-      quantityErrorMessage: quantityErrorMessage ?? this.quantityErrorMessage,
-      deadstockErrorMessage: deadstockErrorMessage ?? this.deadstockErrorMessage,
-      fastStockErrorMessage: fastStockErrorMessage ?? this.fastStockErrorMessage,
+      creationDate: creationDate ?? this.creationDate,
+      archiveStatus: archiveStatus ?? this.archiveStatus,
+      creatorId: creatorId ?? this.creatorId,
+      productId: productId ?? this.productId,
       formStatus: formStatus ?? this.formStatus,
     );
   }
 
   @override
-  @override
   List<Object?> get props => [
         name,
         sku,
-        category,
+        categoryName,
+        categoryId,
         description,
         price,
         cost,
         quantity,
         mainUnit,
+        alternativeUnits,
         criticalLevel,
+        isCriticalLevelEdited,
         deadstockTreshold,
         fastmovingTreshold,
-        date,
-        productStatus,
-        user,
-        nameErrorMessage,
-        skuErrorMessage,
-        categoryErrorMessage,
-        priceErrorMessage,
-        costErrorMessage,
-        quantityErrorMessage,
-        deadstockErrorMessage,
-        fastStockErrorMessage,
+        creationDate,
+        archiveStatus,
+        creatorId,
         formStatus,
+        productId,
       ];
+
+  Product mapStateToProduct() {
+    return Product(
+      sku: sku,
+      name: name,
+      category: categoryId,
+      description: description,
+      salePrice: double.parse(price),
+      orderCost: double.parse(cost),
+      quantity: double.parse(quantity),
+      mainUnit: mainUnit,
+      criticalLevel: double.parse(criticalLevel),
+      deadStockThreshold: double.parse(deadstockTreshold),
+      fastMovingStockThreshold: double.parse(deadstockTreshold),
+      creationDate: creationDate.toIso8601String(),
+      creatorId: creatorId,
+      archiveStatus: 0,
+    );
+  }
+}
+
+class ProductFormInitial extends ProductFormState {
+  ProductFormInitial({required super.creatorId}) : super();
 }

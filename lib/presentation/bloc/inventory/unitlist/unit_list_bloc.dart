@@ -26,7 +26,9 @@ class UnitListBloc extends Bloc<UnitListEvent, UnitListState> {
         units: await _repository.getAllUnits(),
         status: DataStatus.success,
       ));
+      print('Units loaded: ${state.units.length}');
     } catch (e) {
+      print('Error loading units: $e');
       emit(state.copyWith(status: DataStatus.error));
     }
   }

@@ -1,24 +1,36 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:easthardware_pms/domain/constants/constants.dart';
+import 'package:easthardware_pms/domain/enums/enums.dart';
+import 'package:easthardware_pms/domain/models/product.dart';
+import 'package:easthardware_pms/presentation/models/form_unit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 part 'product_form_event.dart';
 part 'product_form_state.dart';
 
 class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   final GlobalKey<FormState> formKey;
-  ProductFormBloc()
-      : formKey = GlobalKey<FormState>(),
-        super(const ProductFormState()) {
+  final int creatorId;
+  ProductFormBloc({
+    required this.creatorId,
+  })  : formKey = GlobalKey<FormState>(),
+        super(ProductFormState(creatorId: creatorId)) {
     on<NameFieldChangedEvent>(_onNameChanged);
     on<SkuFieldChangedEvent>(_onSkuChanged);
     on<CategoryFieldChangedEvent>(_onCategoryChanged);
+    on<CategoryIdChangedEvent>(_onCategoryIdChanged);
     on<DescriptionFieldChangedEvent>(_onDescriptionChanged);
     on<PriceFieldChangedEvent>(_onPriceChanged);
     on<CostFieldChangedEvent>(_onCostChanged);
     on<QuantityFieldChangedEvent>(_onQuantityChanged);
     on<MainUnitFieldChangedEvent>(_onMainUnitChanged);
+    on<AlternativeUnitFieldNameChangedEvent>(_onAlternativeUnitNameChanged);
+    on<AlternativeUnitFieldFactorChangedEvent>(_onAlternativeUnitFactorChanged);
+    on<AlternativeUnitFieldAddedEvent>(_onAlternativeUnitAdded);
+    on<AlternativeUnitFieldDeletedEvent>(_onAlternativeUnitDeleted);
     on<CriticalLevelFieldChangedEvent>(_onCriticalLevelChanged);
     on<DeadstockFieldChangedEvent>(_onDeadStockChanged);
     on<FastMovingStockFieldChangedEvent>(_onFastMovingStockChanged);
@@ -40,7 +52,12 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
 
   void _onCategoryChanged(CategoryFieldChangedEvent event, Emitter<ProductFormState> emit) {
     final String category = event.category;
-    return emit(state.copyWith(category: category));
+    return emit(state.copyWith(categoryName: category));
+  }
+
+  void _onCategoryIdChanged(CategoryIdChangedEvent event, Emitter<ProductFormState> emit) {
+    final int categoryId = event.categoryId;
+    return emit(state.copyWith(categoryId: categoryId));
   }
 
   void _onDescriptionChanged(DescriptionFieldChangedEvent event, Emitter<ProductFormState> emit) {
@@ -60,7 +77,27 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
 
   void _onQuantityChanged(QuantityFieldChangedEvent event, Emitter<ProductFormState> emit) {
     final String quantity = event.quantity;
-    return emit(state.copyWith(quantity: quantity));
+    // Implementing requested feature for default critical level
+    // Is quantity is numeric
+    // If true, and criticalLevel is not empty, calculate default critical level
+    // If false, do nothing
+    if (quantity.isNotEmpty && double.tryParse(quantity) == null) {
+      emit(state.copyWith(quantity: quantity));
+      return;
+    }
+    if (state.criticalLevel.isEmpty) {
+      emit(state.copyWith(isCriticalLevelEdited: false));
+    }
+
+    if (!state.isCriticalLevelEdited) {
+      // If critical level is not edited, calculate default critical level
+      // If critical level is empty, calculate default critical level
+      final double quantityValue = double.parse(quantity);
+      final double criticalLevel = quantityValue * 0.3;
+      emit(state.copyWith(quantity: quantity, criticalLevel: criticalLevel.toString()));
+    } else {
+      emit(state.copyWith(quantity: quantity));
+    }
   }
 
   void _onMainUnitChanged(MainUnitFieldChangedEvent event, Emitter<ProductFormState> emit) {
@@ -68,10 +105,50 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     return emit(state.copyWith(mainUnit: mainUnit));
   }
 
+  void _onAlternativeUnitNameChanged(
+      AlternativeUnitFieldNameChangedEvent event, Emitter<ProductFormState> emit) {
+    final String name = event.name;
+    final int index = event.index;
+    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+    if (alternativeUnits.isEmpty) {
+      alternativeUnits.add(FormUnit(name: '', factor: ''));
+    }
+    alternativeUnits[index] = alternativeUnits[index].copyWith(name: name);
+    return emit(state.copyWith(alternativeUnits: alternativeUnits));
+  }
+
+  void _onAlternativeUnitFactorChanged(
+      AlternativeUnitFieldFactorChangedEvent event, Emitter<ProductFormState> emit) {
+    final String factor = event.factor;
+    final int index = event.index;
+    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+    if (alternativeUnits.isEmpty) {
+      alternativeUnits.add(FormUnit(name: '', factor: ''));
+    }
+    alternativeUnits[index] = alternativeUnits[index].copyWith(factor: factor);
+    return emit(state.copyWith(alternativeUnits: alternativeUnits));
+  }
+
+  void _onAlternativeUnitAdded(
+      AlternativeUnitFieldAddedEvent event, Emitter<ProductFormState> emit) {
+    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+    alternativeUnits.add(FormUnit(name: '', factor: ''));
+    emit(state.copyWith(alternativeUnits: alternativeUnits));
+  }
+
+  void _onAlternativeUnitDeleted(
+      AlternativeUnitFieldDeletedEvent event, Emitter<ProductFormState> emit) {
+    final updated = [...state.alternativeUnits];
+    if (updated.length > 1) {
+      updated.removeAt(event.index);
+      emit(state.copyWith(alternativeUnits: updated));
+    }
+  }
+
   void _onCriticalLevelChanged(
       CriticalLevelFieldChangedEvent event, Emitter<ProductFormState> emit) {
     final String criticalLevel = event.criticalLevel;
-    return emit(state.copyWith(criticalLevel: criticalLevel));
+    return emit(state.copyWith(criticalLevel: criticalLevel, isCriticalLevelEdited: true));
   }
 
   void _onDeadStockChanged(DeadstockFieldChangedEvent event, Emitter<ProductFormState> emit) {
@@ -86,38 +163,31 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   }
 
   void _onProductStatusChanged(ProductStatusChangedEvent event, Emitter<ProductFormState> emit) {
-    final String status = event.status;
-    return emit(state.copyWith(productStatus: status));
+    final int status = event.status;
+    return emit(state.copyWith(archiveStatus: status));
   }
 
   void _onButtonPressed(FormButtonPressedEvent event, Emitter<ProductFormState> emit) async {
     emit(state.copyWith(formStatus: FormStatus.validating));
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(Duration.zero);
     try {
-      emit(state.copyWith(formStatus: FormStatus.submitting));
+      if (formKey.currentState case FormState formState when formState.validate()) {
+        emit(state.copyWith(formStatus: FormStatus.valid));
+        Future.delayed(Duration.zero);
+        emit(state.copyWith(formStatus: FormStatus.submitting, productId: event.productId));
+      } else {
+        emit(state.copyWith(formStatus: FormStatus.invalid));
+      }
     } catch (e) {
-      print(e.toString());
-      emit(state.copyWith(formStatus: FormStatus.invalid));
+      emit(state.copyWith(formStatus: FormStatus.error));
     }
   }
 
-  FutureOr<void> _onFormReset(FormResetEvent event, Emitter<ProductFormState> emit) {
-    emit(state.copyWith(
-      name: '',
-      sku: '',
-      category: '',
-      description: '',
-      price: '',
-      cost: '',
-      quantity: '',
-      mainUnit: '',
-      criticalLevel: '',
-      deadstockTreshold: '',
-      fastmovingTreshold: '',
-    ));
+  void _onFormSubmitted(FormSubmittedEvent event, Emitter emit) {
+    emit(state.copyWith(formStatus: FormStatus.submitted));
   }
 
-  void _onFormSubmitted(FormSubmittedEvent event, Emitter emit) {
-    emit(state.copyWith(formStatus: FormStatus.valid));
+  void _onFormReset(FormResetEvent event, Emitter emit) {
+    emit(ProductFormInitial(creatorId: creatorId));
   }
 }

@@ -23,6 +23,12 @@ class CategoryFieldChangedEvent extends ProductFormEvent {
   const CategoryFieldChangedEvent(this.category);
 }
 
+class CategoryIdChangedEvent extends ProductFormEvent {
+  final int categoryId;
+
+  const CategoryIdChangedEvent(this.categoryId);
+}
+
 class DescriptionFieldChangedEvent extends ProductFormEvent {
   final String description;
 
@@ -53,10 +59,23 @@ class MainUnitFieldChangedEvent extends ProductFormEvent {
   const MainUnitFieldChangedEvent(this.unit);
 }
 
-class SecondaryUnitFieldChangedEvent extends ProductFormEvent {
-  final Map<String, String> units;
+class AlternativeUnitFieldNameChangedEvent extends ProductFormEvent {
+  final String name;
+  final int index;
+  const AlternativeUnitFieldNameChangedEvent(this.name, this.index);
+}
 
-  const SecondaryUnitFieldChangedEvent(this.units);
+class AlternativeUnitFieldFactorChangedEvent extends ProductFormEvent {
+  final String factor;
+  final int index;
+  const AlternativeUnitFieldFactorChangedEvent(this.factor, this.index);
+}
+
+class AlternativeUnitFieldAddedEvent extends ProductFormEvent {}
+
+class AlternativeUnitFieldDeletedEvent extends ProductFormEvent {
+  final int index;
+  const AlternativeUnitFieldDeletedEvent(this.index);
 }
 
 class CriticalLevelFieldChangedEvent extends ProductFormEvent {
@@ -78,12 +97,15 @@ class FastMovingStockFieldChangedEvent extends ProductFormEvent {
 }
 
 class ProductStatusChangedEvent extends ProductFormEvent {
-  final String status;
+  final int status;
 
   const ProductStatusChangedEvent(this.status);
 }
 
-class FormButtonPressedEvent extends ProductFormEvent {}
+class FormButtonPressedEvent extends ProductFormEvent {
+  final int productId;
+  const FormButtonPressedEvent(this.productId);
+}
 
 class FormSubmittedEvent extends ProductFormEvent {}
 

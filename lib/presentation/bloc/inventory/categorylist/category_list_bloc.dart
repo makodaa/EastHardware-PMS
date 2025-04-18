@@ -25,7 +25,9 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
         categories: await _repository.getAllCategories(),
         status: DataStatus.success,
       ));
+      print('Categories loaded: ${state.categories.map((category) => category.name)}');
     } catch (e) {
+      print('Error loading categories: $e');
       emit(state.copyWith(status: DataStatus.error));
     }
   }
@@ -45,9 +47,8 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   void _onAdd(AddCategoryEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
     try {
-      _repository.insertCategory(event.category);
-      final categories = state.categories;
-      categories.add(event.category);
+      final category = await _repository.insertCategory(event.category);
+      final categories = state.categories..add(category);
       emit(state.copyWith(categories: categories, status: DataStatus.success));
     } catch (e) {
       emit(state.copyWith(status: DataStatus.error));

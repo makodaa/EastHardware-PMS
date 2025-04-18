@@ -25,11 +25,16 @@ class DependencyInjector {
 
   List<SingleChildWidget> inject() {
     return [
+      RepositoryProvider.value(value: _categoryRepository),
+      RepositoryProvider.value(value: _productRepository),
+      RepositoryProvider.value(value: _unitRepository),
       BlocProvider(create: (context) => AuthenticationBloc(_authenticationRepository)),
       BlocProvider(create: (context) => NavigationBloc()),
-      BlocProvider(create: (context) => ProductListBloc(_productRepository)),
-      BlocProvider(create: (context) => CategoryListBloc(_categoryRepository)),
-      BlocProvider(create: (context) => UnitListBloc(_unitRepository)),
+      BlocProvider(
+          create: (context) => ProductListBloc(_productRepository)..add(LoadAllProductsEvent())),
+      BlocProvider(
+          create: (context) => CategoryListBloc(_categoryRepository)..add(LoadCategoriesEvent())),
+      BlocProvider(create: (context) => UnitListBloc(_unitRepository)..add(LoadUnitsEvent())),
     ];
   }
 }
