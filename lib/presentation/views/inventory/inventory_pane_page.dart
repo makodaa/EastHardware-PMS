@@ -1,12 +1,14 @@
+import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/data_row_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/kpi_card.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' show DataCell, DataColumn, DataRow, DataTable;
+import 'package:flutter/material.dart' show DataColumn, DataTable;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InventoryPanePage extends StatelessWidget {
@@ -54,7 +56,6 @@ class SummarySection extends StatelessWidget {
       child: Row(
         children: const [
           InventorySummary(),
-          Notifications(),
         ].withSpacing(() => Spacing.h16),
       ),
     );
@@ -73,7 +74,6 @@ class InventorySummary extends StatelessWidget {
           const SubheadingText('Inventory Summary'),
           BlocBuilder<ProductListBloc, ProductListState>(
             builder: (context, state) {
-              print(state.allProducts.map((product) => product.name));
               final totalCount = state.allProducts.length;
               final lowStockCount = state.lowStockProducts.length;
               final fastMovingCount = state.fastMovingProducts.length;
@@ -87,12 +87,6 @@ class InventorySummary extends StatelessWidget {
                         children: [
                           TotalCountCard(value: totalCount.toString()),
                           LowStockCountCard(value: lowStockCount.toString()),
-                        ].withSpacing(() => Spacing.h16),
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
                           HangingCountCard(value: deadCount.toString()),
                           FastMovingCountCard(value: fastMovingCount.toString()),
                         ].withSpacing(() => Spacing.h16),
@@ -102,31 +96,6 @@ class InventorySummary extends StatelessWidget {
                 ),
               );
             },
-          ),
-        ].withSpacing(() => Spacing.v16),
-      ),
-    );
-  }
-}
-
-class Notifications extends StatelessWidget {
-  const Notifications({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SubheadingText('Notifications'),
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              padding: AppPadding.a8,
-              child: const BodyText('Add List View here'),
-            ),
           ),
         ].withSpacing(() => Spacing.v16),
       ),
@@ -263,37 +232,51 @@ class MockDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columns: const [
-        DataColumn(label: Text('Name')),
-        DataColumn(label: Text('Category')),
-        DataColumn(label: Text('Price')),
-        DataColumn(label: Text('Stock')),
-        DataColumn(label: Text('Actions')),
-      ],
-      rows: const [
-        DataRow(cells: [
-          DataCell(Text('Product 1')),
-          DataCell(Text('Category 1')),
-          DataCell(Text('100')),
-          DataCell(Text('10')),
-          DataCell(Text('Edit')),
-        ]),
-        DataRow(cells: [
-          DataCell(Text('Product 2')),
-          DataCell(Text('Category 2')),
-          DataCell(Text('200')),
-          DataCell(Text('20')),
-          DataCell(Text('Edit')),
-        ]),
-        DataRow(cells: [
-          DataCell(Text('Product 3')),
-          DataCell(Text('Category 3')),
-          DataCell(Text('300')),
-          DataCell(Text('30')),
-          DataCell(Text('Edit')),
-        ]),
-      ],
+    return BlocBuilder<ProductListBloc, ProductListState>(
+      builder: (context, state) {
+        if (state.status == DataStatus.loading) {
+          return const Center(
+            child: ProgressRing(),
+          );
+        }
+
+        final allProducts = state.allProducts.where((p) => p.archiveStatus == 0).toList();
+
+        if (allProducts.isEmpty) {
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  FluentIcons.product_list,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'No products found',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return DataTable(
+            showCheckboxColumn: true,
+            columns: const [
+              DataColumn(label: Text('Name')),
+              DataColumn(label: Text("SKU")),
+              DataColumn(label: Text('Category')),
+              DataColumn(label: Text('Price')),
+              DataColumn(label: Text('Cost')),
+              DataColumn(label: Text('Quantity')),
+              DataColumn(label: Text('Actions')),
+            ],
+            rows: allProducts.map((product) {
+              return DataRowMapper.mapProductToRow(product, () {});
+            }).toList());
+      },
     );
   }
 }
