@@ -14,3 +14,25 @@ enum DataStatus {
   success,
   error,
 }
+
+enum FormStatus {
+  initial,
+  validating,
+  invalid,
+  valid,
+  submitting,
+  submitted,
+  error,
+}
+
+enum ProductFormStatus {
+  initial,
+  validating,
+  invalid,
+  valid,
+  submittingCategories,
+  submittingProduct,
+  submittingUnits,
+  submitted,
+  error,
+}
