@@ -50,11 +50,16 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   void _onAdd(AddProductEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
     try {
-      final insertedProduct = await _repository.insertProduct(event.product);
+      final insertedProduct = event.product.copyWith(
+        isBelowCriticalLevel: event.product.quantity <= event.product.criticalLevel,
+        isDeadStock: false,
+        isFastMovingStock: false,
+      );
+
+      await _repository.insertProduct(event.product);
 
       final products = List<Product>.from(state.allProducts)..add(insertedProduct);
       final lowStockProducts = List<Product>.from(state.lowStockProducts);
-      products.add(event.product);
 
       if (event.product.quantity <= event.product.criticalLevel) {
         lowStockProducts.add(event.product);
@@ -62,36 +67,37 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
       emit(state.copyWith(
         allProducts: products,
         lowStockProducts: lowStockProducts,
+        status: DataStatus.success,
       ));
     } catch (e) {
       print("Error adding product: $e");
-      print(e.runtimeType);
       emit(state.copyWith(status: DataStatus.error));
     }
   }
 
   void _onUpdate(UpdateProductEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
+
     try {
-      await _repository.insertProduct(event.product);
+      final updatedProduct = event.product
+          .copyWith(isBelowCriticalLevel: event.product.quantity <= event.product.criticalLevel);
+      await _repository.updateProduct(updatedProduct);
 
-      final products = List<Product>.from(state.allProducts);
-      final lowStockProducts = List<Product>.from(state.lowStockProducts);
-      products.add(event.product);
-
-      final index = products.indexWhere((product) => product.id == event.product.id);
-      final isInitiallyLowStock = products[index].quantity <= products[index].quantity;
-      final isNowLowStock = event.product.quantity <= event.product.criticalLevel;
-
-      if (isInitiallyLowStock && isNowLowStock) {
-        lowStockProducts.add(event.product);
+      final updatedProducts = List<Product>.from(state.allProducts);
+      final index = updatedProducts.indexWhere((p) => p.id == updatedProduct.id);
+      if (index != -1) {
+        updatedProducts[index] = updatedProduct;
       }
 
+      final updatedLowStock = updatedProducts.where((p) => p.isBelowCriticalLevel == true).toList();
+
       emit(state.copyWith(
-        allProducts: products,
-        lowStockProducts: lowStockProducts,
+        allProducts: updatedProducts,
+        lowStockProducts: updatedLowStock,
+        status: DataStatus.success,
       ));
     } catch (e) {
+      print("Error updating product: $e");
       emit(state.copyWith(status: DataStatus.error));
     }
   }
