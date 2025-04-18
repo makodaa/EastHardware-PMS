@@ -15,12 +15,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-// BUG FIX: ALTERNATE UNITS
-// - SHARING VALIDATORS
-// - WRONG INDEXING
-// REFACTOR: TAKE ID FROM STATE LENGTH, FINAL SHIT
-
-// UI FIX: ROUND CRITICAL LEVEL AUTOGENERATION
 class CreateProductPage extends StatelessWidget {
   const CreateProductPage({super.key});
 
@@ -48,11 +42,11 @@ class CreateProductPage extends StatelessWidget {
 
               final Product mappedProduct = state
                   .mapStateToProduct()
-                  .copyWith(category: matchedCategory.id, id: state.productId);
+                  .copyWith(categoryId: matchedCategory.id, id: state.productId);
 
               context.read<ProductListBloc>().add(AddProductEvent(mappedProduct));
 
-              final List<Unit> mappedUnits = state.alternativeUnits
+              final List<Unit> mappedUnits = state.secondaryUnits
                   .map((unit) {
                     if (unit.name.isNotEmpty && unit.factor.isNotEmpty) {
                       return unit.toUnit(state.productId);
@@ -158,7 +152,7 @@ class RightColumn extends StatelessWidget {
       Spacing.v16,
       OrderInformationSection(),
       Spacing.v16,
-      AlternativeUnitsSection(),
+      SecondaryUnitsSection(),
     ]));
   }
 }
@@ -343,8 +337,8 @@ class _CriticalLevelFieldState extends State<CriticalLevelField> {
   }
 }
 
-class AlternativeUnitsSection extends StatelessWidget {
-  const AlternativeUnitsSection({
+class SecondaryUnitsSection extends StatelessWidget {
+  const SecondaryUnitsSection({
     super.key,
   });
 
@@ -359,7 +353,7 @@ class AlternativeUnitsSection extends StatelessWidget {
           children: [
             const Row(
               children: [
-                Expanded(child: SubheadingText('Alternative Units')),
+                Expanded(flex: 2, child: SubheadingText('Secondary Units')),
                 Spacer(flex: 1),
                 Expanded(child: AddNewUnitButton()),
               ],
@@ -367,13 +361,13 @@ class AlternativeUnitsSection extends StatelessWidget {
             Spacing.v12,
             BlocBuilder<ProductFormBloc, ProductFormState>(
               builder: (context, state) {
-                final units = state.alternativeUnits;
+                final units = state.secondaryUnits;
                 return Flexible(
                   child: ListView.separated(
                     separatorBuilder: (_, __) => Spacing.v8,
                     itemCount: units.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return AlternativeUnitField(index: index);
+                      return SecondaryUnitField(index: index);
                     },
                   ),
                 );
@@ -392,7 +386,7 @@ class AddNewUnitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(
-        onPressed: () => context.read<ProductFormBloc>().add(AlternativeUnitFieldAddedEvent()),
+        onPressed: () => context.read<ProductFormBloc>().add(SecondaryUnitFieldAddedEvent()),
         child: const Padding(
           padding: AppPadding.a4,
           child: BodyText('Add New Unit'),
@@ -400,8 +394,8 @@ class AddNewUnitButton extends StatelessWidget {
   }
 }
 
-class AlternativeUnitField extends StatelessWidget with ProductFormValidator {
-  const AlternativeUnitField({super.key, required this.index});
+class SecondaryUnitField extends StatelessWidget with ProductFormValidator {
+  const SecondaryUnitField({super.key, required this.index});
 
   final int index;
 
@@ -411,7 +405,7 @@ class AlternativeUnitField extends StatelessWidget with ProductFormValidator {
     final state = bloc.state;
     final existingNames = [
       state.mainUnit,
-      ...state.alternativeUnits.map((u) => u.name),
+      ...state.secondaryUnits.map((u) => u.name),
     ];
     existingNames.removeAt(index + 1);
 
@@ -425,10 +419,10 @@ class AlternativeUnitField extends StatelessWidget with ProductFormValidator {
               if (index == 0) Spacing.v4,
               TextFormBox(
                 validator: (value) {
-                  return validateAlternateUnitName(name: value, existingNames: existingNames);
+                  return validateSecondaryUnitName(name: value, existingNames: existingNames);
                 },
                 onChanged: (value) {
-                  bloc.add(AlternativeUnitFieldNameChangedEvent(value, index));
+                  bloc.add(SecondaryUnitFieldNameChangedEvent(value, index));
                 },
               ),
             ],
@@ -443,11 +437,11 @@ class AlternativeUnitField extends StatelessWidget with ProductFormValidator {
               TextFormBox(
                 validator: (value) {
                   final factor = value ?? '';
-                  final name = context.read<ProductFormBloc>().state.alternativeUnits[index].name;
-                  return validateAlternateUnitFactor(name: name, factor: factor);
+                  final name = context.read<ProductFormBloc>().state.secondaryUnits[index].name;
+                  return validateSecondaryUnitFactor(name: name, factor: factor);
                 },
                 onChanged: (value) {
-                  bloc.add(AlternativeUnitFieldFactorChangedEvent(value, index));
+                  bloc.add(SecondaryUnitFieldFactorChangedEvent(value, index));
                 },
               ),
             ],
@@ -455,10 +449,10 @@ class AlternativeUnitField extends StatelessWidget with ProductFormValidator {
         ),
         Column(
           children: [
-            Text(''),
+            const Text(''),
             IconButton(
               icon: const Icon(FluentIcons.cancel),
-              onPressed: () => bloc.add(AlternativeUnitFieldDeletedEvent(index)),
+              onPressed: () => bloc.add(SecondaryUnitFieldDeletedEvent(index)),
             )
           ],
         ),
