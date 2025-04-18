@@ -1,3 +1,4 @@
+import 'package:easthardware_pms/data/database/dao/categories_dao.dart';
 import 'package:easthardware_pms/data/database/dao/products_dao.dart';
 import 'package:easthardware_pms/domain/errors/exceptions.dart';
 import 'package:easthardware_pms/domain/models/product.dart';
@@ -6,6 +7,7 @@ import 'package:easthardware_pms/domain/repository/product_repository.dart';
 class ProductRepositoryImpl extends ProductRepository {
   ProductRepositoryImpl() : super();
   final ProductsDaoImpl _productsDao = ProductsDaoImpl();
+  final CategoriesDaoImpl _categoriesDao = CategoriesDaoImpl();
   @override
   Future<void> deleteProduct(int id) {
     try {
@@ -18,7 +20,17 @@ class ProductRepositoryImpl extends ProductRepository {
   @override
   Future<List<Product>> getAllProducts() async {
     try {
-      return await _productsDao.getAllProducts();
+      final products = await _productsDao.getAllProducts();
+      final categories = await _categoriesDao.getAllCategories();
+      final categoryMap = {
+        for (final c in categories) c.id: c.name,
+      };
+
+      for (final product in products) {
+        product.categoryName = categoryMap[product.categoryId] ?? "Uncategorized";
+      }
+
+      return products;
     } catch (e) {
       throw DatabaseException("Failed to fetch products: $e");
     }

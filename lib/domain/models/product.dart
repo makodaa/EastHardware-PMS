@@ -1,7 +1,8 @@
 class Product {
   final int? id;
   final String name;
-  final int? category;
+  final int? categoryId;
+  String? categoryName;
   final String sku;
   final String? description;
   final double salePrice;
@@ -22,7 +23,8 @@ class Product {
     this.id,
     required this.sku,
     required this.name,
-    required this.category,
+    required this.categoryId,
+    this.categoryName,
     required this.description,
     required this.salePrice,
     required this.orderCost,
@@ -43,7 +45,8 @@ class Product {
     int? id,
     String? name,
     String? sku,
-    int? category,
+    int? categoryId,
+    String? categoryName,
     String? description,
     double? salePrice,
     double? orderCost,
@@ -63,7 +66,8 @@ class Product {
       id: id ?? this.id,
       name: name ?? this.name,
       sku: sku ?? this.sku,
-      category: category ?? this.category,
+      categoryId: categoryId ?? this.categoryId,
+      categoryName: categoryName ?? this.categoryName,
       description: description ?? this.description,
       salePrice: salePrice ?? this.salePrice,
       orderCost: orderCost ?? this.orderCost,
@@ -84,7 +88,7 @@ class Product {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'category': category,
+      'category': categoryId,
       'sku': sku,
       'sale_price': salePrice,
       'order_cost': orderCost,
@@ -103,18 +107,18 @@ class Product {
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
       id: map['id'] as int?,
-      name: map['name'] as String,
-      sku: map['sku'] as String,
-      category: map['category'] as int?,
-      description: map['description'] as String?,
-      salePrice: map['sale_price'] as double,
-      orderCost: map['order_cost'] as double,
-      quantity: map['quantity'] as double,
-      mainUnit: map['main_unit'] as String,
-      criticalLevel: map['critical_level'] as double,
-      deadStockThreshold: map['dead_stock_threshold'] as double,
-      fastMovingStockThreshold: map['fast_moving_threshold'] as double,
-      creationDate: map['creation_date'] as String,
+      name: map['name']?.toString() ?? '',
+      sku: map['sku']?.toString() ?? '',
+      categoryId: map['category'] as int?,
+      description: map['description']?.toString(),
+      salePrice: (map['sale_price'] as num).toDouble(),
+      orderCost: (map['order_cost'] as num).toDouble(),
+      quantity: (map['quantity'] as num).toDouble(),
+      mainUnit: map['main_unit']?.toString() ?? '',
+      criticalLevel: (map['critical_level'] as num).toDouble(),
+      deadStockThreshold: (map['dead_stock_threshold'] as num).toDouble(),
+      fastMovingStockThreshold: (map['fast_moving_threshold'] as num).toDouble(),
+      creationDate: map['creation_date']?.toString() ?? '',
       creatorId: map['creator_id'] as int,
       archiveStatus: map['archive_status'] as int,
       isBelowCriticalLevel: map['is_below_critical_level'] == 1,
