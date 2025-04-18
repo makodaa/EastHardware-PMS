@@ -25,8 +25,8 @@ class ProductFormState extends Equatable {
   final String deadstockTreshold;
   final String fastmovingTreshold;
 
-  // Product Alternative Units
-  final List<FormUnit> alternativeUnits;
+  // Product Secondary Units
+  final List<FormUnit> secondaryUnits;
 
   // Product Creation Information, Hidden from Form
   final DateTime creationDate;
@@ -48,7 +48,7 @@ class ProductFormState extends Equatable {
     this.cost = '',
     this.quantity = '',
     this.mainUnit = '',
-    List<FormUnit>? alternativeUnits,
+    List<FormUnit>? secondaryUnits,
     this.criticalLevel = '',
     this.isCriticalLevelEdited = false,
     String? deadstockTreshold,
@@ -59,7 +59,7 @@ class ProductFormState extends Equatable {
     this.archiveStatus = 0,
     this.formStatus = FormStatus.initial,
   })  : sku = const Uuid().v4().toString(),
-        alternativeUnits = alternativeUnits ?? [FormUnit(name: '', factor: '')],
+        secondaryUnits = secondaryUnits ?? [FormUnit(name: '', factor: '')],
         creationDate = creationDate ?? DateTime.now(),
         deadstockTreshold = deadstockTreshold ?? DEFAULT_DEAD_STOCK_THRESHOLD.toString(),
         fastmovingTreshold = fastmovingTreshold ?? DEFAULT_FAST_MOVING_STOCK_THRESHOLD.toString();
@@ -74,7 +74,7 @@ class ProductFormState extends Equatable {
     String? cost,
     String? quantity,
     String? mainUnit,
-    List<FormUnit>? alternativeUnits,
+    List<FormUnit>? secondaryUnits,
     String? criticalLevel,
     bool? isCriticalLevelEdited,
     String? deadstockTreshold,
@@ -95,7 +95,7 @@ class ProductFormState extends Equatable {
       cost: cost ?? this.cost,
       quantity: quantity ?? this.quantity,
       mainUnit: mainUnit ?? this.mainUnit,
-      alternativeUnits: alternativeUnits ?? this.alternativeUnits,
+      secondaryUnits: secondaryUnits ?? this.secondaryUnits,
       criticalLevel: criticalLevel ?? this.criticalLevel,
       isCriticalLevelEdited: isCriticalLevelEdited ?? this.isCriticalLevelEdited,
       deadstockTreshold: deadstockTreshold ?? this.deadstockTreshold,
@@ -119,7 +119,7 @@ class ProductFormState extends Equatable {
         cost,
         quantity,
         mainUnit,
-        alternativeUnits,
+        secondaryUnits,
         criticalLevel,
         isCriticalLevelEdited,
         deadstockTreshold,
@@ -135,7 +135,7 @@ class ProductFormState extends Equatable {
     return Product(
       sku: sku,
       name: name,
-      category: categoryId,
+      categoryId: categoryId,
       description: description,
       salePrice: double.parse(price),
       orderCost: double.parse(cost),

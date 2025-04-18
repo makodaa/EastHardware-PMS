@@ -59,23 +59,23 @@ class MainUnitFieldChangedEvent extends ProductFormEvent {
   const MainUnitFieldChangedEvent(this.unit);
 }
 
-class AlternativeUnitFieldNameChangedEvent extends ProductFormEvent {
+class SecondaryUnitFieldNameChangedEvent extends ProductFormEvent {
   final String name;
   final int index;
-  const AlternativeUnitFieldNameChangedEvent(this.name, this.index);
+  const SecondaryUnitFieldNameChangedEvent(this.name, this.index);
 }
 
-class AlternativeUnitFieldFactorChangedEvent extends ProductFormEvent {
+class SecondaryUnitFieldFactorChangedEvent extends ProductFormEvent {
   final String factor;
   final int index;
-  const AlternativeUnitFieldFactorChangedEvent(this.factor, this.index);
+  const SecondaryUnitFieldFactorChangedEvent(this.factor, this.index);
 }
 
-class AlternativeUnitFieldAddedEvent extends ProductFormEvent {}
+class SecondaryUnitFieldAddedEvent extends ProductFormEvent {}
 
-class AlternativeUnitFieldDeletedEvent extends ProductFormEvent {
+class SecondaryUnitFieldDeletedEvent extends ProductFormEvent {
   final int index;
-  const AlternativeUnitFieldDeletedEvent(this.index);
+  const SecondaryUnitFieldDeletedEvent(this.index);
 }
 
 class CriticalLevelFieldChangedEvent extends ProductFormEvent {

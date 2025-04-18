@@ -77,14 +77,14 @@ mixin ProductFormValidator on Widget {
     return null;
   }
 
-  String? validateAlternateUnitName({required String? name, required List<String> existingNames}) {
+  String? validateSecondaryUnitName({required String? name, required List<String> existingNames}) {
     if (existingNames.contains(name)) {
       return "Alternate unit name already exists.";
     }
     return null;
   }
 
-  String? validateAlternateUnitFactor({
+  String? validateSecondaryUnitFactor({
     required String? name,
     required String? factor,
   }) {

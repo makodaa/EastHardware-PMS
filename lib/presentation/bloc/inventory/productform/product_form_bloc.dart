@@ -27,10 +27,10 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     on<CostFieldChangedEvent>(_onCostChanged);
     on<QuantityFieldChangedEvent>(_onQuantityChanged);
     on<MainUnitFieldChangedEvent>(_onMainUnitChanged);
-    on<AlternativeUnitFieldNameChangedEvent>(_onAlternativeUnitNameChanged);
-    on<AlternativeUnitFieldFactorChangedEvent>(_onAlternativeUnitFactorChanged);
-    on<AlternativeUnitFieldAddedEvent>(_onAlternativeUnitAdded);
-    on<AlternativeUnitFieldDeletedEvent>(_onAlternativeUnitDeleted);
+    on<SecondaryUnitFieldNameChangedEvent>(_onSecondaryUnitNameChanged);
+    on<SecondaryUnitFieldFactorChangedEvent>(_onSecondaryUnitFactorChanged);
+    on<SecondaryUnitFieldAddedEvent>(_onSecondaryUnitAdded);
+    on<SecondaryUnitFieldDeletedEvent>(_onSecondaryUnitDeleted);
     on<CriticalLevelFieldChangedEvent>(_onCriticalLevelChanged);
     on<DeadstockFieldChangedEvent>(_onDeadStockChanged);
     on<FastMovingStockFieldChangedEvent>(_onFastMovingStockChanged);
@@ -105,43 +105,42 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     return emit(state.copyWith(mainUnit: mainUnit));
   }
 
-  void _onAlternativeUnitNameChanged(
-      AlternativeUnitFieldNameChangedEvent event, Emitter<ProductFormState> emit) {
+  void _onSecondaryUnitNameChanged(
+      SecondaryUnitFieldNameChangedEvent event, Emitter<ProductFormState> emit) {
     final String name = event.name;
     final int index = event.index;
-    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+    final List<FormUnit> alternativeUnits = List.from(state.secondaryUnits);
     if (alternativeUnits.isEmpty) {
       alternativeUnits.add(FormUnit(name: '', factor: ''));
     }
     alternativeUnits[index] = alternativeUnits[index].copyWith(name: name);
-    return emit(state.copyWith(alternativeUnits: alternativeUnits));
+    return emit(state.copyWith(secondaryUnits: alternativeUnits));
   }
 
-  void _onAlternativeUnitFactorChanged(
-      AlternativeUnitFieldFactorChangedEvent event, Emitter<ProductFormState> emit) {
+  void _onSecondaryUnitFactorChanged(
+      SecondaryUnitFieldFactorChangedEvent event, Emitter<ProductFormState> emit) {
     final String factor = event.factor;
     final int index = event.index;
-    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+    final List<FormUnit> alternativeUnits = List.from(state.secondaryUnits);
     if (alternativeUnits.isEmpty) {
       alternativeUnits.add(FormUnit(name: '', factor: ''));
     }
     alternativeUnits[index] = alternativeUnits[index].copyWith(factor: factor);
-    return emit(state.copyWith(alternativeUnits: alternativeUnits));
+    return emit(state.copyWith(secondaryUnits: alternativeUnits));
   }
 
-  void _onAlternativeUnitAdded(
-      AlternativeUnitFieldAddedEvent event, Emitter<ProductFormState> emit) {
-    final List<FormUnit> alternativeUnits = List.from(state.alternativeUnits);
+  void _onSecondaryUnitAdded(SecondaryUnitFieldAddedEvent event, Emitter<ProductFormState> emit) {
+    final List<FormUnit> alternativeUnits = List.from(state.secondaryUnits);
     alternativeUnits.add(FormUnit(name: '', factor: ''));
-    emit(state.copyWith(alternativeUnits: alternativeUnits));
+    emit(state.copyWith(secondaryUnits: alternativeUnits));
   }
 
-  void _onAlternativeUnitDeleted(
-      AlternativeUnitFieldDeletedEvent event, Emitter<ProductFormState> emit) {
-    final updated = [...state.alternativeUnits];
+  void _onSecondaryUnitDeleted(
+      SecondaryUnitFieldDeletedEvent event, Emitter<ProductFormState> emit) {
+    final updated = [...state.secondaryUnits];
     if (updated.length > 1) {
       updated.removeAt(event.index);
-      emit(state.copyWith(alternativeUnits: updated));
+      emit(state.copyWith(secondaryUnits: updated));
     }
   }
 
