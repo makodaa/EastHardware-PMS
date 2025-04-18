@@ -1,3 +1,4 @@
+import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
@@ -6,6 +7,7 @@ import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show DataCell, DataColumn, DataRow, DataTable;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InventoryPanePage extends StatelessWidget {
   const InventoryPanePage({super.key});
@@ -60,9 +62,7 @@ class SummarySection extends StatelessWidget {
 }
 
 class InventorySummary extends StatelessWidget {
-  const InventorySummary({
-    super.key,
-  });
+  const InventorySummary({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,21 +71,37 @@ class InventorySummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SubheadingText('Inventory Summary'),
-          Expanded(
-            child: Row(
-              children: const [
-                TotalCountCard(),
-                LowStockCountCard(),
-              ].withSpacing(() => Spacing.h16),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: const [
-                HangingCountCard(),
-                FastMovingCountCard(),
-              ].withSpacing(() => Spacing.h16),
-            ),
+          BlocBuilder<ProductListBloc, ProductListState>(
+            builder: (context, state) {
+              print(state.allProducts.map((product) => product.name));
+              final totalCount = state.allProducts.length;
+              final lowStockCount = state.lowStockProducts.length;
+              final fastMovingCount = state.fastMovingProducts.length;
+              final deadCount = state.deadStockProducts.length;
+
+              return Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          TotalCountCard(value: totalCount.toString()),
+                          LowStockCountCard(value: lowStockCount.toString()),
+                        ].withSpacing(() => Spacing.h16),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          HangingCountCard(value: deadCount.toString()),
+                          FastMovingCountCard(value: fastMovingCount.toString()),
+                        ].withSpacing(() => Spacing.h16),
+                      ),
+                    ),
+                  ].withSpacing(() => Spacing.v16),
+                ),
+              );
+            },
           ),
         ].withSpacing(() => Spacing.v16),
       ),
@@ -119,37 +135,33 @@ class Notifications extends StatelessWidget {
 }
 
 class TotalCountCard extends KPICard {
-  const TotalCountCard({super.key})
+  const TotalCountCard({super.key, required super.value})
       : super(
           'Total Products',
-          value: '100',
           icon: const Icon(FluentIcons.product),
         );
 }
 
 class LowStockCountCard extends KPICard {
-  const LowStockCountCard({super.key})
+  const LowStockCountCard({super.key, required super.value})
       : super(
           'Low Stock Products',
-          value: '0',
           icon: const Icon(FluentIcons.product_warning),
         );
 }
 
 class HangingCountCard extends KPICard {
-  const HangingCountCard({super.key})
+  const HangingCountCard({super.key, required super.value})
       : super(
           'Hanging Products',
-          value: '0',
           icon: const Icon(FluentIcons.market_down),
         );
 }
 
 class FastMovingCountCard extends KPICard {
-  const FastMovingCountCard({super.key})
+  const FastMovingCountCard({super.key, required super.value})
       : super(
           'Fast Moving Products',
-          value: '0',
           icon: const Icon(FluentIcons.market),
         );
 }

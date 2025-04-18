@@ -5,7 +5,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 class KPICard extends StatelessWidget {
   const KPICard(
     this.title, {
-    this.value = '',
+    required this.value,
     this.icon = const Icon(FluentIcons.square_shape),
     super.key,
   });
