@@ -18,16 +18,21 @@ class ProductFlagsView {
           END AS is_fast_moving,
           CASE
             WHEN (
-              SELECT MAX(date(i.invoice_date)) FROM invoice_products ip
+              SELECT MAX(date(i.invoice_date)) 
+              FROM invoice_products ip
               JOIN invoices i ON ip.invoice_id = i.id
               WHERE ip.product_id = p.id
             ) IS NULL
-            OR date(
-              (SELECT MAX(i.invoice_date)
+            AND date(p.creation_date) <= date('now', '-30 days')
+            
+            OR (
+              SELECT MAX(date(i.invoice_date)) 
               FROM invoice_products ip
               JOIN invoices i ON ip.invoice_id = i.id
-              WHERE ip.product_id = p.id)
+              WHERE ip.product_id = p.id
             ) < date('now', '-' || p.dead_stock_threshold || ' days')
+            AND date(p.creation_date) <= date('now', '-30 days')
+            
             THEN 1 ELSE 0
           END AS is_dead_stock,
           CASE
