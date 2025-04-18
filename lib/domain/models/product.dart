@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 class Product {
   final int? id;
   final String name;
@@ -14,7 +12,7 @@ class Product {
   final double deadStockThreshold;
   final double fastMovingStockThreshold;
   final String creationDate;
-  final int userId;
+  final int creatorId;
   final int archiveStatus;
   final bool? isBelowCriticalLevel;
   final bool? isFastMovingStock;
@@ -22,7 +20,7 @@ class Product {
 
   Product({
     this.id,
-    String? sku,
+    required this.sku,
     required this.name,
     required this.category,
     required this.description,
@@ -34,12 +32,12 @@ class Product {
     required this.deadStockThreshold,
     required this.fastMovingStockThreshold,
     required this.creationDate,
-    required this.userId,
+    required this.creatorId,
     required this.archiveStatus,
     this.isBelowCriticalLevel,
     this.isFastMovingStock,
     this.isDeadStock,
-  }) : sku = sku!.isNotEmpty ? sku : const Uuid().v4();
+  });
 
   Product copyWith({
     int? id,
@@ -55,7 +53,7 @@ class Product {
     double? deadStockThreshold,
     double? fastMovingStockThreshold,
     String? creationDate,
-    int? userId,
+    int? creatorId,
     int? archiveStatus,
     bool? isBelowCriticalLevel,
     bool? isFastMovingStock,
@@ -75,7 +73,7 @@ class Product {
       deadStockThreshold: deadStockThreshold ?? this.deadStockThreshold,
       fastMovingStockThreshold: fastMovingStockThreshold ?? this.fastMovingStockThreshold,
       creationDate: creationDate ?? this.creationDate,
-      userId: userId ?? this.userId,
+      creatorId: creatorId ?? this.creatorId,
       archiveStatus: archiveStatus ?? this.archiveStatus,
       isBelowCriticalLevel: isBelowCriticalLevel ?? this.isBelowCriticalLevel,
       isFastMovingStock: isFastMovingStock ?? this.isFastMovingStock,
@@ -97,17 +95,14 @@ class Product {
       'dead_stock_threshold': deadStockThreshold,
       'fast_moving_threshold': fastMovingStockThreshold,
       'creation_date': creationDate,
-      'user_id': userId,
+      'creator_id': creatorId,
       'archive_status': archiveStatus,
-      'is_below_critical_level': isBelowCriticalLevel,
-      'is_fast_moving_stock': isFastMovingStock,
-      'is_dead_stock': isDeadStock,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      id: map['id'] as int,
+      id: map['id'] as int?,
       name: map['name'] as String,
       sku: map['sku'] as String,
       category: map['category'] as int?,
@@ -120,7 +115,7 @@ class Product {
       deadStockThreshold: map['dead_stock_threshold'] as double,
       fastMovingStockThreshold: map['fast_moving_threshold'] as double,
       creationDate: map['creation_date'] as String,
-      userId: map['user_id'] as int,
+      creatorId: map['creator_id'] as int,
       archiveStatus: map['archive_status'] as int,
       isBelowCriticalLevel: map['is_below_critical_level'] == 1,
       isFastMovingStock: map['is_fast_moving_stock'] == 1,
