@@ -53,8 +53,8 @@ class UnitsDaoImpl extends UnitsDao {
   @override
   Future<Unit> insertUnit(Unit unit) async {
     final database = await _databaseHelper.database;
-    await database.insert(UnitsTable.UNITS_TABLE_NAME, unit.toMap());
-    return unit;
+    final id = await database.insert(UnitsTable.UNITS_TABLE_NAME, unit.toMap());
+    return unit.copyWith(id: id);
   }
 
   @override

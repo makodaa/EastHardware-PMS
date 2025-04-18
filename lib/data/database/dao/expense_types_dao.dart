@@ -56,12 +56,12 @@ class ExpenseTypesDaoImpl extends ExpenseTypesDao {
   @override
   Future<ExpenseType> insertExpenseType(ExpenseType expenseType) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'expense_types',
       expenseType.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return expenseType;
+    return expenseType.copyWith(id: id);
   }
 
   /// This method updates an existing expense type in the database.

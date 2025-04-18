@@ -55,12 +55,11 @@ class SecurityQuestionsDaoImpl extends SecurityQuestionsDao {
   @override
   Future<SecurityQuestion> insertSecurityQuestion(SecurityQuestion securityQuestion) async {
     final database = await _databaseHelper.database;
-    await database.insert(
+    final id = await database.insert(
       SecurityQuestionsTable.SECURITY_QUESTIONS_TABLE,
       securityQuestion.toMap(),
     );
-
-    return securityQuestion;
+    return securityQuestion.copyWith(id: id);
   }
 
   @override

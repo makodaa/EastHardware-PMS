@@ -2,26 +2,26 @@ class Unit {
   final int? id;
   final int? productId;
   final String name;
-  final double conversionFactor;
+  final double factor;
 
   Unit({
     this.id,
     this.productId,
     required this.name,
-    required this.conversionFactor,
+    required this.factor,
   });
 
   Unit copyWith({
     int? id,
     int? productId,
     String? name,
-    double? conversionFactor,
+    double? factor,
   }) {
     return Unit(
       id: id ?? this.id,
       productId: productId ?? this.productId,
       name: name ?? this.name,
-      conversionFactor: conversionFactor ?? this.conversionFactor,
+      factor: factor ?? this.factor,
     );
   }
 
@@ -30,7 +30,7 @@ class Unit {
       id: map['id'] as int,
       productId: map['product_id'] as int,
       name: map['name'] as String,
-      conversionFactor: map['conversion_factor'] as double,
+      factor: map['conversion_factor'] as double,
     );
   }
 
@@ -39,7 +39,7 @@ class Unit {
       'id': id,
       'product_id': productId,
       'name': name,
-      'conversion_factor': conversionFactor,
+      'conversion_factor': factor,
     };
   }
 }

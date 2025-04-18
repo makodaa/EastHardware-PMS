@@ -7,7 +7,7 @@ abstract class UserLogsDao {
   Future<UserLog?> getUserLogByUid(String uid);
   Future<List<UserLog?>> getUserLogsByUser(int id);
   Future<List<UserLog>> getUserLogsByEventTime(DateTime start, DateTime end);
-  Future<void> insertUserLog(UserLog userLog);
+  Future<UserLog> insertUserLog(UserLog userLog);
   Future<void> updateUserLog(UserLog userLog);
   Future<void> deleteUserLog(int id);
 }
@@ -48,9 +48,10 @@ class UserLogsDaoImpl extends UserLogsDao {
   }
 
   @override
-  Future<void> insertUserLog(UserLog userLog) async {
+  Future<UserLog> insertUserLog(UserLog userLog) async {
     final database = await _databaseHelper.database;
-    await database.insert('user_logs', userLog.toMap());
+    final id = await database.insert('user_logs', userLog.toMap());
+    return userLog.copyWith(id: id);
   }
 
   @override

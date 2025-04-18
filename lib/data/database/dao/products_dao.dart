@@ -15,6 +15,7 @@ abstract class ProductsDao {
   Future<Product> updateProduct(Product product);
   Future<void> deleteProduct(int id);
   Future<List<Product>> getProductsByCategoryId(int categoryId);
+  Future<List<Product>> getProductsByCreatorId(int creatorId);
 }
 
 class ProductsDaoImpl extends ProductsDao {
@@ -36,6 +37,8 @@ class ProductsDaoImpl extends ProductsDao {
   Future<List<Product>> getAllProducts() async {
     final Database database = await _databaseHelper.database;
     var queryResults = await database.query(ProductFlagsView.PRODUCT_STATUS_VIEW_TABLE);
+
+    print(queryResults);
 
     return List.generate(queryResults.length, (i) {
       return Product.fromMap(queryResults[i]);
@@ -71,10 +74,6 @@ class ProductsDaoImpl extends ProductsDao {
       product.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-
-    /// [jm] TODO: This is the problem. We need an id value for Product, BUT the id is created by the databse. Decisions decisions.
-    /// [mk] DAO should not handle this issue
-    /// [mk] Take id from last entry of product list state
     assert(id == product.id);
 
     return product;
@@ -101,10 +100,10 @@ class ProductsDaoImpl extends ProductsDao {
     List<Map<String, dynamic>> maps = await database.rawQuery(
       "SELECT p.* FROM products p "
       "WHERE p.id NOT IN ("
-      "SELECT p2.id FROM products p2"
+      "SELECT p2.id FROM products p2 "
       "JOIN invoice_products ip ON p2.id = ip.product_id "
       "JOIN invoices i ON ip.invoice_id = i.id "
-      "WHERE date(i.invoice_date) >= date('now', - || p2.deadStockThreshold || days) "
+      "WHERE date(i.invoice_date) >= date('now', '-' || p2.dead_stock_threshold || ' days') "
       ")",
     );
     return List.generate(maps.length, (i) {
@@ -117,12 +116,12 @@ class ProductsDaoImpl extends ProductsDao {
     final Database database = await _databaseHelper.database;
     List<Map<String, dynamic>> maps = await database.rawQuery(
       "SELECT products.* FROM products "
-      "JOIN invoice_products ON products.id = invoice_product.product_id "
+      "JOIN invoice_products ON products.id = invoice_products.product_id "
       "JOIN invoices ON invoice_products.invoice_id = invoices.id "
       "WHERE date(invoices.invoice_date) BETWEEN date('now', '-30 days') AND date('now', '0 days') "
       "GROUP BY products.id "
-      "HAVING count(invoices.*) >= products.fast_moving_threshold "
-      "ORDER BY count(invoices.*) DESC",
+      "HAVING count(invoices.id) >= products.fast_moving_threshold "
+      "ORDER BY count(invoices.id) DESC",
     );
     return List.generate(maps.length, (i) {
       return Product.fromMap(maps[i]);
@@ -146,6 +145,17 @@ class ProductsDaoImpl extends ProductsDao {
       ProductsTable.PRODUCTS_TABLE_NAME,
       where: '${ProductsTable.PRODUCTS_CATEGORY} = ?',
       whereArgs: [categoryId],
+    );
+    return res.map(Product.fromMap).toList();
+  }
+
+  @override
+  Future<List<Product>> getProductsByCreatorId(int creatorId) async {
+    final Database database = await _databaseHelper.database;
+    var res = await database.query(
+      ProductsTable.PRODUCTS_TABLE_NAME,
+      where: '${ProductsTable.PRODUCTS_CREATOR_ID} = ?',
+      whereArgs: [creatorId],
     );
     return res.map(Product.fromMap).toList();
   }

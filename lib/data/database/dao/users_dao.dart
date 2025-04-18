@@ -60,8 +60,8 @@ class UsersDaoImpl extends UsersDao {
   @override
   Future<User> insertUser(User user) async {
     final database = await _databaseHelper.database;
-    await database.insert(UsersTable.USERS_TABLE_NAME, user.toMap());
-    return user;
+    final id = await database.insert(UsersTable.USERS_TABLE_NAME, user.toMap());
+    return user.copyWith(id: id);
   }
 
   @override

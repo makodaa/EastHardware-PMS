@@ -153,12 +153,12 @@ class OrdersDaoImpl extends OrdersDao {
   @override
   Future<Order> insertOrder(Order order) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'insert',
       order.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return order;
+    return order.copyWith(id: id);
   }
 
   @override

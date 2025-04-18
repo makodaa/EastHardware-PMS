@@ -73,12 +73,12 @@ class InvoiceProductsDaoImpl extends InvoiceProductsDao {
   @override
   Future<InvoiceProduct> insertInvoiceProduct(InvoiceProduct invoiceProduct) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'invoice_products',
       invoiceProduct.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return invoiceProduct.copyWith();
+    return invoiceProduct.copyWith(id: id);
   }
 
   /// This method updates an existing invoice product in the database.

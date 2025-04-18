@@ -48,12 +48,12 @@ class OrderProductsDaoImpl extends OrderProductsDao {
   @override
   Future<OrderProduct> insertOrderProduct(OrderProduct orderProduct) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'order_products',
       orderProduct.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return orderProduct;
+    return orderProduct.copyWith(id: id);
   }
 
   /// Updates an existing order product in the database.

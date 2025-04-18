@@ -62,20 +62,18 @@ class InvoicesDaoImpl extends InvoicesDao {
   }
 
   /// Inserts a new invoice into the database.
-  /// TODO: Handle the case where the invoice already exists.
   @override
   Future<Invoice> insertInvoice(Invoice invoice) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'invoices',
       invoice.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return invoice;
+    return invoice.copyWith(id: id);
   }
 
   /// Updates an existing invoice in the database.
-  /// TODO: Handle the case where the invoice does not exist.
   @override
   Future<Invoice> updateInvoice(Invoice invoice) async {
     final db = await _databaseHelper.database;

@@ -20,6 +20,20 @@ class SecurityQuestion {
     );
   }
 
+  SecurityQuestion copyWith({
+    int? id,
+    int? userId,
+    String? question,
+    String? answer,
+  }) {
+    return SecurityQuestion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      question: question ?? this.question,
+      answer: answer ?? this.answer,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'user_id': userId,

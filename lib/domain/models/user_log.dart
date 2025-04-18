@@ -24,6 +24,22 @@ class UserLog {
     );
   }
 
+  UserLog copyWith({
+    int? id,
+    String? uid,
+    int? userId,
+    String? event,
+    DateTime? eventTime,
+  }) {
+    return UserLog(
+      id: id ?? this.id,
+      uid: uid ?? this.uid,
+      userId: userId ?? this.userId,
+      event: event ?? this.event,
+      eventTime: eventTime ?? this.eventTime,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,

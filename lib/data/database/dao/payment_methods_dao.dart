@@ -51,12 +51,12 @@ class PaymentMethodsDaoImpl extends PaymentMethodsDao {
   @override
   Future<PaymentMethod> insertPaymentMethod(PaymentMethod paymentMethod) async {
     final db = await _databaseHelper.database;
-    await db.insert(
+    final id = await db.insert(
       'payment_methods',
       paymentMethod.toMap(),
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
-    return paymentMethod;
+    return paymentMethod.copyWith(id: id);
   }
 
   @override
