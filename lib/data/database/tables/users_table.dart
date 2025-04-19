@@ -44,7 +44,6 @@ class UsersTable {
     Uint8List passwordHash = cryptographyService.generateHash(password, salt);
 
     User admin = User(
-      id: 0,
       firstName: 'System',
       lastName: 'Administrator',
       username: 'admin',
