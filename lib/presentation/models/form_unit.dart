@@ -26,4 +26,11 @@ class FormUnit {
       factor: double.parse(factor),
     );
   }
+
+  factory FormUnit.fromUnit(Unit unit) {
+    return FormUnit(
+      name: unit.name,
+      factor: unit.factor.toString(),
+    );
+  }
 }

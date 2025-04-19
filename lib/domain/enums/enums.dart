@@ -17,6 +17,8 @@ enum DataStatus {
 
 enum FormStatus {
   initial,
+  loading,
+  loaded,
   validating,
   invalid,
   valid,

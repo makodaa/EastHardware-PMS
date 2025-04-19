@@ -104,7 +104,14 @@ class ProductStatusChangedEvent extends ProductFormEvent {
 
 class FormButtonPressedEvent extends ProductFormEvent {
   final int productId;
-  const FormButtonPressedEvent(this.productId);
+  final int creatorId;
+  const FormButtonPressedEvent({required this.productId, required this.creatorId});
+}
+
+class ProductLoadedEvent extends ProductFormEvent {
+  final Product product;
+  final List<Unit> secondaryUnits;
+  const ProductLoadedEvent(this.product, this.secondaryUnits);
 }
 
 class FormSubmittedEvent extends ProductFormEvent {}

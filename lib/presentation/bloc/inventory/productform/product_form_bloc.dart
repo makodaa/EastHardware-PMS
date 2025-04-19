@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easthardware_pms/domain/constants/constants.dart';
 import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/domain/models/product.dart';
+import 'package:easthardware_pms/domain/models/unit.dart';
 import 'package:easthardware_pms/presentation/models/form_unit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
@@ -13,11 +14,15 @@ part 'product_form_state.dart';
 
 class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   final GlobalKey<FormState> formKey;
-  final int creatorId;
   ProductFormBloc({
-    required this.creatorId,
+    Product? product,
+    List<Unit>? units,
   })  : formKey = GlobalKey<FormState>(),
-        super(ProductFormState(creatorId: creatorId)) {
+        super(
+          product == null || units == null
+              ? ProductFormState()
+              : ProductFormState.fromProduct(product, units),
+        ) {
     on<NameFieldChangedEvent>(_onNameChanged);
     on<SkuFieldChangedEvent>(_onSkuChanged);
     on<CategoryFieldChangedEvent>(_onCategoryChanged);
@@ -38,6 +43,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     on<FormButtonPressedEvent>(_onButtonPressed);
     on<FormResetEvent>(_onFormReset);
     on<FormSubmittedEvent>(_onFormSubmitted);
+    on<ProductLoadedEvent>(_onProductLoaded);
   }
 
   void _onNameChanged(NameFieldChangedEvent event, Emitter<ProductFormState> emit) {
@@ -173,7 +179,12 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
       if (formKey.currentState case FormState formState when formState.validate()) {
         emit(state.copyWith(formStatus: FormStatus.valid));
         Future.delayed(Duration.zero);
-        emit(state.copyWith(formStatus: FormStatus.submitting, productId: event.productId));
+        emit(state.copyWith(
+          formStatus: FormStatus.submitting,
+          creatorId: event.creatorId,
+          productId: event.productId,
+          archiveStatus: state.archiveStatus ?? 0,
+        ));
       } else {
         emit(state.copyWith(formStatus: FormStatus.invalid));
       }
@@ -187,6 +198,32 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   }
 
   void _onFormReset(FormResetEvent event, Emitter emit) {
-    emit(ProductFormInitial(creatorId: creatorId));
+    emit(ProductFormInitial());
+  }
+
+  void _onProductLoaded(ProductLoadedEvent event, Emitter emit) {
+    emit(state.copyWith(formStatus: FormStatus.loading));
+    try {
+      emit(state.copyWith(
+        name: event.product.name,
+        sku: event.product.sku,
+        categoryName: event.product.categoryName,
+        categoryId: event.product.categoryId,
+        description: event.product.description,
+        price: event.product.salePrice.toString(),
+        cost: event.product.orderCost.toString(),
+        quantity: event.product.quantity.toString(),
+        mainUnit: event.product.mainUnit,
+        secondaryUnits: event.secondaryUnits.map(FormUnit.fromUnit).toList(),
+        criticalLevel: event.product.criticalLevel.toString(),
+        deadstockTreshold: event.product.deadStockThreshold.toString(),
+        fastmovingTreshold: event.product.fastMovingStockThreshold.toString(),
+        archiveStatus: event.product.archiveStatus,
+        formStatus: FormStatus.loaded,
+      ));
+    } catch (e) {
+      print('Error trying to load product: $e');
+      emit(state.copyWith(formStatus: FormStatus.error));
+    }
   }
 }

@@ -30,11 +30,11 @@ class ProductFormState extends Equatable {
 
   // Product Creation Information, Hidden from Form
   final DateTime creationDate;
-  final int archiveStatus;
-  final int creatorId;
+  final int? archiveStatus;
+  final int? creatorId;
 
   // Temporary Solution to not use repositories
-  final int productId;
+  final int? productId;
 
   final FormStatus formStatus;
 
@@ -54,9 +54,9 @@ class ProductFormState extends Equatable {
     String? deadstockTreshold,
     String? fastmovingTreshold,
     DateTime? creationDate,
-    required this.creatorId,
-    this.productId = 0,
-    this.archiveStatus = 0,
+    this.creatorId,
+    this.productId,
+    this.archiveStatus,
     this.formStatus = FormStatus.initial,
   })  : sku = const Uuid().v4().toString(),
         secondaryUnits = secondaryUnits ?? [FormUnit(name: '', factor: '')],
@@ -145,12 +145,35 @@ class ProductFormState extends Equatable {
       deadStockThreshold: double.parse(deadstockTreshold),
       fastMovingStockThreshold: double.parse(deadstockTreshold),
       creationDate: creationDate.toIso8601String(),
-      creatorId: creatorId,
-      archiveStatus: 0,
+      creatorId: creatorId!,
+      archiveStatus: archiveStatus!,
+    );
+  }
+
+  factory ProductFormState.fromProduct(Product product, List<Unit> units) {
+    return ProductFormState(
+      name: product.name,
+      sku: product.sku,
+      categoryId: product.categoryId,
+      categoryName: product.categoryName!,
+      description: product.description,
+      price: product.salePrice.toString(),
+      cost: product.orderCost.toString(),
+      quantity: product.quantity.toString(),
+      mainUnit: product.mainUnit,
+      criticalLevel: product.criticalLevel.toString(),
+      deadstockTreshold: product.deadStockThreshold.toString(),
+      fastmovingTreshold: product.fastMovingStockThreshold.toString(),
+      secondaryUnits:
+          units.isEmpty ? [FormUnit(name: '', factor: '')] : units.map(FormUnit.fromUnit).toList(),
+      creationDate: DateTime.parse(product.creationDate),
+      creatorId: product.creatorId,
+      archiveStatus: product.archiveStatus,
+      productId: product.id!,
     );
   }
 }
 
 class ProductFormInitial extends ProductFormState {
-  ProductFormInitial({required super.creatorId}) : super();
+  ProductFormInitial() : super();
 }

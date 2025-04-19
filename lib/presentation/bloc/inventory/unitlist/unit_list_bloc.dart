@@ -19,6 +19,7 @@ class UnitListBloc extends Bloc<UnitListEvent, UnitListState> {
 
   final UnitRepositoryImpl _repository;
 
+  // TODO: try refactor these shi
   void _onLoad(LoadUnitsEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
     try {
