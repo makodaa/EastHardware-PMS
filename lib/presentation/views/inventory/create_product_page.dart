@@ -21,9 +21,7 @@ class CreateProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProductFormBloc(
-        creatorId: context.read<AuthenticationBloc>().state.user!.id!,
-      ),
+      create: (context) => ProductFormBloc(),
       child: BlocListener<ProductFormBloc, ProductFormState>(
         listener: (context, state) {
           switch (state.formStatus) {
@@ -35,21 +33,24 @@ class CreateProductPage extends StatelessWidget {
 
               final Category matchedCategory = stateCategories.firstWhere(
                 (category) => category.name == formCategory,
-                orElse: () => Category(name: formCategory, id: stateCategories.length + 1),
+                orElse: () {
+                  final newCategory = Category(name: formCategory, id: stateCategories.length + 1);
+                  context.read<CategoryListBloc>().add(AddCategoryEvent(newCategory));
+                  return newCategory;
+                },
               );
 
-              context.read<CategoryListBloc>().add(AddCategoryEvent(matchedCategory));
-
-              final Product mappedProduct = state
-                  .mapStateToProduct()
-                  .copyWith(categoryId: matchedCategory.id, id: state.productId);
+              final Product mappedProduct = state.mapStateToProduct().copyWith(
+                  categoryId: matchedCategory.id,
+                  categoryName: matchedCategory.name,
+                  id: state.productId);
 
               context.read<ProductListBloc>().add(AddProductEvent(mappedProduct));
 
               final List<Unit> mappedUnits = state.secondaryUnits
                   .map((unit) {
                     if (unit.name.isNotEmpty && unit.factor.isNotEmpty) {
-                      return unit.toUnit(state.productId);
+                      return unit.toUnit(state.productId!);
                     }
                     return null;
                   })
@@ -256,6 +257,9 @@ class BasicInformationSection extends StatelessWidget with ProductFormValidator 
                   .toList(),
               onChanged: (value, reason) {
                 context.read<ProductFormBloc>().add(CategoryFieldChangedEvent(value));
+              },
+              onSelected: (value) {
+                context.read<ProductFormBloc>().add(CategoryIdChangedEvent(value.value!.id!));
               },
             );
           },
@@ -567,8 +571,12 @@ class PageHeader extends StatelessWidget {
         const Spacer(flex: 1),
         TextButtonFilled('Save Product', onPressed: () {
           // Added 1 because SQLite has one-based indexing
+          final int creatorId = 1 + context.read<AuthenticationBloc>().state.user!.id!;
           final int productId = 1 + context.read<ProductListBloc>().state.allProducts.length;
-          context.read<ProductFormBloc>().add(FormButtonPressedEvent(productId));
+          context.read<ProductFormBloc>().add(FormButtonPressedEvent(
+                productId: productId,
+                creatorId: creatorId,
+              ));
         })
       ].withSpacing(() => Spacing.h16),
     );
