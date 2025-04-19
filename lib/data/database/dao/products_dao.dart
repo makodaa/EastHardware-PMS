@@ -83,10 +83,11 @@ class ProductsDaoImpl extends ProductsDao {
     int affected = await database.update(
       ProductsTable.PRODUCTS_TABLE_NAME,
       product.toMap(),
-      where: '${ProductsTable.PRODUCTS_TABLE_NAME} = ?',
+      where: '${ProductsTable.PRODUCTS_ID} = ?',
       whereArgs: [product.id],
     );
 
+    print(affected);
     assert(affected == 1, "This should only update one row.");
 
     return product;
@@ -95,15 +96,15 @@ class ProductsDaoImpl extends ProductsDao {
   @override
   Future<List<Product>> getDeadStockProducts() async {
     final Database database = await _databaseHelper.database;
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-      "SELECT p.* FROM products p "
-      "WHERE p.id NOT IN ("
-      "SELECT p2.id FROM products p2 "
-      "JOIN invoice_products ip ON p2.id = ip.product_id "
-      "JOIN invoices i ON ip.invoice_id = i.id "
-      "WHERE date(i.invoice_date) >= date('now', '-' || p2.dead_stock_threshold || ' days') "
-      ")",
-    );
+    List<Map<String, dynamic>> maps = await database.rawQuery("SELECT p.* FROM products p "
+        "WHERE p.id NOT IN ("
+        "  SELECT p2.id FROM products p2 "
+        "  JOIN invoice_products ip ON p2.id = ip.product_id "
+        "  JOIN invoices i ON ip.invoice_id = i.id "
+        "  WHERE date(i.invoice_date) >= date('now', '-' || p2.dead_stock_threshold || ' days')"
+        ") "
+        "AND date(p.creation_date) <= date('now', '-30 days')");
+
     return List.generate(maps.length, (i) {
       return Product.fromMap(maps[i]);
     });
@@ -126,6 +127,7 @@ class ProductsDaoImpl extends ProductsDao {
     });
   }
 
+  // Refactor all special case queries, as archived products won't be interacted from them
   @override
   Future<List<Product>> getLowStockProducts() async {
     final Database database = await _databaseHelper.database;
