@@ -1,6 +1,8 @@
+import 'package:easthardware_pms/domain/models/product.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/views/authentication/login_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/create_product_page.dart';
+import 'package:easthardware_pms/presentation/views/inventory/edit_product_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,11 @@ final GoRouter router = GoRouter(
                 child: CreateProductPage(),
               ),
             ),
+            GoRoute(
+                path: AppRoutes.editProductPage,
+                pageBuilder: (context, state) => MaterialPage(
+                      child: EditProductPage(product: state.extra as Product),
+                    )),
             GoRoute(
               path: AppRoutes.categoriesPage,
               builder: (context, state) => const Center(child: Text('Manage Categories')),

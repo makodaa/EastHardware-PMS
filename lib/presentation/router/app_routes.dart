@@ -17,6 +17,9 @@ class AppRoutes {
   static const String createProductPage = '/create_product';
 
   // Edit Page Routes
+  static const String editProductPage = '/edit_product';
+
+  // Edit Page Routes
 
   // Detail Page Routes
 }

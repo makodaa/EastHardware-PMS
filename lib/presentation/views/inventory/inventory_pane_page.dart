@@ -1,6 +1,5 @@
 import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
-import 'package:easthardware_pms/presentation/router/app_router.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/data_row_mapper.dart';
@@ -10,6 +9,7 @@ import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show DataColumn, DataTable;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class InventoryPanePage extends StatelessWidget {
   const InventoryPanePage({super.key});
@@ -39,8 +39,8 @@ class PageHeader extends StatelessWidget {
       children: [
         const HeadingText('Products'),
         Expanded(child: Container()),
-        TextButton('Manage Categories', onPressed: () => router.push(AppRoutes.categoriesPage)),
-        TextButtonFilled('New Product', onPressed: () => router.push(AppRoutes.createProductPage)),
+        TextButton('Manage Categories', onPressed: () => context.push(AppRoutes.categoriesPage)),
+        TextButtonFilled('New Product', onPressed: () => context.push(AppRoutes.createProductPage)),
       ].withSpacing(() => Spacing.h16),
     );
   }
@@ -274,7 +274,9 @@ class MockDataTable extends StatelessWidget {
               DataColumn(label: Text('Actions')),
             ],
             rows: allProducts.map((product) {
-              return DataRowMapper.mapProductToRow(product, () {});
+              return DataRowMapper.mapProductToRow(product, () {
+                context.push(AppRoutes.editProductPage, extra: product);
+              });
             }).toList());
       },
     );
