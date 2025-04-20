@@ -87,7 +87,6 @@ class ProductsDaoImpl extends ProductsDao {
       whereArgs: [product.id],
     );
 
-    print(affected);
     assert(affected == 1, "This should only update one row.");
 
     return product;
@@ -102,8 +101,9 @@ class ProductsDaoImpl extends ProductsDao {
         "  JOIN invoice_products ip ON p2.id = ip.product_id "
         "  JOIN invoices i ON ip.invoice_id = i.id "
         "  WHERE date(i.invoice_date) >= date('now', '-' || p2.dead_stock_threshold || ' days')"
-        ") "
-        "AND date(p.creation_date) <= date('now', '-30 days')");
+        ")"
+        "  AND date(p.creation_date) <= date('now', '-' || p.dead_stock_threshold || ' days')"
+        "  AND archive_status = 0");
 
     return List.generate(maps.length, (i) {
       return Product.fromMap(maps[i]);
@@ -118,6 +118,7 @@ class ProductsDaoImpl extends ProductsDao {
       "JOIN invoice_products ON products.id = invoice_products.product_id "
       "JOIN invoices ON invoice_products.invoice_id = invoices.id "
       "WHERE date(invoices.invoice_date) BETWEEN date('now', '-30 days') AND date('now', '0 days') "
+      "AND products.archive_status = 0 "
       "GROUP BY products.id "
       "HAVING count(invoices.id) >= products.fast_moving_threshold "
       "ORDER BY count(invoices.id) DESC",
@@ -133,7 +134,8 @@ class ProductsDaoImpl extends ProductsDao {
     final Database database = await _databaseHelper.database;
     var res = await database.query(
       ProductsTable.PRODUCTS_TABLE_NAME,
-      where: '${ProductsTable.PRODUCTS_QUANTITY} <= ${ProductsTable.PRODUCTS_CRITICAL_LEVEL}',
+      where:
+          '${ProductsTable.PRODUCTS_QUANTITY} <= ${ProductsTable.PRODUCTS_CRITICAL_LEVEL} AND ${ProductsTable.PRODUCTS_ARCHIVE_STATUS} = 0',
     );
     return res.map(Product.fromMap).toList();
   }

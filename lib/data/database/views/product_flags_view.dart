@@ -23,7 +23,7 @@ class ProductFlagsView {
               JOIN invoices i ON ip.invoice_id = i.id
               WHERE ip.product_id = p.id
             ) IS NULL
-            AND date(p.creation_date) <= date('now', '-30 days')
+            AND date(p.creation_date) <= date('now', '-' || p.dead_stock_threshold || ' days')
             
             OR (
               SELECT MAX(date(i.invoice_date)) 
@@ -31,7 +31,7 @@ class ProductFlagsView {
               JOIN invoices i ON ip.invoice_id = i.id
               WHERE ip.product_id = p.id
             ) < date('now', '-' || p.dead_stock_threshold || ' days')
-            AND date(p.creation_date) <= date('now', '-30 days')
+            AND date(p.creation_date) <= date('now', '-' || p.dead_stock_threshold || ' days')
             
             THEN 1 ELSE 0
           END AS is_dead_stock,
@@ -42,6 +42,7 @@ class ProductFlagsView {
     ''');
   }
 
+//"  AND date(p.creation_date) <= date('now', '-' || dead_stock_threshold || ' days')"
   static void dropView(Database database) async {
     await database.execute('DROP VIEW IF EXISTS $PRODUCT_STATUS_VIEW_TABLE');
   }
