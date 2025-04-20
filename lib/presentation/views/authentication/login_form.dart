@@ -14,25 +14,27 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginFormBloc(),
-      child: Padding(
-        padding: AppPadding.a16,
-        child: Builder(builder: (context) {
-          var formKey = context.read<LoginFormBloc>().formKey;
-          return Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset("assets/icons/app.png", height: 24.0),
-                _FormHeader(),
-                _FormUsernameField(),
-                _FormPasswordField(),
-                Spacing.v8,
-                _FormButton(),
-              ].withSpacing(() => Spacing.v16),
-            ),
-          );
-        }),
+      child: ColoredBox(
+        color: Colors.white,
+        child: Padding(
+          padding: AppPadding.a32,
+          child: Builder(builder: (context) {
+            var formKey = context.read<LoginFormBloc>().formKey;
+            return Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset("assets/icons/app.png", height: 24.0),
+                  _FormHeader(),
+                  _FormUsernameField(),
+                  _FormPasswordField(),
+                  _FormButton(),
+                ].withSpacing(() => Spacing.v16),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

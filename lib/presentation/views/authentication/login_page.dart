@@ -3,8 +3,6 @@ import 'package:easthardware_pms/presentation/bloc/authentication/authentication
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/views/authentication/login_form.dart';
-
-import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -35,31 +33,18 @@ class LoginPage extends StatelessWidget {
       },
       child: ColoredBox(
         color: Colors.grey[10],
-        child: const Center(
-          child: LoginPageCard(
-            children: [
-              LoginForm(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoginPageCard extends StatelessWidget {
-  const LoginPageCard({super.key, this.children});
-  final List<Widget>? children;
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxHeight: 400,
-          maxWidth: 500,
-        ),
-        child: Column(
-          children: children!.withSpacing(() => Spacing.v16),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              children: [
+                Spacer(),
+                Expanded(child: LoginForm()),
+                Spacer(),
+              ],
+            ),
+          ],
         ),
       ),
     );
