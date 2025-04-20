@@ -4,6 +4,7 @@ import 'package:easthardware_pms/presentation/views/authentication/login_page.da
 import 'package:easthardware_pms/presentation/views/inventory/create_product_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/edit_product_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_page.dart';
+import 'package:easthardware_pms/presentation/views/inventory/manage_categories_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -50,19 +51,15 @@ final GoRouter router = GoRouter(
 
               /// The [MaterialPage] is used for the transition animation.
               /// Should be removed if decided not to use the transition.
-              pageBuilder: (context, state) => const MaterialPage(
-                child: CreateProductPage(),
-              ),
+              pageBuilder: (context, state) => const MaterialPage(child: CreateProductPage()),
             ),
             GoRoute(
                 path: AppRoutes.editProductPage,
-                pageBuilder: (context, state) => MaterialPage(
-                      child: EditProductPage(product: state.extra as Product),
-                    )),
+                pageBuilder: (context, state) =>
+                    MaterialPage(child: EditProductPage(product: state.extra as Product))),
             GoRoute(
-              path: AppRoutes.categoriesPage,
-              builder: (context, state) => const Center(child: Text('Manage Categories')),
-            ),
+                path: AppRoutes.categoriesPage,
+                pageBuilder: (context, state) => const MaterialPage(child: ManageCategoriesPage())),
           ],
         ),
       ],

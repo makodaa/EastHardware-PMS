@@ -1,8 +1,10 @@
 import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/data_row_mapper.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/kpi_card.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
@@ -38,9 +40,19 @@ class PageHeader extends StatelessWidget {
     return Row(
       children: [
         const HeadingText('Products'),
-        Expanded(child: Container()),
-        TextButton('Manage Categories', onPressed: () => context.push(AppRoutes.categoriesPage)),
-        TextButtonFilled('New Product', onPressed: () => context.push(AppRoutes.createProductPage)),
+        const Spacer(flex: 1),
+        TextButton('Manage Categories', onPressed: () {
+          const route = AppRoutes.categoriesPage;
+          context
+              .read<NavigationBloc>()
+              .add(NavigationIndexChanged(index: RouteIndexMapper.getIndexFromRoute(route)!));
+        }),
+        TextButtonFilled('New Product', onPressed: () {
+          const route = AppRoutes.createProductPage;
+          context
+              .read<NavigationBloc>()
+              .add(NavigationIndexChanged(index: RouteIndexMapper.getIndexFromRoute(route)!));
+        }),
       ].withSpacing(() => Spacing.h16),
     );
   }
@@ -74,7 +86,8 @@ class InventorySummary extends StatelessWidget {
           const SubheadingText('Inventory Summary'),
           BlocBuilder<ProductListBloc, ProductListState>(
             builder: (context, state) {
-              final totalCount = state.allProducts.length;
+              final activeCount =
+                  state.allProducts.where((product) => product.archiveStatus == 0).length;
               final lowStockCount = state.lowStockProducts.length;
               final fastMovingCount = state.fastMovingProducts.length;
               final deadCount = state.deadStockProducts.length;
@@ -85,7 +98,7 @@ class InventorySummary extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          TotalCountCard(value: totalCount.toString()),
+                          ActiveCountCard(value: activeCount.toString()),
                           LowStockCountCard(value: lowStockCount.toString()),
                           HangingCountCard(value: deadCount.toString()),
                           FastMovingCountCard(value: fastMovingCount.toString()),
@@ -103,10 +116,10 @@ class InventorySummary extends StatelessWidget {
   }
 }
 
-class TotalCountCard extends KPICard {
-  const TotalCountCard({super.key, required super.value})
+class ActiveCountCard extends KPICard {
+  const ActiveCountCard({super.key, required super.value})
       : super(
-          'Total Products',
+          'Active Products',
           icon: const Icon(FluentIcons.product),
         );
 }
@@ -209,24 +222,15 @@ class ProductListSection extends StatelessWidget {
         children: [
           const SubheadingText('List of Products'),
           const SearchRow(),
-          Expanded(
-            child: Container(
-              padding: AppPadding.a4,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: const MockDataTable(),
-            ),
-          ),
+          const ProductsDataTable(),
         ].withSpacing(() => Spacing.v8),
       ),
     );
   }
 }
 
-class MockDataTable extends StatelessWidget {
-  const MockDataTable({
+class ProductsDataTable extends StatelessWidget {
+  const ProductsDataTable({
     super.key,
   });
 
@@ -235,15 +239,18 @@ class MockDataTable extends StatelessWidget {
     return BlocBuilder<ProductListBloc, ProductListState>(
       builder: (context, state) {
         if (state.status == DataStatus.loading) {
-          return const Center(
-            child: ProgressRing(),
+          return const Expanded(
+            child: Center(
+              child: ProgressRing(),
+            ),
           );
         }
 
         final allProducts = state.allProducts.where((p) => p.archiveStatus == 0).toList();
 
         if (allProducts.isEmpty) {
-          return const Center(
+          return const Expanded(
+              child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -259,25 +266,32 @@ class MockDataTable extends StatelessWidget {
                 ),
               ],
             ),
-          );
+          ));
         }
 
-        return DataTable(
-            showCheckboxColumn: true,
-            columns: const [
-              DataColumn(label: Text('Name')),
-              DataColumn(label: Text("SKU")),
-              DataColumn(label: Text('Category')),
-              DataColumn(label: Text('Price')),
-              DataColumn(label: Text('Cost')),
-              DataColumn(label: Text('Quantity')),
-              DataColumn(label: Text('Actions')),
-            ],
-            rows: allProducts.map((product) {
-              return DataRowMapper.mapProductToRow(product, () {
-                context.push(AppRoutes.editProductPage, extra: product);
-              });
-            }).toList());
+        return Expanded(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: DataTable(
+                showCheckboxColumn: true,
+                columns: const [
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Category')),
+                  DataColumn(label: Text('Price')),
+                  DataColumn(label: Text('Cost')),
+                  DataColumn(label: Text('Quantity')),
+                  DataColumn(label: Text('Actions')),
+                ],
+                rows: allProducts.map((product) {
+                  return DataRowMapper.mapProductToRow(product, () {
+                    context.push(AppRoutes.editProductPage, extra: product);
+                  });
+                }).toList()),
+          ),
+        );
       },
     );
   }

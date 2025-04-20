@@ -27,7 +27,7 @@ class KPICard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BodyText(title),
+                Flexible(child: BodyText(title)),
                 icon,
               ],
             ),

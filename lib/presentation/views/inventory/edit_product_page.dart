@@ -8,12 +8,14 @@ import 'package:easthardware_pms/presentation/bloc/inventory/productform/product
 import 'package:easthardware_pms/presentation/bloc/inventory/productform/product_form_validator.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class EditProductPage extends StatelessWidget {
   final Product product;
@@ -87,7 +89,10 @@ class EditProductPage extends StatelessWidget {
               Future.delayed(Duration.zero, () {
                 if (context.mounted) {
                   context.read<ProductFormBloc>().add(FormResetEvent());
-                  context.pop();
+                  context.read<NavigationBloc>().add(
+                        NavigationIndexChanged(
+                            index: RouteIndexMapper.getIndexFromRoute(AppRoutes.inventoryPage)!),
+                      );
                 }
               });
             case FormStatus.error:
@@ -573,7 +578,13 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(icon: const Icon(FluentIcons.back), onPressed: context.pop),
+        IconButton(
+          icon: const Icon(FluentIcons.back),
+          onPressed: () => context.read<NavigationBloc>().add(
+                NavigationIndexChanged(
+                    index: RouteIndexMapper.getIndexFromRoute(AppRoutes.inventoryPage)!),
+              ),
+        ),
         const DisplayText('Edit Product'),
         const Spacer(flex: 1),
         TextButton('Archive Product', onPressed: () {
@@ -595,7 +606,7 @@ class PageHeader extends StatelessWidget {
           // Take actual productId
           // Add onUpdate Event
           final int productId = context.read<ProductFormBloc>().state.productId!;
-          final int creatorId = context.read<AuthenticationBloc>().state.user!.id!;
+          final int creatorId = context.read<ProductFormBloc>().state.creatorId!;
           context.read<ProductFormBloc>().add(FormButtonPressedEvent(
                 productId: productId,
                 creatorId: creatorId,

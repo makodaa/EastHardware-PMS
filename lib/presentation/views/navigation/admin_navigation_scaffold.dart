@@ -1,6 +1,6 @@
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
-import 'package:easthardware_pms/presentation/router/app_routes.dart';
-import 'package:easthardware_pms/presentation/widgets/brand/logo_row.dart';
+import 'package:easthardware_pms/presentation/widgets/brand/navrail_header.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,21 +15,18 @@ class AdminNavigationScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<NavigationBloc, NavigationState>(
       listener: (context, state) {
-        final route = getRouteFromIndex(state);
+        final route = RouteIndexMapper.getRouteFromIndex(state);
         if (route != null && state.selectedIndex != shell.currentIndex) {
           context.push(route);
         }
       },
       builder: (context, state) {
         return NavigationView(
-            appBar: const NavigationAppBar(
-              title: SizedBox(),
-              leading: LogoRow(),
-            ),
             paneBodyBuilder: (item, body) {
               return children[shell.currentIndex];
             },
             pane: NavigationPane(
+              header: const LogoRow(),
               selected: state.selectedIndex,
               displayMode: PaneDisplayMode.auto,
               onItemPressed: (index) {
@@ -71,17 +68,6 @@ class AdminNavigationScaffold extends StatelessWidget {
             ));
       },
     );
-  }
-
-  String? getRouteFromIndex(NavigationState state) {
-    return switch (state.selectedIndex) {
-      0 => AppRoutes.admin,
-      1 => AppRoutes.inventoryPage,
-      2 => AppRoutes.inventoryPage,
-      3 => AppRoutes.createProductPage,
-      4 => AppRoutes.categoriesPage,
-      _ => null,
-    };
   }
 }
 

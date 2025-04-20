@@ -8,12 +8,14 @@ import 'package:easthardware_pms/presentation/bloc/inventory/productform/product
 import 'package:easthardware_pms/presentation/bloc/inventory/productform/product_form_validator.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class CreateProductPage extends StatelessWidget {
   const CreateProductPage({super.key});
@@ -64,34 +66,17 @@ class CreateProductPage extends StatelessWidget {
 
               context.read<ProductFormBloc>().add(FormSubmittedEvent());
               break;
-            // Handle Product Map
             case FormStatus.submitted:
               Future.delayed(Duration.zero, () {
                 if (context.mounted) {
                   context.read<ProductFormBloc>().add(FormResetEvent());
-                  context.pop();
                 }
               });
-            case FormStatus.error:
-              // Revert all changes / delete all changes
-              if (state.categoryId != null) {
-                context.read<CategoryListBloc>().add(DeleteCategoryEvent(state.categoryId!));
-              }
-              final insertedProduct = context.read<ProductListBloc>().state.allProducts.last;
-              // add rangeerror check here lol
-              if (insertedProduct.name == state.name) {
-                context.read<ProductListBloc>().add(DeleteProductEvent(insertedProduct.id!));
-              }
-              final List<Unit> units = context
-                  .read()
-                  .read<UnitListBloc>()
-                  .state
-                  .allUnits
-                  .where((unit) => unit.productId == insertedProduct.id)
-                  .toList();
-              for (var unit in units) {
-                context.read<UnitListBloc>().add(DeleteUnitEvent(unit.id!));
-              }
+              context.read<NavigationBloc>().add(
+                    NavigationIndexChanged(
+                        index: RouteIndexMapper.getIndexFromRoute(AppRoutes.inventoryPage)!),
+                  );
+              break;
             default:
               break;
           }
@@ -566,12 +551,18 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(icon: const Icon(FluentIcons.back), onPressed: context.pop),
+        IconButton(
+          icon: const Icon(FluentIcons.back),
+          onPressed: () => context.read<NavigationBloc>().add(
+                NavigationIndexChanged(
+                    index: RouteIndexMapper.getIndexFromRoute(AppRoutes.inventoryPage)!),
+              ),
+        ),
         const DisplayText('Add Product'),
         const Spacer(flex: 1),
         TextButtonFilled('Save Product', onPressed: () {
           // Added 1 because SQLite has one-based indexing
-          final int creatorId = 1 + context.read<AuthenticationBloc>().state.user!.id!;
+          final int creatorId = context.read<AuthenticationBloc>().state.user!.id!;
           final int productId = 1 + context.read<ProductListBloc>().state.allProducts.length;
           context.read<ProductFormBloc>().add(FormButtonPressedEvent(
                 productId: productId,
