@@ -6,6 +6,8 @@ import 'package:easthardware_pms/presentation/views/inventory/edit_product_page.
 import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_page.dart';
 import 'package:easthardware_pms/presentation/views/inventory/manage_categories_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
+import 'package:easthardware_pms/presentation/views/security/create_user_page.dart';
+import 'package:easthardware_pms/presentation/views/security/users_pane_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -62,6 +64,19 @@ final GoRouter router = GoRouter(
                 pageBuilder: (context, state) => const MaterialPage(child: ManageCategoriesPage())),
           ],
         ),
+        StatefulShellBranch(
+          initialLocation: AppRoutes.usersPage,
+          routes: [
+            GoRoute(
+              path: AppRoutes.usersPage,
+              builder: (context, state) => const UsersPanePage(),
+            ),
+            GoRoute(
+              path: AppRoutes.createUserPage,
+              builder: (context, state) => const CreateUserPage(),
+            ),
+          ],
+        )
       ],
     )
   ],

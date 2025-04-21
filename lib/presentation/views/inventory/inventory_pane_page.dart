@@ -216,7 +216,7 @@ class ProductListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 2,
+      flex: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -30,7 +30,7 @@ class AdminNavigationScaffold extends StatelessWidget {
               selected: state.selectedIndex,
               displayMode: PaneDisplayMode.auto,
               onItemPressed: (index) {
-                if ([1].contains(index)) index++;
+                if ([1, 12].contains(index)) index++;
                 context.read<NavigationBloc>().add(NavigationIndexChanged(index: index));
               },
               items: [
@@ -62,6 +62,12 @@ class AdminNavigationScaffold extends StatelessWidget {
                   icon: const Icon(FluentIcons.bar_chart_vertical_fill),
                   title: const Text('Reports'),
                   body: const SizedBox(),
+                ),
+                PaneItemExpander(
+                  icon: const Icon(FluentIcons.local_admin),
+                  title: const Text('Security'),
+                  items: _securitySubItems,
+                  body: const SizedBox(),
                 )
                 //
               ],
@@ -79,7 +85,7 @@ List<NavigationPaneItem> _inventorySubItems = [
   ),
   PaneItem(
     icon: const Icon(FluentIcons.product_release),
-    title: const Text("Create Product"),
+    title: const Text("Register Product"),
     body: const SizedBox(),
   ),
   PaneItem(
@@ -113,4 +119,19 @@ List<NavigationPaneItem> _orderSubItems = [
     title: const Text('Manage Expense Type'),
     body: const SizedBox(),
   ),
+];
+
+List<NavigationPaneItem> _securitySubItems = [
+  PaneItem(
+      icon: const Icon(FluentIcons.contact_list),
+      title: const Text('List of Users'),
+      body: const SizedBox()),
+  PaneItem(
+      icon: const Icon(FluentIcons.add_friend),
+      title: const Text('Register User'),
+      body: const SizedBox()),
+  PaneItem(
+      icon: const Icon(FluentIcons.user_window),
+      title: const Text('User Logs'),
+      body: const SizedBox()),
 ];

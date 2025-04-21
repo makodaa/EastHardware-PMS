@@ -11,15 +11,13 @@ class AppRoutes {
   static const String orderPage = '/order';
   static const String reportsPage = '/reports';
   static const String settingsPage = '/settings';
+
+  // Inventory Sub Pages
   static const String categoriesPage = '/categories';
+  static const String createProductPage = '/create/product';
+  static const String editProductPage = '/edit';
 
-  // Create Page Routes
-  static const String createProductPage = '/create_product';
-
-  // Edit Page Routes
-  static const String editProductPage = '/edit_product';
-
-  // Edit Page Routes
-
-  // Detail Page Routes
+  // Security Sub Pages
+  static const String usersPage = '/users';
+  static const String createUserPage = '/create/user';
 }

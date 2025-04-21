@@ -9,6 +9,9 @@ class RouteIndexMapper {
       2 => AppRoutes.inventoryPage,
       3 => AppRoutes.createProductPage,
       4 => AppRoutes.categoriesPage,
+      12 => AppRoutes.usersPage,
+      13 => AppRoutes.usersPage,
+      14 => AppRoutes.createUserPage,
       _ => null,
     };
   }
@@ -19,6 +22,8 @@ class RouteIndexMapper {
       AppRoutes.inventoryPage => 2,
       AppRoutes.createProductPage => 3,
       AppRoutes.categoriesPage => 4,
+      AppRoutes.usersPage => 13,
+      AppRoutes.createUserPage => 14,
       _ => null
     };
   }

@@ -168,3 +168,15 @@ class ButtonText extends StatelessWidget {
     );
   }
 }
+
+extension StringExtension on String {
+  String toTitleCase() {
+    return split(' ')
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
+  }
+
+  String capitalize() {
+    return this[0].toUpperCase() + substring(1).toLowerCase();
+  }
+}

@@ -1,8 +1,11 @@
 import 'package:easthardware_pms/domain/models/category.dart';
 import 'package:easthardware_pms/domain/models/product.dart';
+import 'package:easthardware_pms/domain/models/user.dart';
 import 'package:easthardware_pms/presentation/widgets/data_row.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
+import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart' show DataCell, DataRow;
 
 class DataRowMapper {
@@ -60,6 +63,15 @@ class DataRowMapper {
       DataCell(Text(category.name.toString())),
       DataCell(Text(productCount.toString())),
       DataCell(HyperlinkButton(onPressed: action, child: const Text('Edit'))),
+    ]);
+  }
+
+  static DataRow mapUserToRow(User user, Function() action) {
+    return DataRow(cells: [
+      DataCell(Text('${user.firstName} ${user.lastName}')),
+      DataCell(Text(user.accessLevel.name.toTitleCase())),
+      DataCell(Text(DateFormat.yMMMMd().format(DateTime.parse(user.creationDate)))),
+      DataCell(HyperlinkButton(onPressed: action, child: const Text('Edit')))
     ]);
   }
 }
