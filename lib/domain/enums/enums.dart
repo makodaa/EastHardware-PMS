@@ -5,7 +5,7 @@ enum DiscountType {
 
 enum AccessLevel {
   staff,
-  admin,
+  administrator,
 }
 
 enum DataStatus {
@@ -17,8 +17,6 @@ enum DataStatus {
 
 enum FormStatus {
   initial,
-  loading,
-  loaded,
   validating,
   invalid,
   valid,

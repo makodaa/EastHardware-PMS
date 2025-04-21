@@ -1,7 +1,6 @@
 import "dart:typed_data";
 
 import "package:easthardware_pms/domain/enums/enums.dart";
-import "package:uuid/uuid.dart";
 
 class User {
   final int? id;
@@ -12,9 +11,11 @@ class User {
   final AccessLevel accessLevel;
   final Uint8List salt;
   final Uint8List passwordHash;
+  final int status;
+  final String creationDate;
 
   User({
-    String? uid,
+    required this.uid,
     this.id,
     required this.firstName,
     required this.lastName,
@@ -22,25 +23,33 @@ class User {
     required this.accessLevel,
     required this.passwordHash,
     required this.salt,
-  }) : uid = uid ?? const Uuid().v4();
+    required this.status,
+    required this.creationDate,
+  });
 
   User copyWith({
     int? id,
+    String? uid,
     String? firstName,
     String? lastName,
     String? username,
     AccessLevel? accessLevel,
     Uint8List? passwordHash,
     Uint8List? salt,
+    int? status,
+    String? creationDate,
   }) {
     return User(
       id: id ?? this.id,
+      uid: uid ?? this.uid,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       username: username ?? this.username,
       accessLevel: accessLevel ?? this.accessLevel,
       passwordHash: passwordHash ?? this.passwordHash,
       salt: salt ?? this.salt,
+      status: status ?? this.status,
+      creationDate: creationDate ?? this.creationDate,
     );
   }
 
@@ -53,18 +62,23 @@ class User {
       'access_level': accessLevel.index,
       'password_hash': passwordHash,
       'salt': salt,
+      'status': status,
+      'creation_date': creationDate,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'] as int,
+      uid: map['uid'] as String,
       firstName: map['first_name'] as String,
       lastName: map['last_name'] as String,
       username: map['username'] as String,
       accessLevel: AccessLevel.values[map['access_level'] as int],
       passwordHash: map['password_hash'] as Uint8List,
       salt: map['salt'] as Uint8List,
+      creationDate: map['creation_date'] as String,
+      status: map['status'] as int,
     );
   }
 }

@@ -16,7 +16,6 @@ import 'package:easthardware_pms/domain/services/cryptography_service.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final UserRepository _userRepository = UserRepositoryImpl();
-  static const CryptographyService _cryptographyService = CryptographyService();
 
   /// Attempts to log in a user with inputted credentials
   /// @param [username] The string username of the user
@@ -34,7 +33,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       throw AuthenticationException('Invalid username or password');
     }
     // Hash the input password
-    final Uint8List hashedPassword = _cryptographyService.generateHash(password, user.salt);
+    final Uint8List hashedPassword = CryptographyService.generateHash(password, user.salt);
     // Compare the hashed password with the stored password
     if (user.passwordHash.toString() != hashedPassword.toString()) {
       throw AuthenticationException('Invalid username or password');

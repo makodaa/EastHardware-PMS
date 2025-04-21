@@ -9,7 +9,7 @@ class UserRepositoryImpl extends UserRepository {
   final UsersDao _usersDao = UsersDaoImpl();
 
   @override
-  Future<User> addUser(User user) {
+  Future<User> insertUser(User user) {
     _validateUser(user);
     try {
       return _usersDao.insertUser(user);
@@ -19,12 +19,12 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> deleteUser(int id) {
-    if (id <= 0) {
+  Future<void> deleteUser(User user) {
+    if (user.id == null || user.id! <= 0) {
       throw ArgumentException('Invalid user ID');
     }
     try {
-      return _usersDao.deleteUser(id);
+      return _usersDao.deleteUser(user);
     } catch (e) {
       throw DatabaseException('Failed to delete user: $e');
     }
@@ -64,10 +64,10 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<User> updateUser(int id, User user) {
+  Future<User> updateUser(User user) {
     _validateUser(user);
     try {
-      return _usersDao.updateUser(id, user);
+      return _usersDao.updateUser(user);
     } catch (e) {
       throw DatabaseException(e.toString());
     }

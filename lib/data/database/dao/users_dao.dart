@@ -9,8 +9,8 @@ abstract class UsersDao {
   Future<User?> getUserByUsername(String username);
 
   Future<User> insertUser(User user);
-  Future<User> updateUser(int id, User user);
-  Future<void> deleteUser(int id);
+  Future<User> updateUser(User user);
+  Future<void> deleteUser(User user);
 }
 
 class UsersDaoImpl extends UsersDao {
@@ -65,24 +65,24 @@ class UsersDaoImpl extends UsersDao {
   }
 
   @override
-  Future<User> updateUser(int id, User user) async {
+  Future<User> updateUser(User user) async {
     final database = await _databaseHelper.database;
     await database.update(
       UsersTable.USERS_TABLE_NAME,
       user.toMap(),
       where: "${UsersTable.USERS_ID} = ?",
-      whereArgs: [id],
+      whereArgs: [user.id],
     );
     return user;
   }
 
   @override
-  Future<void> deleteUser(int id) async {
+  Future<void> deleteUser(User user) async {
     final database = await _databaseHelper.database;
     await database.delete(
       UsersTable.USERS_TABLE_NAME,
       where: "${UsersTable.USERS_ID} = ?",
-      whereArgs: [id],
+      whereArgs: [user.id],
     );
   }
 

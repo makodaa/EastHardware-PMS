@@ -7,7 +7,7 @@ class CryptographyService {
   const CryptographyService();
 
   // Generates a secure random salt
-  Uint8List generateSalt([int length = 16]) {
+  static Uint8List generateSalt([int length = 16]) {
     final secureRandom = Random.secure();
     final salt = Uint8List(length);
     for (int i = 0; i < length; i++) {
@@ -17,7 +17,7 @@ class CryptographyService {
   }
 
   // Hashes password + salt using SHA-256
-  Uint8List generateHash(String password, Uint8List salt) {
+  static Uint8List generateHash(String password, Uint8List salt) {
     final passwordBytes = Uint8List.fromList(password.codeUnits);
     final combined = Uint8List(salt.length + passwordBytes.length)
       ..setAll(0, salt)

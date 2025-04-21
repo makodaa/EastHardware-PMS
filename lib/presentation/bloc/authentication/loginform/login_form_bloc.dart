@@ -1,3 +1,4 @@
+import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     on<LoginFormUsernameChanged>(_onUsernameChanged);
     on<LoginFormPasswordChanged>(_onPasswordChanged);
     on<LoginFormButtonPressed>(_onButtonPressed);
+    on<LoginFormReturned>(_onFormReturned);
     on<LoginFormResetEvent>(_onReset);
   }
 
@@ -27,14 +29,18 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     return emit(state.copyWith(password: password));
   }
 
-  void _onButtonPressed(LoginFormButtonPressed event, Emitter emit) async {
-    emit(state.copyWith(isValidating: true));
+  void _onButtonPressed(LoginFormButtonPressed event, Emitter emit) {
+    emit(state.copyWith(status: FormStatus.validating));
 
     if (formKey.currentState case FormState formState when formState.validate()) {
-      emit(state.copyWith(isSubmitting: true, isValidating: false));
+      emit(state.copyWith(status: FormStatus.submitting));
     } else {
-      emit(state.copyWith(isSubmitting: false, isValidating: false));
+      emit(state.copyWith(status: FormStatus.error));
     }
+  }
+
+  void _onFormReturned(LoginFormReturned event, Emitter emit) async {
+    emit(state.copyWith(status: FormStatus.initial));
   }
 
   void _onReset(LoginFormResetEvent event, Emitter emit) {

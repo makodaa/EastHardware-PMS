@@ -1,3 +1,4 @@
+import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_validator.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
@@ -12,29 +13,26 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginFormBloc(),
-      child: ColoredBox(
-        color: Colors.white,
-        child: Padding(
-          padding: AppPadding.a32,
-          child: Builder(builder: (context) {
-            var formKey = context.read<LoginFormBloc>().formKey;
-            return Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset("assets/icons/app.png", height: 24.0),
-                  _FormHeader(),
-                  _FormUsernameField(),
-                  _FormPasswordField(),
-                  _FormButton(),
-                ].withSpacing(() => Spacing.v16),
-              ),
-            );
-          }),
-        ),
+    return ColoredBox(
+      color: Colors.white,
+      child: Padding(
+        padding: AppPadding.a32,
+        child: Builder(builder: (context) {
+          var formKey = context.read<LoginFormBloc>().formKey;
+          return Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset("assets/icons/app.png", height: 24.0),
+                _FormHeader(),
+                _FormUsernameField(),
+                _FormPasswordField(),
+                _FormButton(),
+              ].withSpacing(() => Spacing.v16),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -100,7 +98,7 @@ class _FormButton extends StatelessWidget {
     return BlocListener<LoginFormBloc, LoginFormState>(
       bloc: loginFormBloc,
       listener: (context, state) {
-        if (state.isSubmitting == true) {
+        if (state.status == FormStatus.validating) {
           var event = AuthenticationLoginEvent(
             username: state.username,
             password: state.password,

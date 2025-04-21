@@ -14,4 +14,6 @@ class LoginFormPasswordChanged extends LoginFormEvent {
 
 class LoginFormButtonPressed extends LoginFormEvent {}
 
+class LoginFormReturned extends LoginFormEvent {}
+
 class LoginFormResetEvent extends LoginFormEvent {}

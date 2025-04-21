@@ -16,7 +16,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   void _onLogin(AuthenticationLoginEvent event, Emitter emit) async {
     emit(state.copyWith(status: AuthenticationStatus.loading));
-    await Future.delayed(const Duration(milliseconds: 0));
+    Future.delayed(Duration.zero);
     try {
       User user = await _repository.logIn(username: event.username, password: event.password);
       emit(state.copyWith(status: AuthenticationStatus.success, user: user));
