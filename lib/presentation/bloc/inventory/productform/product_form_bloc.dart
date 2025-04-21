@@ -116,9 +116,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final String name = event.name;
     final int index = event.index;
     final List<FormUnit> alternativeUnits = List.from(state.secondaryUnits);
-    if (alternativeUnits.isEmpty) {
-      alternativeUnits.add(FormUnit(name: '', factor: ''));
-    }
+
     alternativeUnits[index] = alternativeUnits[index].copyWith(name: name);
     return emit(state.copyWith(secondaryUnits: alternativeUnits));
   }
@@ -128,9 +126,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final String factor = event.factor;
     final int index = event.index;
     final List<FormUnit> alternativeUnits = List.from(state.secondaryUnits);
-    if (alternativeUnits.isEmpty) {
-      alternativeUnits.add(FormUnit(name: '', factor: ''));
-    }
+
     alternativeUnits[index] = alternativeUnits[index].copyWith(factor: factor);
     return emit(state.copyWith(secondaryUnits: alternativeUnits));
   }
@@ -202,7 +198,6 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   }
 
   void _onProductLoaded(ProductLoadedEvent event, Emitter emit) {
-    emit(state.copyWith(formStatus: FormStatus.loading));
     try {
       emit(state.copyWith(
         name: event.product.name,
@@ -219,7 +214,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
         deadstockTreshold: event.product.deadStockThreshold.toString(),
         fastmovingTreshold: event.product.fastMovingStockThreshold.toString(),
         archiveStatus: event.product.archiveStatus,
-        formStatus: FormStatus.loaded,
+        formStatus: FormStatus.initial,
       ));
     } catch (e) {
       print('Error trying to load product: $e');
