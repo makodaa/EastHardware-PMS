@@ -102,6 +102,7 @@ class ProductRepositoryImpl extends ProductRepository {
     }
   }
 
+  // TODO: Remove, since validaiton is done in the presentation layer alr lol
   void _validateProduct(Product product) {
     if (product.name.isEmpty) {
       throw ValidationException('Product name cannot be empty');

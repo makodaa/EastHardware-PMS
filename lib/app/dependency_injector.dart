@@ -2,11 +2,15 @@ import 'package:easthardware_pms/data/repository/authentication_repository.dart'
 import 'package:easthardware_pms/data/repository/category_repository.dart';
 import 'package:easthardware_pms/data/repository/product_repository.dart';
 import 'package:easthardware_pms/data/repository/unit_repository.dart';
+import 'package:easthardware_pms/data/repository/user_log_repository.dart';
+import 'package:easthardware_pms/data/repository/user_repository.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/categorylist/category_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userlist/user_list_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -15,12 +19,16 @@ class DependencyInjector {
   late ProductRepositoryImpl _productRepository;
   late CategoryRepositoryImpl _categoryRepository;
   late UnitRepositoryImpl _unitRepository;
+  late UserLogRepositoryImpl _userLogRepository;
+  late UserRepositoryImpl _userRepository;
 
   Future<void> init() async {
     _authenticationRepository = AuthenticationRepositoryImpl();
     _productRepository = ProductRepositoryImpl();
     _categoryRepository = CategoryRepositoryImpl();
     _unitRepository = UnitRepositoryImpl();
+    _userLogRepository = UserLogRepositoryImpl();
+    _userRepository = UserRepositoryImpl();
   }
 
   List<SingleChildWidget> inject() {
@@ -30,11 +38,14 @@ class DependencyInjector {
       RepositoryProvider.value(value: _unitRepository),
       BlocProvider(create: (context) => AuthenticationBloc(_authenticationRepository)),
       BlocProvider(create: (context) => NavigationBloc()),
+      BlocProvider(create: (context) => UserListBloc(_userRepository)..add(LoadAllUsersEvent())),
       BlocProvider(
           create: (context) => ProductListBloc(_productRepository)..add(LoadAllProductsEvent())),
       BlocProvider(
           create: (context) => CategoryListBloc(_categoryRepository)..add(LoadCategoriesEvent())),
       BlocProvider(create: (context) => UnitListBloc(_unitRepository)..add(LoadUnitsEvent())),
+      BlocProvider(
+          create: (context) => UserLogListBloc(_userLogRepository)..add(LoadUserLogsEvent())),
     ];
   }
 }

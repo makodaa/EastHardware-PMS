@@ -5,11 +5,11 @@ abstract class UserLogsDao {
   Future<List<UserLog>> getAllUserLogs();
   Future<UserLog?> getUserLogById(int id);
   Future<UserLog?> getUserLogByUid(String uid);
-  Future<List<UserLog?>> getUserLogsByUser(int id);
+  Future<List<UserLog>> getUserLogsByUserId(int id);
   Future<List<UserLog>> getUserLogsByEventTime(DateTime start, DateTime end);
   Future<UserLog> insertUserLog(UserLog userLog);
   Future<void> updateUserLog(UserLog userLog);
-  Future<void> deleteUserLog(int id);
+  Future<void> deleteUserLog(UserLog userLog);
 }
 
 class UserLogsDaoImpl extends UserLogsDao {
@@ -17,12 +17,12 @@ class UserLogsDaoImpl extends UserLogsDao {
   UserLogsDaoImpl([DatabaseHelper? databaseHelper])
       : _databaseHelper = databaseHelper ?? DatabaseHelper();
   @override
-  Future<void> deleteUserLog(int id) async {
+  Future<void> deleteUserLog(UserLog userLog) async {
     final database = await _databaseHelper.database;
     await database.delete(
       'user_logs',
       where: 'id = ?',
-      whereArgs: [id],
+      whereArgs: [userLog.id],
     );
   }
 
@@ -55,7 +55,7 @@ class UserLogsDaoImpl extends UserLogsDao {
   }
 
   @override
-  Future<void> updateUserLog(UserLog userLog) async {
+  Future<UserLog> updateUserLog(UserLog userLog) async {
     final database = await _databaseHelper.database;
     await database.update(
       'user_logs',
@@ -63,10 +63,11 @@ class UserLogsDaoImpl extends UserLogsDao {
       where: 'id = ?',
       whereArgs: [userLog.id],
     );
+    return userLog;
   }
 
   @override
-  Future<List<UserLog?>> getUserLogsByUser(int id) async {
+  Future<List<UserLog>> getUserLogsByUserId(int id) async {
     final database = await _databaseHelper.database;
     final maps = await database.query('user_logs', where: 'user_id = ?', whereArgs: [id]);
     return List.generate(maps.length, (i) {
