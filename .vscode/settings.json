@@ -1,7 +1,7 @@
 {
-    "cmake.sourceDirectory": "/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/windows",
-    "github.copilot.chat.editor.temporalContext.enabled": true,
-    "github.copilot.chat.edits.temporalContext.enabled": true,
-    "github.copilot.editor.enableAutoCompletions": true
-    // "dart.flutterSdkPath": ".fvm/versions/3.24.3"
+  "cmake.sourceDirectory": "/Users/mackenziecerenio/Developer/Flutter/EastHardware-PMS/windows",
+  "github.copilot.chat.editor.temporalContext.enabled": true,
+  "github.copilot.chat.edits.temporalContext.enabled": true,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "dart.flutterSdkPath": ".fvm/versions/3.24.3"
 }

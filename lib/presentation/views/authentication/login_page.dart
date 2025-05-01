@@ -2,6 +2,7 @@ import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/authentication/loginform/login_form_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/views/authentication/login_form.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -34,6 +35,7 @@ class LoginPage extends StatelessWidget {
               } else if (user?.accessLevel == AccessLevel.staff) {
                 context.go(AppRoutes.admin);
               }
+              context.read<UserLogListBloc>().add(AddLoginEvent(user!));
             }
             context.read<LoginFormBloc>().add(LoginFormReturned());
           },

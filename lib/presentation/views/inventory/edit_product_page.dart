@@ -9,6 +9,7 @@ import 'package:easthardware_pms/presentation/bloc/inventory/productform/product
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
@@ -59,6 +60,11 @@ class EditProductPage extends StatelessWidget {
                     categoryName: matchedCategory.name,
                     id: state.productId,
                   );
+
+              context.read<UserLogListBloc>().add(AddUpdateEvent(
+                    'Product #${state.productId}',
+                    context.read<AuthenticationBloc>().state.user!,
+                  ));
 
               context.read<ProductListBloc>().add(UpdateProductEvent(mappedProduct));
               final stateUnits = context.read<UnitListBloc>().state.units;
@@ -596,6 +602,10 @@ class PageHeader extends StatelessWidget {
           // Update Product
           final int productId = context.read<ProductFormBloc>().state.productId!;
           final int creatorId = context.read<AuthenticationBloc>().state.user!.id!;
+          context.read<UserLogListBloc>().add(AddArchiveEvent(
+                'Product #${context.read<ProductFormBloc>().state.productId}',
+                context.read<AuthenticationBloc>().state.user!,
+              ));
           context.read<ProductFormBloc>().add(FormButtonPressedEvent(
                 productId: productId,
                 creatorId: creatorId,

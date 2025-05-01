@@ -9,6 +9,7 @@ import 'package:easthardware_pms/presentation/bloc/inventory/productform/product
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
@@ -48,6 +49,10 @@ class CreateProductPage extends StatelessWidget {
                   id: state.productId);
 
               context.read<ProductListBloc>().add(AddProductEvent(mappedProduct));
+              context.read<UserLogListBloc>().add(AddCreateEvent(
+                    'Product #${state.productId}',
+                    context.read<AuthenticationBloc>().state.user!,
+                  ));
 
               final List<Unit> mappedUnits = state.secondaryUnits
                   .map((unit) {
@@ -393,10 +398,9 @@ class SecondaryUnitField extends StatelessWidget with ProductFormValidator {
     final bloc = context.read<ProductFormBloc>();
     final state = bloc.state;
     final existingNames = [
-      state.mainUnit,
       ...state.secondaryUnits.map((u) => u.name),
-    ];
-    existingNames.removeAt(index + 1);
+      state.mainUnit,
+    ]..removeAt(index);
 
     return Row(
       children: [
