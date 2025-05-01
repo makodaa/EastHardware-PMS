@@ -20,4 +20,5 @@ class AppRoutes {
   // Security Sub Pages
   static const String usersPage = '/users';
   static const String createUserPage = '/create/user';
+  static const String userLogsPage = '/logs';
 }

@@ -7,6 +7,7 @@ import 'package:easthardware_pms/presentation/views/inventory/inventory_pane_pag
 import 'package:easthardware_pms/presentation/views/inventory/manage_categories_page.dart';
 import 'package:easthardware_pms/presentation/views/navigation/admin_navigation_scaffold.dart';
 import 'package:easthardware_pms/presentation/views/security/create_user_page.dart';
+import 'package:easthardware_pms/presentation/views/security/user_log_pane.dart';
 import 'package:easthardware_pms/presentation/views/security/users_pane_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -75,6 +76,10 @@ final GoRouter router = GoRouter(
               path: AppRoutes.createUserPage,
               builder: (context, state) => const CreateUserPage(),
             ),
+            GoRoute(
+              path: AppRoutes.userLogsPage,
+              builder: (context, state) => const UserLogPane(),
+            )
           ],
         )
       ],

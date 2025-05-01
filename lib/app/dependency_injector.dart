@@ -1,6 +1,7 @@
 import 'package:easthardware_pms/data/repository/authentication_repository.dart';
 import 'package:easthardware_pms/data/repository/category_repository.dart';
 import 'package:easthardware_pms/data/repository/product_repository.dart';
+import 'package:easthardware_pms/data/repository/security_question_repository.dart';
 import 'package:easthardware_pms/data/repository/unit_repository.dart';
 import 'package:easthardware_pms/data/repository/user_log_repository.dart';
 import 'package:easthardware_pms/data/repository/user_repository.dart';
@@ -9,6 +10,7 @@ import 'package:easthardware_pms/presentation/bloc/inventory/categorylist/catego
 import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/inventory/unitlist/unit_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/securityquestions/security_question_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userlist/user_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +23,7 @@ class DependencyInjector {
   late UnitRepositoryImpl _unitRepository;
   late UserLogRepositoryImpl _userLogRepository;
   late UserRepositoryImpl _userRepository;
+  late SecurityQuestionRepositoryImpl _securityQuestionRepository;
 
   Future<void> init() async {
     _authenticationRepository = AuthenticationRepositoryImpl();
@@ -29,6 +32,7 @@ class DependencyInjector {
     _unitRepository = UnitRepositoryImpl();
     _userLogRepository = UserLogRepositoryImpl();
     _userRepository = UserRepositoryImpl();
+    _securityQuestionRepository = SecurityQuestionRepositoryImpl();
   }
 
   List<SingleChildWidget> inject() {
@@ -46,6 +50,9 @@ class DependencyInjector {
       BlocProvider(create: (context) => UnitListBloc(_unitRepository)..add(LoadUnitsEvent())),
       BlocProvider(
           create: (context) => UserLogListBloc(_userLogRepository)..add(LoadUserLogsEvent())),
+      BlocProvider(
+          create: (context) => SecurityQuestionListBloc(_securityQuestionRepository)
+            ..add(const FetchSecurityQuestionsEvent())),
     ];
   }
 }

@@ -169,6 +169,29 @@ class ButtonText extends StatelessWidget {
   }
 }
 
+class ErrorText extends StatelessWidget {
+  const ErrorText(
+    this.data, {
+    this.textAlign = TextAlign.left,
+    super.key,
+  });
+  final String data;
+  final TextAlign textAlign;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      data,
+      textAlign: textAlign,
+      style: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 14.0,
+        color: Colors.errorPrimaryColor,
+      ),
+    );
+  }
+}
+
 extension StringExtension on String {
   String toTitleCase() {
     return split(' ')
