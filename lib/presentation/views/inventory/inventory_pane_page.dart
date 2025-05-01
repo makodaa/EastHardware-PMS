@@ -3,6 +3,7 @@ import 'package:easthardware_pms/presentation/bloc/inventory/productlist/product
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
+import 'package:easthardware_pms/presentation/widgets/data_table_place_holder.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/data_row_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/kpi_card.dart';
@@ -24,7 +25,7 @@ class InventoryPanePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const PageHeader(),
-          const SummarySection(),
+          const InventorySummary(),
           const ProductListSection(),
         ].withSpacing(() => Spacing.v16),
       ),
@@ -58,59 +59,40 @@ class PageHeader extends StatelessWidget {
   }
 }
 
-class SummarySection extends StatelessWidget {
-  const SummarySection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Row(
-        children: const [
-          InventorySummary(),
-        ].withSpacing(() => Spacing.h16),
-      ),
-    );
-  }
-}
-
 class InventorySummary extends StatelessWidget {
   const InventorySummary({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SubheadingText('Inventory Summary'),
-          BlocBuilder<ProductListBloc, ProductListState>(
-            builder: (context, state) {
-              final activeCount =
-                  state.allProducts.where((product) => product.archiveStatus == 0).length;
-              final lowStockCount = state.lowStockProducts.length;
-              final fastMovingCount = state.fastMovingProducts.length;
-              final deadCount = state.deadStockProducts.length;
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 100),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SubheadingText('Inventory Summary'),
+            BlocBuilder<ProductListBloc, ProductListState>(
+              builder: (context, state) {
+                final activeCount =
+                    state.allProducts.where((product) => product.archiveStatus == 0).length;
+                final lowStockCount = state.lowStockProducts.length;
+                final fastMovingCount = state.fastMovingProducts.length;
+                final deadCount = state.deadStockProducts.length;
 
-              return Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          ActiveCountCard(value: activeCount.toString()),
-                          LowStockCountCard(value: lowStockCount.toString()),
-                          HangingCountCard(value: deadCount.toString()),
-                          FastMovingCountCard(value: fastMovingCount.toString()),
-                        ].withSpacing(() => Spacing.h16),
-                      ),
-                    ),
-                  ].withSpacing(() => Spacing.v16),
-                ),
-              );
-            },
-          ),
-        ].withSpacing(() => Spacing.v16),
+                return Expanded(
+                  child: Row(
+                    children: [
+                      ActiveCountCard(value: activeCount.toString()),
+                      LowStockCountCard(value: lowStockCount.toString()),
+                      HangingCountCard(value: deadCount.toString()),
+                      FastMovingCountCard(value: fastMovingCount.toString()),
+                    ].withSpacing(() => Spacing.h16),
+                  ),
+                );
+              },
+            ),
+          ].withSpacing(() => Spacing.v8),
+        ),
       ),
     );
   }
@@ -249,24 +231,7 @@ class ProductsDataTable extends StatelessWidget {
         final allProducts = state.allProducts.where((p) => p.archiveStatus == 0).toList();
 
         if (allProducts.isEmpty) {
-          return const Expanded(
-              child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  FluentIcons.product_list,
-                  size: 48,
-                  color: Colors.grey,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'No products found',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-          ));
+          return const DataTablePlaceHolder(FluentIcons.product_list, 'Products');
         }
 
         return Expanded(

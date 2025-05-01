@@ -21,57 +21,61 @@ class AdminNavigationScaffold extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return NavigationView(
-            paneBodyBuilder: (item, body) {
-              return children[shell.currentIndex];
-            },
-            pane: NavigationPane(
-              header: const LogoRow(),
-              selected: state.selectedIndex,
-              displayMode: PaneDisplayMode.auto,
-              onItemPressed: (index) {
-                if ([1, 12].contains(index)) index++;
-                context.read<NavigationBloc>().add(NavigationIndexChanged(index: index));
-              },
-              items: [
-                PaneItem(
-                  icon: const Icon(FluentIcons.dynamic_list),
-                  title: const Text("Dashboard"),
-                  body: const SizedBox(),
-                ),
-                PaneItemSeparator(),
-                PaneItemExpander(
-                  icon: const Icon(FluentIcons.product),
-                  title: const Text("Inventory"),
-                  body: const SizedBox(),
-                  items: _inventorySubItems,
-                ),
-                PaneItemExpander(
-                  title: const Text('Billing'),
-                  icon: const Icon(FluentIcons.text_document),
-                  items: _billingSubItems,
-                  body: const SizedBox(),
-                ),
-                PaneItemExpander(
-                  title: const Text('Orders'),
-                  icon: const Icon(FluentIcons.bill),
-                  items: _orderSubItems,
-                  body: const SizedBox(),
-                ),
-                PaneItem(
-                  icon: const Icon(FluentIcons.bar_chart_vertical_fill),
-                  title: const Text('Reports'),
-                  body: const SizedBox(),
-                ),
-                PaneItemExpander(
-                  icon: const Icon(FluentIcons.local_admin),
-                  title: const Text('Security'),
-                  items: _securitySubItems,
-                  body: const SizedBox(),
-                )
-                //
-              ],
-            ));
+        return Stack(
+          children: [
+            NavigationView(
+                paneBodyBuilder: (item, body) {
+                  return children[shell.currentIndex];
+                },
+                pane: NavigationPane(
+                  header: const LogoRow(),
+                  selected: state.selectedIndex,
+                  displayMode: PaneDisplayMode.auto,
+                  onItemPressed: (index) {
+                    if ([1, 12].contains(index)) index++;
+                    context.read<NavigationBloc>().add(NavigationIndexChanged(index: index));
+                  },
+                  items: [
+                    PaneItem(
+                      icon: const Icon(FluentIcons.dynamic_list),
+                      title: const Text("Dashboard"),
+                      body: const SizedBox(),
+                    ),
+                    PaneItemSeparator(),
+                    PaneItemExpander(
+                      icon: const Icon(FluentIcons.product),
+                      title: const Text("Inventory"),
+                      body: const SizedBox(),
+                      items: _inventorySubItems,
+                    ),
+                    PaneItemExpander(
+                      title: const Text('Billing'),
+                      icon: const Icon(FluentIcons.text_document),
+                      items: _billingSubItems,
+                      body: const SizedBox(),
+                    ),
+                    PaneItemExpander(
+                      title: const Text('Orders'),
+                      icon: const Icon(FluentIcons.bill),
+                      items: _orderSubItems,
+                      body: const SizedBox(),
+                    ),
+                    PaneItem(
+                      icon: const Icon(FluentIcons.bar_chart_vertical_fill),
+                      title: const Text('Reports'),
+                      body: const SizedBox(),
+                    ),
+                    PaneItemExpander(
+                      icon: const Icon(FluentIcons.local_admin),
+                      title: const Text('Security'),
+                      items: _securitySubItems,
+                      body: const SizedBox(),
+                    )
+                    //
+                  ],
+                )),
+          ],
+        );
       },
     );
   }
