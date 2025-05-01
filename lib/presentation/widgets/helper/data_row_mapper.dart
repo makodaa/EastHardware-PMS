@@ -1,6 +1,7 @@
 import 'package:easthardware_pms/domain/models/category.dart';
 import 'package:easthardware_pms/domain/models/product.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
+import 'package:easthardware_pms/domain/models/user_log.dart';
 import 'package:easthardware_pms/presentation/widgets/data_row.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
@@ -72,6 +73,16 @@ class DataRowMapper {
       DataCell(Text(user.accessLevel.name.toTitleCase())),
       DataCell(Text(DateFormat.yMMMMd().format(DateTime.parse(user.creationDate)))),
       DataCell(HyperlinkButton(onPressed: action, child: const Text('Edit')))
+    ]);
+  }
+
+  static DataRow mapUserLogToRow(UserLog log, User user) {
+    return DataRow(cells: [
+      DataCell(Text('${log.id}')),
+      DataCell(Text('${user.firstName} ${user.lastName}')),
+      DataCell(Text(DateFormat.yMMMMd().format(log.eventTime))),
+      DataCell(Text(DateFormat('hh:mm a').format(log.eventTime))),
+      DataCell(Text(log.event)),
     ]);
   }
 }

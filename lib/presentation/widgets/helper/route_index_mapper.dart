@@ -12,6 +12,7 @@ class RouteIndexMapper {
       12 => AppRoutes.usersPage,
       13 => AppRoutes.usersPage,
       14 => AppRoutes.createUserPage,
+      15 => AppRoutes.userLogsPage,
       _ => null,
     };
   }
@@ -24,6 +25,7 @@ class RouteIndexMapper {
       AppRoutes.categoriesPage => 4,
       AppRoutes.usersPage => 13,
       AppRoutes.createUserPage => 14,
+      AppRoutes.userLogsPage => 15,
       _ => null
     };
   }
