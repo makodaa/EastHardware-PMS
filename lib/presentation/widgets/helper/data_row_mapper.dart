@@ -72,7 +72,6 @@ class DataRowMapper {
       DataCell(Text('${user.firstName} ${user.lastName}')),
       DataCell(Text(user.accessLevel.name.toTitleCase())),
       DataCell(Text(DateFormat.yMMMMd().format(DateTime.parse(user.creationDate)))),
-      DataCell(HyperlinkButton(onPressed: action, child: const Text('Edit')))
     ]);
   }
 

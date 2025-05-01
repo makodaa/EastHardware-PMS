@@ -1,7 +1,10 @@
 import 'package:easthardware_pms/domain/enums/enums.dart';
+import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userlist/user_list_bloc.dart';
+import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
 import 'package:easthardware_pms/presentation/widgets/helper/data_row_mapper.dart';
+import 'package:easthardware_pms/presentation/widgets/helper/route_index_mapper.dart';
 import 'package:easthardware_pms/presentation/widgets/spacing.dart';
 import 'package:easthardware_pms/presentation/widgets/text.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -56,7 +59,12 @@ class PageActions extends StatelessWidget {
         ),
         const Expanded(child: TextBox()),
         const Spacer(flex: 2),
-        TextButtonFilled('Add User', onPressed: () {}),
+        TextButtonFilled('Add User', onPressed: () {
+          const route = AppRoutes.createUserPage;
+          context
+              .read<NavigationBloc>()
+              .add(NavigationIndexChanged(index: RouteIndexMapper.getIndexFromRoute(route)!));
+        }),
       ].withSpacing(() => Spacing.h16),
     );
   }
@@ -81,7 +89,6 @@ class UserDataTable extends StatelessWidget {
                       DataColumn(label: Text('Name')),
                       DataColumn(label: Text('Level of Access')),
                       DataColumn(label: Text('Creation Date')),
-                      DataColumn(label: Text('Actions')),
                     ],
                     rows: allUsers.map((user) {
                       return DataRowMapper.mapUserToRow(user, () {});

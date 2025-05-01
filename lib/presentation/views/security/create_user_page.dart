@@ -2,11 +2,13 @@ import 'package:easthardware_pms/domain/constants/constants.dart';
 import 'package:easthardware_pms/domain/enums/enums.dart';
 import 'package:easthardware_pms/domain/models/security_question.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
+import 'package:easthardware_pms/presentation/bloc/authentication/authentication/authentication_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/securityquestions/security_question_list_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userform/user_form_bloc.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userform/user_form_validator.dart';
 import 'package:easthardware_pms/presentation/bloc/security/userlist/user_list_bloc.dart';
+import 'package:easthardware_pms/presentation/bloc/security/userloglist/user_log_list_bloc.dart';
 import 'package:easthardware_pms/presentation/models/form_question.dart';
 import 'package:easthardware_pms/presentation/router/app_routes.dart';
 import 'package:easthardware_pms/presentation/widgets/buttons/text_button.dart';
@@ -41,9 +43,16 @@ class CreateUserPage extends StatelessWidget {
                 for (final question in securityQuestions) {
                   context.read<SecurityQuestionListBloc>().add(AddSecurityQuestionEvent(question));
                 }
+                final creator = context.read<AuthenticationBloc>().state.user;
                 context.read<UserFormBloc>().add(FormSubmittedEvent());
+                context.read<UserLogListBloc>().add(AddCreateEvent('User #${user.id!}', creator!));
                 break;
               case FormStatus.submitted:
+                Future.delayed(Duration.zero, () {
+                  if (context.mounted) {
+                    context.read<UserFormBloc>().add(FormResetEvent());
+                  }
+                });
                 // Show success message and navigate back
                 context.read<NavigationBloc>().add(
                       NavigationIndexChanged(
