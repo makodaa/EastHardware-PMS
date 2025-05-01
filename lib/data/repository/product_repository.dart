@@ -6,8 +6,8 @@ import 'package:easthardware_pms/domain/repository/product_repository.dart';
 
 class ProductRepositoryImpl extends ProductRepository {
   ProductRepositoryImpl() : super();
-  final ProductsDaoImpl _productsDao = ProductsDaoImpl();
-  final CategoriesDaoImpl _categoriesDao = CategoriesDaoImpl();
+  final ProductsDao _productsDao = ProductsDao();
+  final CategoriesDao _categoriesDao = CategoriesDao();
   @override
   Future<void> deleteProduct(int id) {
     try {

@@ -7,7 +7,7 @@ import 'package:easthardware_pms/domain/models/product.dart';
 import 'package:easthardware_pms/domain/repository/invoice_product_repository.dart';
 
 class InvoiceProductRepositoryImpl extends InvoiceProductRepository {
-  final InvoiceProductsDaoImpl _invoiceProductsDao = InvoiceProductsDaoImpl();
+  final InvoiceProductsDao _invoiceProductsDao = InvoiceProductsDao();
   @override
   Future<InvoiceProduct> createInvoiceProduct(InvoiceProduct invoiceProduct) {
     try {

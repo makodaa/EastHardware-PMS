@@ -6,7 +6,7 @@ import 'package:easthardware_pms/domain/repository/category_repository.dart';
 class CategoryRepositoryImpl extends CategoryRepository {
   CategoryRepositoryImpl() : super();
 
-  final CategoriesDao _categoriesDao = CategoriesDaoImpl();
+  final CategoriesDao _categoriesDao = CategoriesDao();
 
   @override
   Future<void> deleteCategory(int id) async {

@@ -4,7 +4,7 @@ import 'package:easthardware_pms/domain/models/user_log.dart';
 import 'package:easthardware_pms/domain/repository/user_log_repository.dart';
 
 class UserLogRepositoryImpl extends UserLogRepository {
-  final _userLogsDao = UserLogsDaoImpl();
+  final _userLogsDao = UserLogsDao();
   @override
   Future<UserLog> insertUserLog(UserLog userLog) async {
     try {

@@ -4,7 +4,7 @@ import 'package:easthardware_pms/domain/models/order_product.dart';
 import 'package:easthardware_pms/domain/repository/order_product_repository.dart';
 
 class OrderProductRepositoryImpl extends OrderProductRepository {
-  final OrderProductsDaoImpl _orderProductsDao = OrderProductsDaoImpl();
+  final OrderProductsDao _orderProductsDao = OrderProductsDao();
 
   @override
   Future<void> deleteOrderProduct(int id) async {

@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/order_product.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class OrderProductsDao {
+  OrderProductsDao._();
+  factory OrderProductsDao([DatabaseHelper? databaseHelper]) {
+    return OrderProductsDaoImpl._(databaseHelper);
+  }
   Future<List<OrderProduct>> getAllOrderProducts();
   Future<OrderProduct?> getOrderProductById(int id);
   Future<OrderProduct> insertOrderProduct(OrderProduct orderProduct);
@@ -13,8 +17,9 @@ abstract class OrderProductsDao {
 
 class OrderProductsDaoImpl extends OrderProductsDao {
   final DatabaseHelper _databaseHelper;
-  OrderProductsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  OrderProductsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   /// Returns a list of all order products in the database.
   ///

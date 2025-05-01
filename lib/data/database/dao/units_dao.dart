@@ -3,6 +3,10 @@ import 'package:easthardware_pms/data/database/tables/units_table.dart';
 import 'package:easthardware_pms/domain/models/unit.dart';
 
 abstract class UnitsDao {
+  UnitsDao._();
+  factory UnitsDao([DatabaseHelper? databaseHelper]) {
+    return UnitsDaoImpl._(databaseHelper);
+  }
   Future<List<Unit>> getAllUnits();
   Future<List<Unit>> getAllUnitsOfProduct(int id);
   Future<Unit?> getUnitById(int id);
@@ -15,8 +19,9 @@ abstract class UnitsDao {
 class UnitsDaoImpl extends UnitsDao {
   final DatabaseHelper _databaseHelper;
 
-  UnitsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  UnitsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   @override
   Future<void> deleteUnit(int id) async {

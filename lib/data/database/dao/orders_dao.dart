@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/order.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class OrdersDao {
+  OrdersDao._();
+  factory OrdersDao([DatabaseHelper? databaseHelper]) {
+    return OrdersDaoImpl._(databaseHelper);
+  }
   Future<List<Order>> getAllOrders();
   Future<Order?> getOrderById(int id);
   Future<Order?> getOrderByUid(String uid);
@@ -23,8 +27,9 @@ abstract class OrdersDao {
 
 class OrdersDaoImpl extends OrdersDao {
   final DatabaseHelper _databaseHelper;
-  OrdersDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  OrdersDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   @override
   Future<void> deleteOrder(int id) async {

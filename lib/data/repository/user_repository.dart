@@ -6,7 +6,7 @@ import 'package:easthardware_pms/domain/repository/user_repository.dart';
 class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl() : super();
 
-  final UsersDao _usersDao = UsersDaoImpl();
+  final UsersDao _usersDao = UsersDao();
 
   @override
   Future<User> insertUser(User user) {

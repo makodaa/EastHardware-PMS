@@ -4,7 +4,7 @@ import 'package:easthardware_pms/domain/models/security_question.dart';
 import 'package:easthardware_pms/domain/repository/security_question_repository.dart';
 
 class SecurityQuestionRepositoryImpl extends SecurityQuestionRepository {
-  final SecurityQuestionsDaoImpl securityQuestionsDao = SecurityQuestionsDaoImpl();
+  final SecurityQuestionsDao securityQuestionsDao = SecurityQuestionsDao();
 
   @override
   Future<SecurityQuestion> addSecurityQuestion(SecurityQuestion securityQuestion) async {

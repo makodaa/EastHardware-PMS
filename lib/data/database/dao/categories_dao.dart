@@ -11,6 +11,11 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // and returning the results.
 
 abstract class CategoriesDao {
+  CategoriesDao._();
+  factory CategoriesDao([DatabaseHelper? databaseHelper]) {
+    return CategoriesDaoImpl._(databaseHelper);
+  }
+
   Future<List<Category>> getAllCategories();
   Future<Category?> getCategoryById(int id);
   Future<Category> insertCategory(Category category);
@@ -30,8 +35,9 @@ abstract class CategoriesDao {
 class CategoriesDaoImpl extends CategoriesDao {
   final DatabaseHelper _databaseHelper;
 
-  CategoriesDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  CategoriesDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   /// Gets all categories from the database.
   @override

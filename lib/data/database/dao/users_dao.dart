@@ -3,6 +3,10 @@ import 'package:easthardware_pms/data/database/tables/users_table.dart';
 import 'package:easthardware_pms/domain/models/user.dart';
 
 abstract class UsersDao {
+  UsersDao._();
+  factory UsersDao([DatabaseHelper? databaseHelper]) {
+    return UsersDaoImpl._(databaseHelper);
+  }
   Future<List<User>> getAllUsers();
   Future<User?> getUserById(int id);
   Future<User?> getUserByUid(String uid);
@@ -16,8 +20,9 @@ abstract class UsersDao {
 class UsersDaoImpl extends UsersDao {
   final DatabaseHelper _databaseHelper;
 
-  UsersDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  UsersDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   @override
   Future<List<User>> getAllUsers() async {

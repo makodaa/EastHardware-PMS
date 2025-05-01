@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/invoice.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class InvoicesDao {
+  InvoicesDao._();
+  factory InvoicesDao([DatabaseHelper? databaseHelper]) {
+    return InvoicesDaoImpl._(databaseHelper);
+  }
   Future<List<Invoice>> getAllInvoices();
   Future<Invoice?> getInvoiceById(int id);
   Future<Invoice?> getInvoiceByUid(String uid);
@@ -30,8 +34,9 @@ abstract class InvoicesDao {
 ///
 class InvoicesDaoImpl extends InvoicesDao {
   final DatabaseHelper _databaseHelper;
-  InvoicesDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  InvoicesDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   /// Returns a list of all invoices in the database.
   ///

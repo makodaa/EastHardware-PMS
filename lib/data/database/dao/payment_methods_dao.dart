@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/payment_method.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class PaymentMethodsDao {
+  PaymentMethodsDao._();
+  factory PaymentMethodsDao([DatabaseHelper? databaseHelper]) {
+    return PaymentMethodsDaoImpl._(databaseHelper);
+  }
   Future<List<PaymentMethod>> getAllPaymentMethods();
   Future<PaymentMethod?> getPaymentMethodById(int id);
   Future<PaymentMethod> insertPaymentMethod(PaymentMethod paymentMethod);
@@ -12,8 +16,10 @@ abstract class PaymentMethodsDao {
 
 class PaymentMethodsDaoImpl extends PaymentMethodsDao {
   final DatabaseHelper _databaseHelper;
-  PaymentMethodsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+
+  PaymentMethodsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   @override
   Future<void> deletePaymentMethod(int id) async {

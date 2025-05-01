@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/expense_type.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class ExpenseTypesDao {
+  ExpenseTypesDao._();
+  factory ExpenseTypesDao([DatabaseHelper? databaseHelper]) {
+    return ExpenseTypesDaoImpl._(databaseHelper);
+  }
   Future<List<ExpenseType>> getAllExpenseTypes();
   Future<ExpenseType?> getExpenseTypeById(int id);
   Future<ExpenseType> insertExpenseType(ExpenseType expenseType);
@@ -17,8 +21,10 @@ abstract class ExpenseTypesDao {
 // and perform CRUD operations on the expense types.
 class ExpenseTypesDaoImpl extends ExpenseTypesDao {
   final DatabaseHelper _databaseHelper;
-  ExpenseTypesDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+
+  ExpenseTypesDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   /// This method retrieves all expense types from the database.
   /// It returns a list of [ExpenseType] objects.

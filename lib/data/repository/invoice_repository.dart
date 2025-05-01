@@ -3,7 +3,7 @@ import 'package:easthardware_pms/domain/models/invoice.dart';
 import 'package:easthardware_pms/domain/repository/invoice_repository.dart';
 
 class InvoiceRepositoryImpl extends InvoiceRepository {
-  final InvoicesDaoImpl _invoicesDao = InvoicesDaoImpl();
+  final InvoicesDao _invoicesDao = InvoicesDao();
   @override
   Future<void> deleteInvoice(int id) async {
     if (id <= 0) {

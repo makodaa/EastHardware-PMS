@@ -6,6 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class ProductsDao {
+  ProductsDao._();
+  factory ProductsDao([DatabaseHelper? databaseHelper]) {
+    return ProductsDaoImpl._(databaseHelper);
+  }
+
   Future<List<Product>> getAllProducts();
   Future<List<Product>> getLowStockProducts();
   Future<List<Product>> getFastMovingProducts();
@@ -20,8 +25,10 @@ abstract class ProductsDao {
 
 class ProductsDaoImpl extends ProductsDao {
   final DatabaseHelper _databaseHelper;
-  ProductsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+
+  ProductsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   @override
   Future<void> deleteProduct(int id) async {

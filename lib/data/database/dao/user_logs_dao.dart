@@ -2,20 +2,25 @@ import 'package:easthardware_pms/data/database/database_helper.dart';
 import 'package:easthardware_pms/domain/models/user_log.dart';
 
 abstract class UserLogsDao {
+  UserLogsDao._();
+  factory UserLogsDao([DatabaseHelper? databaseHelper]) {
+    return UserLogsDaoImpl._(databaseHelper);
+  }
   Future<List<UserLog>> getAllUserLogs();
   Future<UserLog?> getUserLogById(int id);
   Future<UserLog?> getUserLogByUid(String uid);
   Future<List<UserLog>> getUserLogsByUserId(int id);
   Future<List<UserLog>> getUserLogsByEventTime(DateTime start, DateTime end);
   Future<UserLog> insertUserLog(UserLog userLog);
-  Future<void> updateUserLog(UserLog userLog);
+  Future<UserLog> updateUserLog(UserLog userLog);
   Future<void> deleteUserLog(UserLog userLog);
 }
 
 class UserLogsDaoImpl extends UserLogsDao {
   final DatabaseHelper _databaseHelper;
-  UserLogsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  UserLogsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
   @override
   Future<void> deleteUserLog(UserLog userLog) async {
     final database = await _databaseHelper.database;

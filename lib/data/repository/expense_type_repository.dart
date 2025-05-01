@@ -4,7 +4,7 @@ import 'package:easthardware_pms/domain/models/expense_type.dart';
 import 'package:easthardware_pms/domain/repository/expense_type_repository.dart';
 
 class ExpenseTypeRepositoryImpl extends ExpenseTypeRepository {
-  final ExpenseTypesDao _expenseTypeDao = ExpenseTypesDaoImpl();
+  final ExpenseTypesDao _expenseTypeDao = ExpenseTypesDao();
   ExpenseTypeRepositoryImpl() : super();
   @override
   Future<void> deleteExpenseType(int id) async {

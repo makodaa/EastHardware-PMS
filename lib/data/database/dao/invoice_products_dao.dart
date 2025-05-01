@@ -3,6 +3,10 @@ import 'package:easthardware_pms/domain/models/invoice_product.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 abstract class InvoiceProductsDao {
+  InvoiceProductsDao._();
+  factory InvoiceProductsDao([DatabaseHelper? databaseHelper]) {
+    return InvoiceProductsDaoImpl._(databaseHelper);
+  }
   Future<List<InvoiceProduct>> getAllInvoiceProducts();
   Future<InvoiceProduct?> getInvoiceProductById(int id);
   Future<List<InvoiceProduct>> getInvoiceProductsByInvoiceId(int invoiceId);
@@ -15,8 +19,9 @@ abstract class InvoiceProductsDao {
 // and provide the actual database operations using a database library.
 class InvoiceProductsDaoImpl extends InvoiceProductsDao {
   final DatabaseHelper _databaseHelper;
-  InvoiceProductsDaoImpl([DatabaseHelper? databaseHelper])
-      : _databaseHelper = databaseHelper ?? DatabaseHelper();
+  InvoiceProductsDaoImpl._([DatabaseHelper? databaseHelper])
+      : _databaseHelper = databaseHelper ?? DatabaseHelper(),
+        super._();
 
   /// This method retrieves all invoice products from the database.
   /// It returns a list of [InvoiceProduct] objects.

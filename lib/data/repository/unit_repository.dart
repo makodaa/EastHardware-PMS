@@ -6,7 +6,7 @@ import 'package:easthardware_pms/domain/repository/unit_repository.dart';
 class UnitRepositoryImpl extends UnitRepository {
   UnitRepositoryImpl() : super();
 
-  final UnitsDaoImpl _unitsDao = UnitsDaoImpl();
+  final UnitsDao _unitsDao = UnitsDao();
   @override
   Future<void> deleteUnit(int id) {
     try {
