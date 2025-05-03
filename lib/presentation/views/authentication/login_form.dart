@@ -48,7 +48,7 @@ class _FormHeader extends StatelessWidget {
             "Login",
             textAlign: TextAlign.start,
           ),
-          const GreyText(
+          const GrayText(
             "Fill in the form below to log in",
             textAlign: TextAlign.start,
           )
