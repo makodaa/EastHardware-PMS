@@ -19,7 +19,6 @@ class UnitListBloc extends Bloc<UnitListEvent, UnitListState> {
 
   final UnitRepositoryImpl _repository;
 
-  // TODO: try refactor these shi
   void _onLoad(LoadUnitsEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
     try {
@@ -36,14 +35,12 @@ class UnitListBloc extends Bloc<UnitListEvent, UnitListState> {
 
   void _onFilter(FilterUnitsEvent event, Emitter emit) async {
     emit(state.copyWith(status: DataStatus.loading));
-    try {
-      emit(state.copyWith(
-        filteredUnits: await _repository.getAllUnitsOfProductId(event.productId),
-        status: DataStatus.success,
-      ));
-    } catch (e) {
-      emit(state.copyWith(status: DataStatus.error));
-    }
+    Future.delayed(Duration.zero, () {
+      final filteredUnits = state.units.where((unit) {
+        return unit.productId! == event.productId;
+      }).toList();
+      emit(state.copyWith(filteredUnits: filteredUnits, status: DataStatus.success));
+    });
   }
 
   void _onReload(ReloadUnitsEvent event, Emitter emit) async {

@@ -46,6 +46,7 @@ dependencies:
     scroll_animator: ^0.3.0
     uuid: ^4.5.1
     intl: ^0.19.0
+    fl_chart: ^0.71.0
 
 dev_dependencies:
     flutter_test:

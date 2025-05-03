@@ -5,7 +5,7 @@ abstract class InvoiceRepository {
   Future<Invoice?> getInvoiceById(int id);
   Future<Invoice> insertInvoice(Invoice invoice);
   Future<Invoice> updateInvoice(Invoice invoice);
-  Future<void> deleteInvoice(int id);
+  Future<void> deleteInvoice(Invoice invoice);
   Future<List<Invoice>> getInvoicesByCustomerName(String customerName);
   Future<List<Invoice>> getInvoicesByDateRange(DateTime startDate, DateTime endDate);
   Future<List<Invoice>> getInvoicesByPaymentMethod(String paymentMethod);

@@ -26,9 +26,7 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
           fastMovingProducts: await _repository.getFastMovingProducts(),
           deadStockProducts: await _repository.getDeadStockProducts(),
           status: DataStatus.success));
-      print('Products loaded: ${state.allProducts}');
     } catch (e) {
-      print('Error loading products: $e');
       emit(state.copyWith(status: DataStatus.error));
     }
   }
@@ -70,7 +68,6 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
         status: DataStatus.success,
       ));
     } catch (e) {
-      print("Error adding product: $e");
       emit(state.copyWith(status: DataStatus.error));
     }
   }

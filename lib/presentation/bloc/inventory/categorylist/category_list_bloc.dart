@@ -25,9 +25,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
         categories: await _repository.getAllCategories(),
         status: DataStatus.success,
       ));
-      print('Categories loaded: ${state.categories.map((category) => category.name)}');
     } catch (e) {
-      print('Error loading categories: $e');
       emit(state.copyWith(status: DataStatus.error));
     }
   }

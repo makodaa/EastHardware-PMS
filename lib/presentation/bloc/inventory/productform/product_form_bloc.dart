@@ -217,7 +217,6 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
         formStatus: FormStatus.initial,
       ));
     } catch (e) {
-      print('Error trying to load product: $e');
       emit(state.copyWith(formStatus: FormStatus.error));
     }
   }

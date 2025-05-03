@@ -5,12 +5,9 @@ import 'package:easthardware_pms/domain/repository/invoice_repository.dart';
 class InvoiceRepositoryImpl extends InvoiceRepository {
   final InvoicesDao _invoicesDao = InvoicesDao();
   @override
-  Future<void> deleteInvoice(int id) async {
-    if (id <= 0) {
-      throw ArgumentError('Invalid invoice ID');
-    }
+  Future<void> deleteInvoice(Invoice invoice) async {
     try {
-      return await _invoicesDao.deleteInvoice(id);
+      return await _invoicesDao.deleteInvoice(invoice.id!);
     } catch (e) {
       throw Exception('Failed to delete invoice: $e');
     }

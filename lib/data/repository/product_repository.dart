@@ -47,7 +47,6 @@ class ProductRepositoryImpl extends ProductRepository {
 
   @override
   Future<Product> insertProduct(Product product) async {
-    _validateProduct(product);
     try {
       return await _productsDao.insertProduct(product);
     } catch (e) {
@@ -57,8 +56,6 @@ class ProductRepositoryImpl extends ProductRepository {
 
   @override
   Future<Product> updateProduct(Product product) {
-    // Validate the product before updating
-    _validateProduct(product);
     try {
       return _productsDao.updateProduct(product);
     } catch (e) {
@@ -100,16 +97,5 @@ class ProductRepositoryImpl extends ProductRepository {
     } catch (e) {
       throw DatabaseException("Failed to fetch products by category ID: $e");
     }
-  }
-
-  // TODO: Remove, since validaiton is done in the presentation layer alr lol
-  void _validateProduct(Product product) {
-    if (product.name.isEmpty) {
-      throw ValidationException('Product name cannot be empty');
-    }
-    if (product.salePrice <= 0) {
-      throw ValidationException('Product price must be greater than zero');
-    }
-    // TODO: Add more validation rules as needed
   }
 }
