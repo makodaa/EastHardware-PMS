@@ -106,8 +106,8 @@ class StrongText extends StatelessWidget {
   }
 }
 
-class GreyText extends StatelessWidget {
-  const GreyText(
+class GrayText extends StatelessWidget {
+  const GrayText(
     this.data, {
     this.textAlign = TextAlign.left,
     super.key,

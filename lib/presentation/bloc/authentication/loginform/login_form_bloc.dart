@@ -24,7 +24,6 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _onPasswordChanged(LoginFormPasswordChanged event, Emitter emit) {
-    print('pass ass ${event.password}');
     final password = event.password;
     return emit(state.copyWith(password: password));
   }

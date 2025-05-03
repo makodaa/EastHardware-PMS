@@ -515,7 +515,7 @@ class DeadFastStockFields extends StatelessWidget with ProductFormValidator {
                     validator: validateDeadStockThreshold,
                     suffix: const Padding(
                       padding: AppPadding.a4,
-                      child: GreyText('Days'),
+                      child: GrayText('Days'),
                     ),
                     onChanged: (value) {
                       context.read<ProductFormBloc>().add((DeadstockFieldChangedEvent(value)));
@@ -534,7 +534,7 @@ class DeadFastStockFields extends StatelessWidget with ProductFormValidator {
                     validator: validateFastMovingThreshold,
                     suffix: const Padding(
                       padding: AppPadding.a4,
-                      child: GreyText('Days'),
+                      child: GrayText('Days'),
                     ),
                     onChanged: (value) {
                       context.read<ProductFormBloc>().add(FastMovingStockFieldChangedEvent(value));

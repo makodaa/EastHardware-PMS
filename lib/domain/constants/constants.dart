@@ -6,3 +6,10 @@ const List<String> SECURITY_QUESTIONS = [
   "What was the name of your first pet?",
   "What was the name of your elementary school?",
 ];
+
+const List<String> PAYMENT_METHODS = [
+  "Cash",
+  "Credit Card",
+  "Debit Card",
+  "Mobile Payment",
+];
